@@ -6,7 +6,7 @@ namespace Client
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hey you! Someday I'll be a Coinche client!");
+            Console.WriteLine("Hey you! Someday I'll be a coinche client!");
         }
     }
 }
