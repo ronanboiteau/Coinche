@@ -1,1 +1,3 @@
-bin/
+Client/bin/
+Server/bin/
+.idea/

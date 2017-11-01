@@ -670,11 +670,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/ronan/Documents/Projects/Coinche/coinche.csproj",
-      "projectName": "coinche",
-      "projectPath": "/Users/ronan/Documents/Projects/Coinche/coinche.csproj",
+      "projectUniqueName": "/Users/ronan/Documents/Projects/Coinche/Client/Client.csproj",
+      "projectName": "Client",
+      "projectPath": "/Users/ronan/Documents/Projects/Coinche/Client/Client.csproj",
       "packagesPath": "/Users/ronan/.nuget/packages/",
-      "outputPath": "/Users/ronan/Documents/Projects/Coinche/obj/",
+      "outputPath": "/Users/ronan/Documents/Projects/Coinche/Client/obj/",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"

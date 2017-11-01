@@ -1,0 +1,10 @@
+/Users/ronan/Documents/Projects/Coinche/Client/bin/Debug/netcoreapp2.0/Client.deps.json
+/Users/ronan/Documents/Projects/Coinche/Client/bin/Debug/netcoreapp2.0/Client.runtimeconfig.json
+/Users/ronan/Documents/Projects/Coinche/Client/bin/Debug/netcoreapp2.0/Client.runtimeconfig.dev.json
+/Users/ronan/Documents/Projects/Coinche/Client/bin/Debug/netcoreapp2.0/Client.dll
+/Users/ronan/Documents/Projects/Coinche/Client/bin/Debug/netcoreapp2.0/Client.pdb
+/Users/ronan/Documents/Projects/Coinche/Client/obj/Debug/netcoreapp2.0/Client.csproj.CoreCompileInputs.cache
+/Users/ronan/Documents/Projects/Coinche/Client/obj/Debug/netcoreapp2.0/Client.AssemblyInfoInputs.cache
+/Users/ronan/Documents/Projects/Coinche/Client/obj/Debug/netcoreapp2.0/Client.AssemblyInfo.cs
+/Users/ronan/Documents/Projects/Coinche/Client/obj/Debug/netcoreapp2.0/Client.dll
+/Users/ronan/Documents/Projects/Coinche/Client/obj/Debug/netcoreapp2.0/Client.pdb

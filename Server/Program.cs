@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace coinche
+namespace Server
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("Hey you! Someday I'll be a coinche server!");
         }
     }
 }

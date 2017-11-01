@@ -9,33 +9,28 @@ This is a .NET online Coinche game. It requires 4 players to play. You can find 
 To build and run the project you need to install:
 * [.NET Core](https://www.microsoft.com/net/download/macos)
 
-### Building JAR files
+## How to run the server & clients
 
-To build the project from your terminal, go to the root of the repository and run this command:
+### Running the server
+
+To run the Coinche server, use your terminal to navigate to the `Server/` folder located at the root of the repository & then run:
 ```
 dotnet run
 ```
-On success, it will build the jcoinche-server.jar and jcoinche-client.jar files in the target/ directory.
 
-## How to start a game
-### Running the JAR files
+### Running clients
 
-To run the jar files, go in the target/ repository.
-You need to run the server first. Type this command to run it:
+To run Coinche clients, use your terminal to navigate to the `Client/` folder located at the root of the repository & then run:
 ```
-java -jar jcoinche-server.jar
+dotnet run
 ```
-Type this command to run a client:
-```
-java -jar jcoinche-client.jar
-```
-You need to run **5 clients** to start a game *(4 players and 1 arbiter)*.
+You need to run **4 clients** to start a Coinche game.
 
-### How to play
+## How to play
 
-Once you've run the 5 clients, the game starts. You are now a player in a team of two.
+Once you've run the 4 clients, the game starts. You are now a player in a team of 2.
 
-##### Bidding
+#### Bidding
 
 You are given 8 cards with different IDs.
 ex.:
@@ -56,7 +51,7 @@ PASS
 If every player passes, the cards are re-drawn and the bidding will start again.
 The bidding will stop when only one player bids and the other ones pass.
 
-##### Game
+#### Game
 
 The player who made the highest bid starts. He needs to type the ID *(shown in the deck between parentheses)* of the card he wants to play.
 ```
