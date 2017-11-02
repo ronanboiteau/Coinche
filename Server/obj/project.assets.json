@@ -664,7 +664,8 @@
     ]
   },
   "packageFolders": {
-    "/Users/ronan/.nuget/packages/": {}
+    "/Users/ronan/.nuget/packages/": {},
+    "/usr/local/share/dotnet/sdk/NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
@@ -675,8 +676,11 @@
       "packagesPath": "/Users/ronan/.nuget/packages/",
       "outputPath": "/Users/ronan/Documents/Projects/Coinche/Server/obj/",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
+      ],
       "configFilePaths": [
-        "/Users/ronan/.config/NuGet/NuGet.Config"
+        "/Users/ronan/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.0"
@@ -688,6 +692,11 @@
         "netcoreapp2.0": {
           "projectReferences": {}
         }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
       }
     },
     "frameworks": {
@@ -695,7 +704,8 @@
         "dependencies": {
           "Microsoft.NETCore.App": {
             "target": "Package",
-            "version": "2.0.0"
+            "version": "2.0.0",
+            "autoReferenced": true
           }
         },
         "imports": [
