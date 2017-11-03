@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Net;
-using System.Text;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace TCPServer.App.AfzaalAhmadZeeshan
+namespace Server
 {
     class TcpServer
     {
@@ -47,7 +47,7 @@ namespace TCPServer.App.AfzaalAhmadZeeshan
                 string message = "";
 
                 await Task.Run(() => {
-                    while (message != null && !message.StartsWith("quit"))
+                    while (message != null && !message.Equals("quit"))
                     {
                         byte[] data = Encoding.ASCII.GetBytes("Send next data: [enter 'quit' to terminate] ");
                         client.GetStream().Write(data, 0, data.Length);

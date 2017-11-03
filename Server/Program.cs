@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TCPServer.App.AfzaalAhmadZeeshan
+namespace Server
 {
     public class Program
     {
