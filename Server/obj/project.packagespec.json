@@ -1,10 +1,10 @@
 ﻿{
   "version": "1.0.0",
   "restore": {
-    "projectUniqueName": "/Users/ronan/Documents/Projects/Coinche/Server/Server.csproj",
+    "projectUniqueName": "/Users/fannytavart/Epitech/rendu/dotNet/Coinche/Server/Server.csproj",
     "projectName": "Server",
-    "projectPath": "/Users/ronan/Documents/Projects/Coinche/Server/Server.csproj",
-    "outputPath": "/Users/ronan/Documents/Projects/Coinche/Server/obj/",
+    "projectPath": "/Users/fannytavart/Epitech/rendu/dotNet/Coinche/Server/Server.csproj",
+    "outputPath": "/Users/fannytavart/Epitech/rendu/dotNet/Coinche/Server/obj/",
     "projectStyle": "PackageReference",
     "originalTargetFrameworks": [
       "netcoreapp2.0"

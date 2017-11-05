@@ -664,23 +664,23 @@
     ]
   },
   "packageFolders": {
-    "/Users/ronan/.nuget/packages/": {},
+    "/Users/fannytavart/.nuget/packages/": {},
     "/usr/local/share/dotnet/sdk/NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/ronan/Documents/Projects/Coinche/Server/Server.csproj",
+      "projectUniqueName": "/Users/fannytavart/Epitech/rendu/dotNet/Coinche/Server/Server.csproj",
       "projectName": "Server",
-      "projectPath": "/Users/ronan/Documents/Projects/Coinche/Server/Server.csproj",
-      "packagesPath": "/Users/ronan/.nuget/packages/",
-      "outputPath": "/Users/ronan/Documents/Projects/Coinche/Server/obj/",
+      "projectPath": "/Users/fannytavart/Epitech/rendu/dotNet/Coinche/Server/Server.csproj",
+      "packagesPath": "/Users/fannytavart/.nuget/packages/",
+      "outputPath": "/Users/fannytavart/Epitech/rendu/dotNet/Coinche/Server/obj/",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "/Users/ronan/.nuget/NuGet/NuGet.Config"
+        "/Users/fannytavart/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.0"

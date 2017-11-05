@@ -9,3 +9,14 @@
 /Users/ronan/Documents/Projects/Coinche/Server/obj/Debug/netcoreapp2.0/Server.dll
 /Users/ronan/Documents/Projects/Coinche/Server/obj/Debug/netcoreapp2.0/Server.pdb
 /Users/ronan/Documents/Projects/Coinche/Server/obj/Debug/netcoreapp2.0/Server.csprojResolveAssemblyReference.cache
+/Users/fannytavart/Epitech/rendu/dotNet/Coinche/Server/bin/Debug/netcoreapp2.0/Server.deps.json
+/Users/fannytavart/Epitech/rendu/dotNet/Coinche/Server/bin/Debug/netcoreapp2.0/Server.runtimeconfig.json
+/Users/fannytavart/Epitech/rendu/dotNet/Coinche/Server/bin/Debug/netcoreapp2.0/Server.runtimeconfig.dev.json
+/Users/fannytavart/Epitech/rendu/dotNet/Coinche/Server/bin/Debug/netcoreapp2.0/Server.dll
+/Users/fannytavart/Epitech/rendu/dotNet/Coinche/Server/bin/Debug/netcoreapp2.0/Server.pdb
+/Users/fannytavart/Epitech/rendu/dotNet/Coinche/Server/obj/Debug/netcoreapp2.0/Server.csprojResolveAssemblyReference.cache
+/Users/fannytavart/Epitech/rendu/dotNet/Coinche/Server/obj/Debug/netcoreapp2.0/Server.csproj.CoreCompileInputs.cache
+/Users/fannytavart/Epitech/rendu/dotNet/Coinche/Server/obj/Debug/netcoreapp2.0/Server.AssemblyInfoInputs.cache
+/Users/fannytavart/Epitech/rendu/dotNet/Coinche/Server/obj/Debug/netcoreapp2.0/Server.AssemblyInfo.cs
+/Users/fannytavart/Epitech/rendu/dotNet/Coinche/Server/obj/Debug/netcoreapp2.0/Server.dll
+/Users/fannytavart/Epitech/rendu/dotNet/Coinche/Server/obj/Debug/netcoreapp2.0/Server.pdb
