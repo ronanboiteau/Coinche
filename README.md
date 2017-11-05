@@ -7,7 +7,7 @@ This is a .NET online Coinche game. It requires 4 players to play. You can find 
 ### Prerequisites
 
 To build and run the project you need to install:
-* [.NET Core](https://www.microsoft.com/net/download/)
+* [.NET Core](https://www.microsoft.com/net/download/) 2.0.2
 
 ## How to run the server & clients
 

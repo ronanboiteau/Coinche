@@ -16,7 +16,7 @@ namespace Server
                 TcpServer.StartServer("127.0.0.1", 4242);
                 TcpServer.Listen();
             } catch (Exception e) {
-                Console.WriteLine("An error occurred! Please see trace below for more information.\n" + e);
+                Console.Write("An error occurred! Please see trace below for more information.\n" + e);
             }
         }
     }

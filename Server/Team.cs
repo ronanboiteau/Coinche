@@ -4,31 +4,31 @@ namespace Server
 {
     public class Team
     {
-        private Player[] players = new Player[2];
-        private String name;
+        private readonly Player[] _players = new Player[2];
+        private readonly String _name;
 
         public Team(Player playerOne, Player playerTwo, String name)
         {
-            players[0] = playerOne;
-            players[1] = playerTwo;
-            this.name = name;
+            _players[0] = playerOne;
+            _players[1] = playerTwo;
+            _name = name;
         }
 
         public Player[] GetPlayers()
         {
-            return (players);
+            return _players;
         }
         
         public Player GetPlayer(int id)
         {
             if (id >= 2 || id < 0)
                 return (null);
-            return (players[id]);
+            return _players[id];
         }
 
         public String GetName()
         {
-            return (name);
+            return _name;
         }
     }
 }

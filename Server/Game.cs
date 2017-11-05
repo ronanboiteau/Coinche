@@ -59,11 +59,10 @@ namespace Server
         
         private void DrawCards()
         {
-            Random rand = new Random();
+            var rand = new Random();
             ResetDeck();
             int idxPlayer;
             int idxTeam;
-            int randCard;
 
             idxPlayer = rand.Next(1, 2);
             idxTeam = rand.Next(1, 2);
@@ -75,21 +74,19 @@ namespace Server
                 }
                 if (idxTeam < 0 || idxTeam >= 2)
                     idxTeam = 0;
-                Console.Write("========== CARDS REMAINING : " + _deck.Size() + " =========");
-                for (int i = 0; i < 3; i += 1)
+                Console.Write("========== CARDS REMAINING : " + _deck.Size() + " =========\n");
+                for (var i = 0; i < 3; i += 1)
                 {
+                    int randCard;
                     if (_deck.Size() == 8 || _deck.Size() == 6 || _deck.Size() == 4 || _deck.Size() == 2)
                         i = 1;
-                    if (_deck.Size() > 1)
-                        randCard = rand.Next(1, _deck.Size());
-                    else
-                        randCard = 0;
+                    randCard = _deck.Size() > 1 ? rand.Next(1, _deck.Size()) : 0;
                     if (randCard < 0)
                         randCard *= -1;
                     Console.Write("Giving card - ");
-                    _deck.GetCardById(randCard).PrintCard();
+                    _deck.GetDeck()[randCard].PrintCard();
                     Console.Write(" - to " + teams[idxTeam].GetPlayer(idxPlayer).GetName() +
-                                       " of " + teams[idxTeam].GetName());
+                                       " of " + teams[idxTeam].GetName() + "\n");
                     teams[idxTeam].GetPlayer(idxPlayer).GetDeck().AddCard(_deck.GetDeck()[randCard]);
                     _deck.RemoveCard(_deck.GetDeck()[randCard]);
                 }
@@ -101,6 +98,11 @@ namespace Server
         {
             CreateModelDeck();
             DrawCards();
+            Console.Write("Starting game...\n");
+            teams[0].GetPlayer(0).SendDeck();
+            teams[0].GetPlayer(1).SendDeck();
+            teams[1].GetPlayer(0).SendDeck();
+            teams[1].GetPlayer(1).SendDeck();
         }
     }
 }

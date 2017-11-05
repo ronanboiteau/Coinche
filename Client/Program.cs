@@ -17,32 +17,32 @@ namespace Client
 //                Console.Write("Server port: ");
 //                int port = Convert.ToInt32(Console.ReadLine());
 //                tcpclnt.Connect(ip, port);
+                Console.Write("Connecting to server...\n");
                 tcpclnt.Connect("127.0.0.1", 4242);
-                Console.WriteLine("Connexion successful!");
+                Console.Write("Connexion successful!\n");
                 Console.Write("Message: ");
-                String str = "";
-                while (!str.Equals("quit"))
+                while (true)
                 {
-                    str = Console.ReadLine();
+                    var str = Console.ReadLine();
                     if (str == null)
                     {
                         Console.Write("\n");
+                        tcpclnt.Close();
                         return;
                     }
                     Stream stm = tcpclnt.GetStream();
-                    ASCIIEncoding asen = new ASCIIEncoding();
-                    byte[] ba = asen.GetBytes(str);
+                    var asen = new ASCIIEncoding();
+                    var ba = asen.GetBytes(str);
                     stm.Write(ba, 0, ba.Length);
-                    byte[] bb = new byte[100];
-                    int k = stm.Read(bb, 0, 100);
-                    for (int i = 0; i < k; i++)
+                    var bb = new byte[100];
+                    var k = stm.Read(bb, 0, 100);
+                    for (var i = 0; i < k; i++)
                         Console.Write(Convert.ToChar(bb[i]));
                 }
-                tcpclnt.Close();
             } catch (SocketException) {
-                Console.WriteLine("Cannot connect to server!");
+                Console.Write("Cannot connect to server!\n");
             } catch (Exception e) {
-                Console.WriteLine("An error occurred! Please see trace below for more information.\n" + e);
+                Console.Write("An error occurred! Please see trace below for more information.\n" + e + "\n");
             }
         }
     }

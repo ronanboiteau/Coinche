@@ -20,7 +20,7 @@ namespace Server
 
         public void SendMessage(String message)
         {
-            byte[] data = Encoding.ASCII.GetBytes(message + "\n");
+            var data = Encoding.ASCII.GetBytes(message + "\n");
             channel.GetStream().Write(data, 0, data.Length);
         }
 
@@ -41,8 +41,7 @@ namespace Server
 
         public void SendDeck()
         {
-            String msgDeck;
-            msgDeck = "DECK ";
+            String msgDeck = "DECK ";
             for (int idx = 0 ; idx < deck.Size() ; idx += 1) {
                 msgDeck += deck.GetDeck()[idx].GetId();
                 if (idx < deck.Size() - 1)
