@@ -25,12 +25,12 @@ namespace Server
 
         public String GetName()
         {
-            return (name);
+            return name;
         }
 
         public int GetId()
         {
-            return (id);
+            return id;
         }
     }
 }
