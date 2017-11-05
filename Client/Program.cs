@@ -5,62 +5,41 @@ using System.Text;
 
 namespace Client
 {
-    public class Client {
-
+    public class Client
+    {
         public static void Main() {
-        
             try {
                 TcpClient tcpclnt = new TcpClient();
                 Console.WriteLine("Connecting.....");
-            
-                Console.Write("Enter the IP address of the server: ");
+                Console.Write("Server IP: ");
                 var ip = Console.ReadLine();
-                Console.Write("Enter the port of the server: ");
+                Console.Write("Server port: ");
                 int port = Convert.ToInt32(Console.ReadLine());
-                
                 tcpclnt.Connect(ip,port);
-                // use the ipaddress as in the server program
-            
-                Console.WriteLine("Connected");
-                Console.Write("Enter the string to be transmitted : ");
+                Console.WriteLine("Connexion successful!");
+                Console.Write("Message: ");
                 String str = "";
-                while (!str.Equals("quit"))
-                {
+                while (!str.Equals("quit")) {
                     str = Console.ReadLine();
+                    if (str == null) {
+                        Console.Write("\n");
+                        return;
+                    }
                     Stream stm = tcpclnt.GetStream();
-
                     ASCIIEncoding asen = new ASCIIEncoding();
                     byte[] ba = asen.GetBytes(str);
-                    Console.WriteLine("Transmitting.....");
-
                     stm.Write(ba, 0, ba.Length);
-
                     byte[] bb = new byte[100];
                     int k = stm.Read(bb, 0, 100);
-
                     for (int i = 0; i < k; i++)
                         Console.Write(Convert.ToChar(bb[i]));
                 }
                 tcpclnt.Close();
-            }
-        
-            catch (Exception e) {
-                Console.WriteLine("Error..... " + e.StackTrace);
+            } catch (SocketException) {
+                Console.WriteLine("Cannot connect to server!");
+            } catch (Exception e) {
+                Console.WriteLine("An error occurred! Please see trace below for more information.\n" + e);
             }
         }
-
     }
 }
-
-/*using System;
-
-namespace Client
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            Console.WriteLine("Hey you! Someday I'll be a coinche client!");
-        }
-    }
-}*/

@@ -4,16 +4,17 @@ namespace Server
 {
     public class Program
     {
-        public static void Main(string[] args)
-        {
-            Console.Write("Enter the IP address where to run the TCP server: ");
-            var ip = Console.ReadLine();
-            Console.Write("Enter the port where to run the TCP server: ");
-            int port = Convert.ToInt32(Console.ReadLine());
-
-            // Start the server.
-            TcpServer.StartServer(port, ip);
-            TcpServer.Listen();
+        public static void Main(string[] args) {
+            try {
+                Console.Write("IP address: ");
+                var ip = Console.ReadLine();
+                Console.Write("Port: ");
+                int port = Convert.ToInt32(Console.ReadLine());
+                TcpServer.StartServer(port, ip);
+                TcpServer.Listen();
+            } catch (Exception e) {
+                Console.WriteLine("An error occurred! Please see trace below for more information.\n" + e);
+            }
         }
     }
 }
