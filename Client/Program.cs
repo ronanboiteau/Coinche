@@ -7,21 +7,25 @@ namespace Client
 {
     public class Client
     {
-        public static void Main() {
-            try {
+        public static void Main()
+        {
+            try
+            {
                 TcpClient tcpclnt = new TcpClient();
-                Console.WriteLine("Connecting.....");
-                Console.Write("Server IP: ");
-                var ip = Console.ReadLine();
-                Console.Write("Server port: ");
-                int port = Convert.ToInt32(Console.ReadLine());
-                tcpclnt.Connect(ip,port);
+//                Console.Write("Server IP: ");
+//                var ip = Console.ReadLine();
+//                Console.Write("Server port: ");
+//                int port = Convert.ToInt32(Console.ReadLine());
+//                tcpclnt.Connect(ip, port);
+                tcpclnt.Connect("127.0.0.1", 4242);
                 Console.WriteLine("Connexion successful!");
                 Console.Write("Message: ");
                 String str = "";
-                while (!str.Equals("quit")) {
+                while (!str.Equals("quit"))
+                {
                     str = Console.ReadLine();
-                    if (str == null) {
+                    if (str == null)
+                    {
                         Console.Write("\n");
                         return;
                     }
