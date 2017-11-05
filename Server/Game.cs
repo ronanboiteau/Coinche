@@ -53,7 +53,7 @@ namespace Server
         private void ResetDeck()
         {
             _deck = new Deck(32);
-            for (int idx = 0; idx < modelDeck.Size(); idx += 1)
+            for (var idx = 0; idx < modelDeck.Size(); idx += 1)
                 _deck.AddCard(modelDeck.GetDeck()[idx]);
         }
         
@@ -63,16 +63,15 @@ namespace Server
             ResetDeck();
             int idxPlayer;
             int idxTeam;
-
             idxPlayer = rand.Next(1, 2);
             idxTeam = rand.Next(1, 2);
             while (_deck.Size() != 0)
             {
-                if (idxPlayer < 0 || idxPlayer >= 2) {
+                if (idxPlayer >= 2) {
                     idxPlayer = 0;
                     idxTeam += 1;
                 }
-                if (idxTeam < 0 || idxTeam >= 2)
+                if (idxTeam >= 2)
                     idxTeam = 0;
                 Console.Write("========== CARDS REMAINING : " + _deck.Size() + " =========\n");
                 for (var i = 0; i < 3; i += 1)
@@ -81,8 +80,6 @@ namespace Server
                     if (_deck.Size() == 8 || _deck.Size() == 6 || _deck.Size() == 4 || _deck.Size() == 2)
                         i = 1;
                     randCard = _deck.Size() > 1 ? rand.Next(1, _deck.Size()) : 0;
-                    if (randCard < 0)
-                        randCard *= -1;
                     Console.Write("Giving card - ");
                     _deck.GetDeck()[randCard].PrintCard();
                     Console.Write(" - to " + teams[idxTeam].GetPlayer(idxPlayer).GetName() +
