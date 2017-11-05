@@ -7,11 +7,13 @@ namespace Server
         private String name;
         private Suit suit;
         private int id;
+        private int value;
 
-        public Card(String name, Suit suit, int id)
+        public Card(String name, Suit suit, int value, int id)
         {
             this.name = name;
             this.suit = suit;
+            this.value = value;
             this.id = id;
         }
 
@@ -29,5 +31,15 @@ namespace Server
         {
             return (id);
         }
+
+        public int GetValue()
+        {
+            return (value);
+        }
+        
+        public void     PrintCard() {
+            Console.Write(name + " " + suit);
+        }
+
     }
 }

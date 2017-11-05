@@ -9,6 +9,7 @@ namespace Server
         private int id;
         private String name;
         private TcpClient channel;
+        private Deck deck = new Deck(8);
 
         public Player(int id, String name, TcpClient channel)
         {
@@ -31,6 +32,23 @@ namespace Server
         public int GetId()
         {
             return (id);
+        }
+
+        public Deck GetDeck()
+        {
+            return (deck);
+        }
+
+        public void SendDeck()
+        {
+            String msgDeck;
+            msgDeck = "DECK ";
+            for (int idx = 0 ; idx < deck.Size() ; idx += 1) {
+                msgDeck += deck.GetDeck()[idx].GetId();
+                if (idx < deck.Size() - 1)
+                    msgDeck += " ";
+            }
+            SendMessage(msgDeck);
         }
     }
 }
