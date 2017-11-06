@@ -91,8 +91,20 @@ namespace Server
             }
         }
 
+        private void PreBidding() {
+            teams[0].GetPlayer(0).SendMessage("MSG You are " + teams[0].GetPlayer(0).GetName() + ". Together with your mate "
+                                              + teams[0].GetPlayer(1).GetName() + ", you make " + teams[0].GetName() + ".");
+            teams[0].GetPlayer(1).SendMessage("MSG You are " + teams[0].GetPlayer(1).GetName() + ". Together with your mate "
+                                              + teams[0].GetPlayer(0).GetName() + ", you make " + teams[0].GetName() + ".");
+            teams[1].GetPlayer(0).SendMessage("MSG You are " + teams[1].GetPlayer(0).GetName() + ". Together with your mate "
+                                              + teams[1].GetPlayer(1).GetName() + ", you make " + teams[1].GetName() + ".");
+            teams[1].GetPlayer(1).SendMessage("MSG You are " + teams[1].GetPlayer(1).GetName() + ". Together with your mate "
+                                              + teams[1].GetPlayer(0).GetName() + ", you make " + teams[1].GetName() + ".");
+        }
+
         public void StartGame()
         {
+            PreBidding();
             CreateModelDeck();
             DrawCards();
             Console.Write("Starting game...\n");
