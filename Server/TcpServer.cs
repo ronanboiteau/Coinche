@@ -36,7 +36,7 @@ namespace Server
                 }
             var team1 = new Team(Players[0], Players[2], "Team1");
             var team2 = new Team(Players[1], Players[3], "Team2");
-            var game = new Game(team1, team2);
+            var game = new Game(Players, team1, team2);
             game.StartGame();
             }
 //                byte[] data = Encoding.ASCII.GetBytes("Send next data: [enter 'quit' to terminate] ");
