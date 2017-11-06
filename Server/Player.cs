@@ -45,7 +45,7 @@ namespace Server
             this.trumpChooser = trumpChooser;
         }
 
-        public Boolean GetTrumpChooser()
+        public Boolean IsTrumpChooser()
         {
             return (trumpChooser);
         }
