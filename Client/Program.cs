@@ -35,6 +35,42 @@ namespace Client
                     var asen = new ASCIIEncoding();
                     var toSend = asen.GetBytes(str);
                     stm.Write(toSend, 0, toSend.Length);*/
+                    if (received.StartsWith("MSG "))
+                        Console.Write(received.Substring(4, received.Length) + "\n");
+                    else if (received.StartsWith("DECK "))
+                    {
+                        /*    Scanner     scanner = new Scanner(received.substring(5, received.length()));
+                            while (scanner.hasNextInt())
+                                this.player.getDeck().addCard(modelDeck.getById(scanner.nextInt()));
+                            Console.Write("Your cards:");
+                            this.player.getDeck().printDeck();*/
+                    }
+                    else if (received.Equals("BID"))
+                        //biddingChoice(chan);
+                        ;
+                    else if (received.Equals("BID OK"))
+                        Console.Write("Illegal bid command!\n");
+                    else if (received.Equals("BID KO"))
+                        //biddingChoice(chan);
+                        ;
+                    else if (received.Equals("BID STOP")) {}
+                    else if (received.Equals("BID RESET")) {
+                        /*int     count = this.player.getDeck().size();
+                        while (count != 0) {
+                            this.player.getDeck().remove(0);
+                            count -= 1;
+                        }*/
+                    }
+                    else if (received.Equals("PLAY KO")) {}
+                    else if (received.Equals("PLAY"))
+                        //playACard(chan);
+                        ;
+                    else if (received.Equals("PLAY OK")) {
+                        /*if (cardId != -1) {
+                            this.player.putCard(cardId);
+                            cardId = -1;
+                        }*/
+                    }
                     Stream stm = client.GetStream();
                     var buff = new byte[100];
                     var readStr = stm.Read(buff, 0, 100);
@@ -42,7 +78,7 @@ namespace Client
                         received += Convert.ToChar(buff[i]);
                     Console.Write(received + "\n");
                 }
-                Console.Write("Bye! :)\n");
+                Console.Write("The game is over. See you soon! :)\n");
                 client.Close();
             } catch (SocketException) {
                 Console.Write("Cannot connect to server!\n");
