@@ -112,7 +112,8 @@ namespace Client
                     else if (received.Equals("BID KO"))
                         BiddingChoice(player);
                     //else if (received.Equals("BID STOP")) {}
-                    else if (received.Equals("BID RESET")) {
+                    else if (received.Equals("BID RESET"))
+                    {
                         int     count = player.GetDeck().Size();
                         while (count != 0) {
                             player.GetDeck().GetDeck().RemoveAt(0);
@@ -120,11 +121,16 @@ namespace Client
                         }
                     }
                     else if (received.Equals("PLAY KO"))
+                    {
+                        Console.Write("You cannot play this card!\n");
                         PlayACard(player);
+                    }
                     else if (received.Equals("PLAY"))
                         PlayACard(player);
-                    else if (received.Equals("PLAY OK")) {
-                        if (_idCardToPlay != -1) {
+                    else if (received.Equals("PLAY OK"))
+                    {
+                        if (_idCardToPlay != -1)
+                        {
                             player.PutCard(_modelDeck.GetDeck()[_idCardToPlay]);
                             _idCardToPlay = -1;
                         }
