@@ -45,5 +45,17 @@ namespace Client
         {
             return (cards);
         }
+
+        public void PrintDeck()
+        {
+            Console.Write(" ");
+            for (int idx = 0 ; idx < cards.Count ; idx += 1) {
+                if (idx != 0)
+                    Console.Write(" | ");
+                Console.Write("(" + cards[idx].GetId() + ") ");
+                cards[idx].PrintCard();
+            }
+            Console.Write("\n");
+        }
     }
 }
