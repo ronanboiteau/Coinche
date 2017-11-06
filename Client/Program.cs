@@ -1,14 +1,12 @@
 ﻿using System;
-using System.IO;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks.Dataflow;
 
 namespace Client
 {
     public class Client
     {
         private static Deck _modelDeck = new Deck(32);
+        private static int _idCardToPlay = -1;
 
         private static void CreateModelDeck()
         {
@@ -56,6 +54,13 @@ namespace Client
                 player.SendMessage("BID Y " + input);
         }
         
+        public static void     PlayACard(Player player) {
+            Console.Write("Enter the ID of the card you want to play:\n");
+            var  input = Console.ReadLine();
+            player.SendMessage("PLAY " + input);
+            _idCardToPlay = Int16.Parse(input);
+        }
+        
         public static void Main()
         {
             try
@@ -75,16 +80,6 @@ namespace Client
                 while (!received.Equals("END"))
                 {
                     var buffer = "";
-                    /*var str = Console.ReadLine();
-                    if (str == null)
-                    {
-                        Console.Write("\n");
-                        client.Close();
-                        return;
-                    }
-                    var asen = new ASCIIEncoding();
-                    var toSend = asen.GetBytes(str);
-                    stm.Write(toSend, 0, toSend.Length);*/
                     while (buffer.IndexOf('\n') < 0)
                     {
                         var stream = client.GetStream();
@@ -112,11 +107,11 @@ namespace Client
                     }
                     else if (received.Equals("BID"))
                         BiddingChoice(player);
-                    else if (received.Equals("BID OK"))
-                        ;
+                    /*else if (received.Equals("BID OK"))
+                        ;*/
                     else if (received.Equals("BID KO"))
                         BiddingChoice(player);
-                    else if (received.Equals("BID STOP")) {}
+                    //else if (received.Equals("BID STOP")) {}
                     else if (received.Equals("BID RESET")) {
                         int     count = player.GetDeck().Size();
                         while (count != 0) {
@@ -124,16 +119,16 @@ namespace Client
                             count -= 1;
                         }
                     }
-                    /*else if (received.Equals("PLAY KO")) {}
+                    else if (received.Equals("PLAY KO"))
+                        PlayACard(player);
                     else if (received.Equals("PLAY"))
-                        //playACard(chan);
-                        ;
+                        PlayACard(player);
                     else if (received.Equals("PLAY OK")) {
-                        /*if (cardId != -1) {
-                            this.player.putCard(cardId);
-                            cardId = -1;
+                        if (_idCardToPlay != -1) {
+                            player.PutCard(_modelDeck.GetDeck()[_idCardToPlay]);
+                            _idCardToPlay = -1;
                         }
-                    }*/
+                    }
                 }
                 Console.Write("The game is over. See you soon! :)\n");
                 client.Close();

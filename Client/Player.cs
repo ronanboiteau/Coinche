@@ -26,5 +26,10 @@ namespace Client
         {
             return (deck);
         }
+
+        public void PutCard(Card card)
+        {
+            deck.RemoveCard(card);
+        }
     }
 }
