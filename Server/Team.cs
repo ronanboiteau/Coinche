@@ -6,14 +6,37 @@ namespace Server
     {
         private Player[] _players = new Player[2];
         private String _name;
+        private int _score;
+        private int _contract;
 
         public Team(Player playerOne, Player playerTwo, String name)
         {
             _players[0] = playerOne;
             _players[1] = playerTwo;
             _name = name;
+            _contract = -1;
         }
 
+        public void SetContract(int contract)
+        {
+            _contract = contract;
+        }
+
+        public int GetContract()
+        {
+            return (_contract);
+        }
+        
+        public int GetScore()
+        {
+            return (_score);
+        }
+        
+        public void AddScore(int toAdd)
+        {
+            _score += toAdd;
+        }
+        
         public Player[] GetPlayers()
         {
             return _players;
