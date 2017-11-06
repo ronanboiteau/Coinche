@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Server
 {
@@ -122,106 +123,6 @@ namespace Server
                                               + teams[1].GetPlayer(0).GetName() + ", you make " + teams[1].GetName() + ".");
         }
 
-//        private Boolean         recursiveBidding(int idPlayer, int max_iterations) {
-//            String              msg;
-//            int iterations = 0;
-//            while (iterations < max_iterations) {
-//                if (idPlayer >= 4)
-//                    idPlayer = idPlayer % 4;
-//                ServerPlayer player = this.players.get(idPlayer);
-//                player.sendMessage("BID");
-//                broadcastToOthers(player, "MSG " + player.getName() + " is making a decision...");
-//                while (true) {
-//                    while (player.peekMsg() == null)
-//                        Thread.sleep(500);
-//                    System.out.println("[SG] Received client answer!");
-//                    msg = player.popMsg();
-//                    System.out.println(msg);
-//                    if (msg.equals("BID N")) {
-//                        break;
-//                    }
-//                    if (!msg.startsWith("BID Y ")) {
-//                        player.sendMessage("BID KO");
-//                        continue;
-//                    }
-//                    Scanner     scanner = new Scanner(msg);
-//                    scanner.next();
-//                    scanner.next();
-//                    if (!scanner.hasNextInt()) {
-//                        player.sendMessage("BID KO");
-//                        continue;
-//                    }
-//                    int         contract = scanner.nextInt();
-//                    if (!scanner.hasNext()) {
-//                        player.sendMessage("BID KO");
-//                        continue;
-//                    }
-//                    String      suit = scanner.next();
-//                    System.out.println(this.teams.get(0).getContract() + " - " + this.teams.get(0).getContract());
-//                    if (contract <= this.teams.get(0).getContract()
-//                            || contract <= this.teams.get(1).getContract()
-//                            || contract < 80
-//                            || contract % 10 != 0) {
-//                        player.sendMessage("BID KO");
-//                        continue;
-//                    }
-//                    if (!(suit.equalsIgnoreCase("HEARTS")
-//                            || suit.equalsIgnoreCase("DIAMONDS")
-//                            || suit.equalsIgnoreCase("CLUBS")
-//                            || suit.equalsIgnoreCase("SPADES"))) {
-//                        player.sendMessage("BID KO");
-//                        continue;
-//                    }
-//                    this.trump = Suit.valueOf(suit.toUpperCase());
-//                    this.teams.get((idPlayer == 0 || idPlayer == 2) ? 0 : 1).setContract(contract);
-//                    this.teams.get((idPlayer == 0 || idPlayer == 2) ? 1 : 0).setContract(-1);
-//                    broadcast("MSG " + player.getName() + " from " + this.teams.get((idPlayer == 0 || idPlayer == 2) ? 0 : 1).getName()
-//                    + " bid " + contract + " on " + suit.toUpperCase());
-//                    if (!recursiveBidding(idPlayer + 1, 3))
-//                        this.players.get(idPlayer).setTrumpChooser(true);
-//                    return (true);
-//                }
-//                ++idPlayer;
-//                ++iterations;
-//            }
-//            return (false);
-//        }
-
-//        private void StartBidding()
-//        {
-//            var rand = new Random();
-//            int idPlayer;
-//            var playerName = "Player1";
-//            var teamName = "Team2";
-//            var contract = 0;
-//            idPlayer = rand.Next(0, 4);
-//            var contractTaken = false;
-//            while (!contractTaken)
-//            {
-//                DrawCards();
-//                BroadcastDecks();
-//                if (RecursiveBidding(idPlayer, 4))
-//                    contractTaken = true;
-//                if (!contractTaken)
-//                    Broadcast("BID RESET");
-//            }
-//            Broadcast("BID STOP");
-//            for (Team team : teams)
-//            {
-//                for (Player player : team.getPlayers())
-//                {
-//                    if (player.isTrumpChooser())
-//                    {
-//                        playerName = player.getName();
-//                        teamName = team.getName();
-//                        contract = team.getContract();
-//                    }
-//                }
-//            }
-//            broadcast("MSG " + playerName + " from " + teamName + " made the final bid! The chosen trump is " + this.trump + ". "
-//                    + teamName + "'s contract is " + contract + ".");
-//        }
-
         public void StartPlaying()
         {
             int playerId = 0;
@@ -295,6 +196,113 @@ namespace Server
             }
         }
 
+//        private Boolean RecursiveBidding(int idPlayer, int max_iterations)
+//        {
+//            String msg;
+//            var iterations = 0;
+//            while (iterations < max_iterations)
+//            {
+//                if (idPlayer >= 4)
+//                    idPlayer = idPlayer % 4;
+//                var player = this.players.get(idPlayer);
+//                Broadcast("MSG " + player.getName() + " is making a decision...");
+//                player.sendMessage("BID");
+//                while (true)
+//                {
+//                    while (player.peekMsg() == null)
+//                        Thread.Sleep(500);
+//                    Console.Write("[SG] Received client answer!\n");
+//                    msg = player.popMsg();
+//                    Console.Write(msg + "\n");
+//                    if (msg.Equals("BID N"))
+//                        break;
+//                    if (!msg.startsWith("BID Y "))
+//                    {
+//                        player.sendMessage("BID KO");
+//                        continue;
+//                    }
+//                    Scanner     scanner = new Scanner(msg);
+//                    scanner.next();
+//                    scanner.next();
+//                    if (!scanner.hasNextInt())
+//                    {
+//                        player.sendMessage("BID KO");
+//                        continue;
+//                    }
+//                    int         contract = scanner.nextInt();
+//                    if (!scanner.hasNext())
+//                    {
+//                        player.sendMessage("BID KO");
+//                        continue;
+//                    }
+//                    String      suit = scanner.next();
+//                    System.out.println(this.teams.get(0).getContract() + " - " + this.teams.get(0).getContract());
+//                    if (contract <= this.teams.get(0).getContract()
+//                            || contract <= this.teams.get(1).getContract()
+//                            || contract < 80
+//                            || contract % 10 != 0)
+//                    {
+//                        player.sendMessage("BID KO");
+//                        continue;
+//                    }
+//                    if (!(suit.equalsIgnoreCase("HEARTS")
+//                            || suit.equalsIgnoreCase("DIAMONDS")
+//                            || suit.equalsIgnoreCase("CLUBS")
+//                            || suit.equalsIgnoreCase("SPADES")))
+//                    {
+//                        player.sendMessage("BID KO");
+//                        continue;
+//                    }
+//                    this.trump = Suit.valueOf(suit.toUpperCase());
+//                    this.teams.get((idPlayer == 0 || idPlayer == 2) ? 0 : 1).setContract(contract);
+//                    this.teams.get((idPlayer == 0 || idPlayer == 2) ? 1 : 0).setContract(-1);
+//                    broadcast("MSG " + player.getName() + " from " + this.teams.get((idPlayer == 0 || idPlayer == 2) ? 0 : 1).getName()
+//                    + " bid " + contract + " on " + suit.toUpperCase());
+//                    if (!recursiveBidding(idPlayer + 1, 3))
+//                        this.players.get(idPlayer).SetTrumpChooser(true);
+//                    return (true);
+//                }
+//                ++idPlayer;
+//                ++iterations;
+//            }
+//            return (false);
+//        }
+//
+//        private void StartBidding()
+//        {
+//            var rand = new Random();
+//            int idPlayer;
+//            var playerName = "Player1";
+//            var teamName = "Team2";
+//            var contract = 0;
+//            idPlayer = rand.Next(0, 4);
+//            var contractTaken = false;
+//            while (!contractTaken)
+//            {
+//                DrawCards();
+//                Broadcast("DECK");
+//                if (RecursiveBidding(idPlayer, 4))
+//                    contractTaken = true;
+//                if (!contractTaken)
+//                    Broadcast("BID RESET");
+//            }
+//            Broadcast("BID STOP");
+//            foreach (var team in teams)
+//            {
+//                foreach (var player in team.GetPlayers())
+//                {
+//                    if (player.IsTrumpChooser())
+//                    {
+//                        playerName = player.GetName();
+//                        teamName = team.GetName();
+//                        contract = team.GetContract();
+//                    }
+//                }
+//            }
+//            Broadcast("MSG " + playerName + " from " + teamName + " made the final bid! The chosen trump is " + this.trump + ". "
+//                    + teamName + "'s contract is " + contract + ".");
+//        }
+        
         public void StartGame()
         {
             Console.Write("Starting game...\n");
@@ -302,9 +310,9 @@ namespace Server
             DrawCards();
             PreBidding();
             Broadcast("DECK");
-            Broadcast("END");
 //            StartBidding();
-            StartPlaying();
+//            StartPlaying();
+            Broadcast("END");
         }
     }
 }

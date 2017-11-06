@@ -10,7 +10,7 @@ namespace Server
         private String name;
         private TcpClient channel;
         private Deck deck = new Deck(8);
-        private Boolean trumpChooser;
+        private Boolean _trumpChooser;
 
         public Player(int id, String name, TcpClient channel)
         {
@@ -39,15 +39,31 @@ namespace Server
         {
             return (deck);
         }
+        
+        public String GetNextMessage()
+        {
+            var buffer = "";
+            while (buffer.IndexOf('\n') < 0)
+            {
+                var stream = channel.GetStream();
+                var buff = new byte[1];
+                var readStr = stream.Read(buff, 0, 1);
+                for (var i = 0; i < readStr; i++)
+                    buffer += Convert.ToChar(buff[i]);
+            }
+            var received = buffer.Substring(0, buffer.IndexOf('\n'));
+            buffer = buffer.Substring(buffer.IndexOf('\n') + 1, buffer.Length - (buffer.IndexOf('\n') + 1));
+            return received;
+        }
 
         public void SetTrumpChooser(Boolean trumpChooser)
         {
-            this.trumpChooser = trumpChooser;
+            this._trumpChooser = trumpChooser;
         }
 
         public Boolean IsTrumpChooser()
         {
-            return (trumpChooser);
+            return (_trumpChooser);
         }
         
         public void SendDeck()
