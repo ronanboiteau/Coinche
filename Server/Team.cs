@@ -4,8 +4,8 @@ namespace Server
 {
     public class Team
     {
-        private readonly Player[] _players = new Player[2];
-        private readonly String _name;
+        private Player[] _players = new Player[2];
+        private String _name;
 
         public Team(Player playerOne, Player playerTwo, String name)
         {

@@ -14,7 +14,7 @@ namespace Server
         private static TcpListener Listener { get; set; }
         private static bool Accept { get; set; }
         private static int ConnectedClients { get; set; }
-        private static readonly List<Player> Players = new List<Player>();
+        private static List<Player> Players = new List<Player>();
 
         public static void StartServer(string ip, int port)
         {
