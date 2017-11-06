@@ -10,6 +10,7 @@ namespace Server
         private String name;
         private TcpClient channel;
         private Deck deck = new Deck(8);
+        private Boolean trumpChooser;
 
         public Player(int id, String name, TcpClient channel)
         {
@@ -39,6 +40,16 @@ namespace Server
             return (deck);
         }
 
+        public void SetTrumpChooser(Boolean trumpChooser)
+        {
+            this.trumpChooser = trumpChooser;
+        }
+
+        public Boolean IsTrumpChooser()
+        {
+            return (trumpChooser);
+        }
+        
         public void SendDeck()
         {
             String msgDeck = "DECK ";
