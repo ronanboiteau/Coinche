@@ -221,9 +221,10 @@ namespace Server
         public void StartGame()
         {
             Console.Write("Starting game...\n");
-            Broadcast("DECK");
             CreateModelDeck();
+            DrawCards();
             PreBidding();
+            Broadcast("DECK");
             Broadcast("END");
 //            StartBidding();
         }
