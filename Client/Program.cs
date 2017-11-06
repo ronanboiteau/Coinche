@@ -11,14 +11,14 @@ namespace Client
         {
             try
             {
-                TcpClient tcpclnt = new TcpClient();
+                TcpClient client = new TcpClient();
 //                Console.Write("Server IP: ");
 //                var ip = Console.ReadLine();
 //                Console.Write("Server port: ");
 //                int port = Convert.ToInt32(Console.ReadLine());
 //                tcpclnt.Connect(ip, port);
                 Console.Write("Connecting to server...\n");
-                tcpclnt.Connect("127.0.0.1", 4242);
+                client.Connect("127.0.0.1", 4242);
                 Console.Write("Connexion successful!\n");
                 Console.Write("Message: ");
                 while (true)
@@ -27,10 +27,10 @@ namespace Client
                     if (str == null)
                     {
                         Console.Write("\n");
-                        tcpclnt.Close();
+                        client.Close();
                         return;
                     }
-                    Stream stm = tcpclnt.GetStream();
+                    Stream stm = client.GetStream();
                     var asen = new ASCIIEncoding();
                     var ba = asen.GetBytes(str);
                     stm.Write(ba, 0, ba.Length);
