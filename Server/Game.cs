@@ -91,15 +91,29 @@ namespace Server
             }
         }
 
+        public void Broadcast(String message)
+        {
+            if (message.Equals("DECK"))
+            {
+                teams[0].GetPlayer(0).SendDeck();
+                teams[0].GetPlayer(1).SendDeck();
+                teams[1].GetPlayer(0).SendDeck();
+                teams[1].GetPlayer(1).SendDeck();
+                return;
+            }
+            teams[0].GetPlayer(0).SendMessage(message);
+            teams[0].GetPlayer(1).SendMessage(message);
+            teams[1].GetPlayer(0).SendMessage(message);
+            teams[1].GetPlayer(1).SendMessage(message);
+        }
+
         public void StartGame()
         {
             CreateModelDeck();
             DrawCards();
             Console.Write("Starting game...\n");
-            teams[0].GetPlayer(0).SendDeck();
-            teams[0].GetPlayer(1).SendDeck();
-            teams[1].GetPlayer(0).SendDeck();
-            teams[1].GetPlayer(1).SendDeck();
+            Broadcast("DECK");
+            Broadcast("END");
         }
     }
 }

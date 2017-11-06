@@ -21,24 +21,29 @@ namespace Client
                 client.Connect("127.0.0.1", 4242);
                 Console.Write("Connexion successful!\n");
                 Console.Write("Message: ");
-                while (true)
+                String received = "";
+                while (!received.Equals("END"))
                 {
-                    var str = Console.ReadLine();
+                    received = "";
+                    /*var str = Console.ReadLine();
                     if (str == null)
                     {
                         Console.Write("\n");
                         client.Close();
                         return;
                     }
-                    Stream stm = client.GetStream();
                     var asen = new ASCIIEncoding();
-                    var ba = asen.GetBytes(str);
-                    stm.Write(ba, 0, ba.Length);
-                    var bb = new byte[100];
-                    var k = stm.Read(bb, 0, 100);
-                    for (var i = 0; i < k; i++)
-                        Console.Write(Convert.ToChar(bb[i]));
+                    var toSend = asen.GetBytes(str);
+                    stm.Write(toSend, 0, toSend.Length);*/
+                    Stream stm = client.GetStream();
+                    var buff = new byte[100];
+                    var readStr = stm.Read(buff, 0, 100);
+                    for (var i = 0; i < (readStr - 1); i++)
+                        received += Convert.ToChar(buff[i]);
+                    Console.Write(received + "\n");
                 }
+                Console.Write("Bye! :)\n");
+                client.Close();
             } catch (SocketException) {
                 Console.Write("Cannot connect to server!\n");
             } catch (Exception e) {
