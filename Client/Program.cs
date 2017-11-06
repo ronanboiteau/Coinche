@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading.Tasks.Dataflow;
 
 namespace Client
 {
@@ -43,6 +44,16 @@ namespace Client
             _modelDeck.AddCard(new Card("Q", Suit.SPADES, 3, 29));
             _modelDeck.AddCard(new Card("K", Suit.SPADES, 4, 30));
             _modelDeck.AddCard(new Card("A", Suit.SPADES, 11, 31));
+        }
+
+        private static void BiddingChoice(Player player)
+        {
+            Console.Write("Enter 'PASS' or bid: '<amount> <HEARTS|DIAMONDS|CLUBS|SPADES>' (ex: '80 SPADES')\n");
+            var  input = Console.ReadLine();
+            if (input.ToUpper().Equals("PASS"))
+                player.SendMessage("BID N");
+            else
+                player.SendMessage("BID Y " + input);
         }
         
         public static void Main()
@@ -99,23 +110,21 @@ namespace Client
                         Console.Write("Your cards:");
                         player.GetDeck().PrintDeck();
                     }
-                    /*else if (received.Equals("BID"))
-                        //biddingChoice(chan);
-                        ;
+                    else if (received.Equals("BID"))
+                        BiddingChoice(player);
                     else if (received.Equals("BID OK"))
-                        Console.Write("Illegal bid command!\n");
-                    else if (received.Equals("BID KO"))
-                        //biddingChoice(chan);
                         ;
+                    else if (received.Equals("BID KO"))
+                        BiddingChoice(player);
                     else if (received.Equals("BID STOP")) {}
                     else if (received.Equals("BID RESET")) {
-                        /*int     count = this.player.getDeck().size();
+                        int     count = player.GetDeck().Size();
                         while (count != 0) {
-                            this.player.getDeck().remove(0);
+                            player.GetDeck().GetDeck().RemoveAt(0);
                             count -= 1;
                         }
                     }
-                    else if (received.Equals("PLAY KO")) {}
+                    /*else if (received.Equals("PLAY KO")) {}
                     else if (received.Equals("PLAY"))
                         //playACard(chan);
                         ;
