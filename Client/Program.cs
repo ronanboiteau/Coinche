@@ -54,11 +54,11 @@ namespace Client
                 player.SendMessage("BID Y " + input);
         }
         
-        public static void     PlayACard(Player player) {
+        private static void     PlayACard(Player player) {
             Console.Write("Enter the ID of the card you want to play:\n");
             var  input = Console.ReadLine();
             player.SendMessage("PLAY " + input);
-            _idCardToPlay = Int16.Parse(input);
+            _idCardToPlay = Int32.Parse(input);
         }
         
         public static void Main()
@@ -66,7 +66,7 @@ namespace Client
             try
             {
                 CreateModelDeck();
-                TcpClient client = new TcpClient();
+                var client = new TcpClient();
 //                Console.Write("Server IP: ");
 //                var ip = Console.ReadLine();
 //                Console.Write("Server port: ");
@@ -114,7 +114,7 @@ namespace Client
                     //else if (received.Equals("BID STOP")) {}
                     else if (received.Equals("BID RESET"))
                     {
-                        int     count = player.GetDeck().Size();
+                        var count = player.GetDeck().Size();
                         while (count != 0) {
                             player.GetDeck().GetDeck().RemoveAt(0);
                             count -= 1;

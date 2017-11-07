@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 
 namespace Server
 {
@@ -137,9 +136,9 @@ namespace Server
 
         private int GetTrumpChooser()
         {
-            foreach (Team team in teams)
+            foreach (var team in teams)
             {
-                foreach (Player player in team.GetPlayers())
+                foreach (var player in team.GetPlayers())
                 {
                     if (player.IsTrumpChooser())
                         return (player.GetId());
@@ -150,9 +149,9 @@ namespace Server
 
         public void CalculateScore()
         {
-            foreach (Team team in teams)
+            foreach (var team in teams)
             {
-                foreach (Player player in team.GetPlayers())
+                foreach (var player in team.GetPlayers())
                 {
                     if (player.GetId() == trick.GetLeadingPlayer().GetId())
                         team.AddScore(trick.GetValue());
@@ -206,8 +205,7 @@ namespace Server
                                       + ". " + trick.GetLeadingPlayer().GetName() + " is leading this turn.");
                             _allPlayers[playerId].SendMessage("PLAY OK");
                             playerId += 1;
-                            if (playerId >= 4)
-                                playerId = 0;
+                            playerId = (playerId >= 4 ? 0 : playerId);
                         }
                         else
                             _allPlayers[playerId].SendMessage("PLAY KO");
