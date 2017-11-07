@@ -1,10 +1,12 @@
-﻿namespace Server
+﻿using System.Runtime.CompilerServices;
+
+namespace Server
 {
     public class Trick : Deck
     {
         private int _value;
         private Player _leadingPlayer;
-        private int _leadingCardId;
+        private Card _leadingCard;
         
         public Trick() : base(4)
         {
@@ -13,6 +15,59 @@
         public void SetLeadingPlayer(Player player)
         {
             _leadingPlayer = player;
+        }
+
+        public bool PlayIsLegal(Card card, Player player, Suit trump)
+        {
+            // First play
+            if (cards.Count == 0)
+                return true;
+            var suit = cards[0].GetSuit();
+            // The card belongs to the requested suit
+            if (card.GetSuit() == suit && suit != trump)
+            {
+                if (suit != trump)
+                    return true;
+                return card.GetValue() > _leadingCard.GetValue() ||
+                       card.GetName().Equals("8") && _leadingCard.GetName().Equals("7");
+            }
+            // The card doesn't belong to the requested suit
+            if (card.GetSuit() != suit)
+            {
+                if (player.HasSuit(suit))
+                    return false;
+                if (card.GetSuit() != trump && player.HasSuit(trump))
+                    return false;
+                if (card.GetSuit() == trump && card.GetValue() < _leadingCard.GetValue() &&
+                    !(card.GetName().Equals("8") && _leadingCard.GetName().Equals("7")))
+                    return false;
+            }
+            return true;
+        }
+
+        public bool CardIsLeading(Card card, Suit trump)
+        {
+            // First play
+            if (cards.Count == 0)
+                return true;
+            // The card belongs to the requested suit 
+            if (cards[0].GetSuit() == card.GetSuit())
+            {
+                if (card.GetSuit() != trump && card.GetId() > _leadingCard.GetId())
+                    return true;
+                if (card.GetSuit() == trump && (card.GetValue() > _leadingCard.GetValue()
+                                                || card.GetName().Equals("8") && _leadingCard.GetName().Equals("7")))
+                    return true;
+            }
+            // The player cut
+            else if (card.GetSuit() == trump) {
+                if (_leadingCard.GetSuit() != trump
+                    || card.GetName().Equals("8") && _leadingCard.GetName().Equals("7")
+                    || card.GetValue() > _leadingCard.GetValue())
+                    return true;
+            }
+            // The card isn't of the requested suit & isn't a trump
+            return (false);
         }
 
         public Player GetLeadingPlayer()
@@ -30,14 +85,14 @@
             return (_value);
         }
 
-        public void SetLeadingCardId(int id)
+        public void SetLeadingCard(Card card)
         {
-            _leadingCardId = id;
+            _leadingCard = card;
         }
 
-        public int GetLeadingCardId()
+        public Card GetLeadingCard()
         {
-            return _leadingCardId;
+            return _leadingCard;
         }
 
         public void ResetDeck()

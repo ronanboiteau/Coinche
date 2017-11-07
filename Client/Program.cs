@@ -5,7 +5,7 @@ namespace Client
 {
     public class Client
     {
-        private static Deck _modelDeck = new Deck(32);
+        private static readonly Deck _modelDeck = new Deck(32);
         private static int _idCardToPlay = -1;
 
         private static void CreateModelDeck()
@@ -13,34 +13,34 @@ namespace Client
             _modelDeck.AddCard(new Card("7", Suit.DIAMONDS, 0, 0));
             _modelDeck.AddCard(new Card("8", Suit.DIAMONDS, 0, 1));
             _modelDeck.AddCard(new Card("9", Suit.DIAMONDS, 0, 2));
-            _modelDeck.AddCard(new Card("10", Suit.DIAMONDS, 10, 3));
-            _modelDeck.AddCard(new Card("J", Suit.DIAMONDS, 2, 4));
-            _modelDeck.AddCard(new Card("Q", Suit.DIAMONDS, 3, 5));
-            _modelDeck.AddCard(new Card("K", Suit.DIAMONDS, 4, 6));
+            _modelDeck.AddCard(new Card("J", Suit.DIAMONDS, 2, 3));
+            _modelDeck.AddCard(new Card("Q", Suit.DIAMONDS, 3, 4));
+            _modelDeck.AddCard(new Card("K", Suit.DIAMONDS, 4, 5));
+            _modelDeck.AddCard(new Card("10", Suit.DIAMONDS, 10, 6));
             _modelDeck.AddCard(new Card("A", Suit.DIAMONDS, 11, 7));
             _modelDeck.AddCard(new Card("7", Suit.CLUBS, 0, 8));
             _modelDeck.AddCard(new Card("8", Suit.CLUBS, 0, 9));
             _modelDeck.AddCard(new Card("9", Suit.CLUBS, 0, 10));
-            _modelDeck.AddCard(new Card("10", Suit.CLUBS, 10, 11));
-            _modelDeck.AddCard(new Card("J", Suit.CLUBS, 2, 12));
-            _modelDeck.AddCard(new Card("Q", Suit.CLUBS, 3, 13));
-            _modelDeck.AddCard(new Card("K", Suit.CLUBS, 4, 14));
+            _modelDeck.AddCard(new Card("J", Suit.CLUBS, 2, 11));
+            _modelDeck.AddCard(new Card("Q", Suit.CLUBS, 3, 12));
+            _modelDeck.AddCard(new Card("K", Suit.CLUBS, 4, 13));
+            _modelDeck.AddCard(new Card("10", Suit.CLUBS, 10, 14));
             _modelDeck.AddCard(new Card("A", Suit.CLUBS, 11, 15));
             _modelDeck.AddCard(new Card("7", Suit.HEARTS, 0, 16));
             _modelDeck.AddCard(new Card("8", Suit.HEARTS, 0, 17));
             _modelDeck.AddCard(new Card("9", Suit.HEARTS, 0, 18));
-            _modelDeck.AddCard(new Card("10", Suit.HEARTS, 10, 19));
-            _modelDeck.AddCard(new Card("J", Suit.HEARTS, 2, 20));
-            _modelDeck.AddCard(new Card("Q", Suit.HEARTS, 3, 21));
-            _modelDeck.AddCard(new Card("K", Suit.HEARTS, 4, 22));
+            _modelDeck.AddCard(new Card("J", Suit.HEARTS, 2, 19));
+            _modelDeck.AddCard(new Card("Q", Suit.HEARTS, 3, 20));
+            _modelDeck.AddCard(new Card("K", Suit.HEARTS, 4, 21));
+            _modelDeck.AddCard(new Card("10", Suit.HEARTS, 10, 22));
             _modelDeck.AddCard(new Card("A", Suit.HEARTS, 11, 23));
             _modelDeck.AddCard(new Card("7", Suit.SPADES, 0, 24));
             _modelDeck.AddCard(new Card("8", Suit.SPADES, 0, 25));
             _modelDeck.AddCard(new Card("9", Suit.SPADES, 0, 26));
-            _modelDeck.AddCard(new Card("10", Suit.SPADES, 10, 27));
-            _modelDeck.AddCard(new Card("J", Suit.SPADES, 2, 28));
-            _modelDeck.AddCard(new Card("Q", Suit.SPADES, 3, 29));
-            _modelDeck.AddCard(new Card("K", Suit.SPADES, 4, 30));
+            _modelDeck.AddCard(new Card("J", Suit.SPADES, 2, 27));
+            _modelDeck.AddCard(new Card("Q", Suit.SPADES, 3, 28));
+            _modelDeck.AddCard(new Card("K", Suit.SPADES, 4, 29));
+            _modelDeck.AddCard(new Card("10", Suit.SPADES, 10, 30));
             _modelDeck.AddCard(new Card("A", Suit.SPADES, 11, 31));
         }
 
@@ -56,9 +56,14 @@ namespace Client
         
         private static void     PlayACard(Player player) {
             Console.Write("Enter the ID of the card you want to play:\n");
-            var  input = Console.ReadLine();
+            var input = Console.ReadLine();
+            while (!Int32.TryParse(input, out _idCardToPlay))
+            {
+                Console.Write("Invalid card ID!\n");
+                Console.Write("Enter the ID of the card you want to play:\n");
+                input = Console.ReadLine();
+            }
             player.SendMessage("PLAY " + input);
-            _idCardToPlay = Int32.Parse(input);
         }
         
         public static void Main()
@@ -69,11 +74,10 @@ namespace Client
                 var client = new TcpClient();
 //                Console.Write("Server IP: ");
 //                var ip = Console.ReadLine();
-//                Console.Write("Server port: ");
-//                int port = Convert.ToInt32(Console.ReadLine());
-//                tcpclnt.Connect(ip, port);
+                Console.Write("Server port: ");
+                int port = Convert.ToInt32(Console.ReadLine());
                 Console.Write("Connecting to server...\n");
-                client.Connect("127.0.0.1", 4242);
+                client.Connect("127.0.0.1", port);
                 Console.Write("Connexion successful!\n");
                 var received = "";
                 var player = new Player(client);
@@ -89,12 +93,12 @@ namespace Client
                             buffer += Convert.ToChar(buff[i]);
                     }
                     received = buffer.Substring(0, buffer.IndexOf('\n'));
+                    Console.Write("RECEIVED: " + received + "\n");
                     buffer = buffer.Substring(buffer.IndexOf('\n') + 1, buffer.Length - (buffer.IndexOf('\n') + 1));
                     if (received.StartsWith("MSG "))
                         Console.Write(received.Substring(4, received.Length - 4) + "\n");
                     else if (received.StartsWith("DECK "))
                     {
-                        Console.Write("RECEIVED: " + received + "\n");
                         var cardsId = received.Substring(5, received.Length - 5).Split();
                         for (var idx = 0; idx < cardsId.Length; idx += 1)
                             player.GetDeck().AddCard(_modelDeck.GetCardById(Int32.Parse(cardsId[idx])));
@@ -117,10 +121,7 @@ namespace Client
                         }
                     }
                     else if (received.Equals("PLAY KO"))
-                    {
                         Console.Write("You cannot play this card!\n");
-                        PlayACard(player);
-                    }
                     else if (received.Equals("PLAY"))
                         PlayACard(player);
                     else if (received.Equals("PLAY OK"))

@@ -10,7 +10,7 @@ namespace Server
         private String name;
         private TcpClient channel;
         private Deck deck = new Deck(8);
-        private Boolean _trumpChooser;
+        private bool _trumpChooser;
 
         public Player(int id, String name, TcpClient channel)
         {
@@ -56,35 +56,64 @@ namespace Server
             return received;
         }
 
-        public void SetTrumpChooser(Boolean trumpChooser)
+        public void SetTrumpChooser(bool trumpChooser)
         {
             _trumpChooser = trumpChooser;
         }
 
-        public Boolean PutCard(Trick trick, int cardId, Suit suit)
+        public bool PlayerIsBuddy(Player player)
         {
-            // TODO : update leadingPlayer & leadingCardId of the trick
+            return id == 0 && player.GetId() == 2 || id == 1 && player.GetId() == 3 ||
+                   id == 2 && player.GetId() == 0 || id == 3 && player.GetId() == 1;
+        }
+
+        public bool HasSuit(Suit suit)
+        {
+            foreach (Card card in deck.GetDeck())
+            {
+                if (card.GetSuit() == suit)
+                    return true;
+            }
+            return false;
+        }
+
+        public bool PutCard(Trick trick, int cardId, Suit trump)
+        {
+            var found = false;
+            Card cardToPlay = null;
             foreach (var card in deck.GetDeck())
             {
                 if (card.GetId() == cardId)
                 {
-                    trick.AddCard(card);
-                    deck.RemoveCard(card);
-                    return (true);
+                    found = true;
+                    cardToPlay = card;
                 }
             }
-            return (false);
+            if (!found)
+                return (false);
+            var isLegal = trick.PlayIsLegal(cardToPlay, this, trump);
+            if (isLegal)
+            {
+                if (trick.CardIsLeading(cardToPlay, trump))
+                {
+                    trick.SetLeadingPlayer(this);
+                    trick.SetLeadingCard(cardToPlay);
+                }
+                trick.AddCard(cardToPlay);
+                deck.RemoveCard(cardToPlay);
+            }
+            return (isLegal);
         }
 
-        public Boolean IsTrumpChooser()
+        public bool IsTrumpChooser()
         {
             return (_trumpChooser);
         }
         
         public void SendDeck()
         {
-            String msgDeck = "DECK ";
-            for (int idx = 0 ; idx < deck.Size() ; idx += 1) {
+            var msgDeck = "DECK ";
+            for (var idx = 0 ; idx < deck.Size() ; idx += 1) {
                 msgDeck += deck.GetDeck()[idx].GetId();
                 if (idx < deck.Size() - 1)
                     msgDeck += " ";
