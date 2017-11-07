@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
+﻿using System;
 namespace Server
 {
     public class Trick : Deck
@@ -102,7 +101,8 @@ namespace Server
 
         public void ResetDeck()
         {
-            for (int i = 0 ; i < cards.Count ; i += 1)
+            int count = cards.Count;
+            for ( ; count > 0 ; count -= 1)
                 cards.RemoveAt(0);
         }
     }
