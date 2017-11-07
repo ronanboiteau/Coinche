@@ -11,6 +11,7 @@ namespace Server
         private Deck _deck;
         private List<Player> _allPlayers;
         private Suit _trump;
+        private Trick trick = new Trick();
         
         public Game(List<Player> allPlayers, Team teamOne, Team teamTwo)
         {
@@ -123,18 +124,33 @@ namespace Server
                                               + teams[1].GetPlayer(0).GetName() + ", you make " + teams[1].GetName() + ".");
         }
 
-        public void StartPlaying()
+        private void AnnounceScores()
         {
-            int playerId = 0;
-            int cardId = -1;
+            Broadcast("MSG " + teams[0].GetName() + " (" + teams[0].GetPlayer(0).GetName() + ", "
+                      + teams[0].GetPlayer(1).GetName() + ") has " + teams[0].GetScore()
+                      + (teams[0].GetContract() == -1 ? "" : "/" + teams[0].GetContract()) + " points || "
+                      + teams[1].GetName() + " (" + teams[1].GetPlayer(0).GetName() + ", "
+                      + teams[1].GetPlayer(1).GetName() + ") has " + teams[1].GetScore()
+                      + (teams[1].GetContract() == -1 ? "" : "/" + teams[1].GetContract()) + " points. "
+                      + "Trump: " + _trump);
+        }
+
+        private int GetTrumpChooser()
+        {
             foreach (Team team in teams)
             {
                 foreach (Player player in team.GetPlayers())
                 {
                     if (player.IsTrumpChooser())
-                        playerId = player.GetId();
+                        return (player.GetId());
                 }
             }
+            return (-1);
+        }
+        
+        public void StartPlaying()
+        {
+            int playerId = GetTrumpChooser();
             while (_allPlayers[0].GetDeck().Size() != 0)
             {
                 Broadcast("MSG " + teams[0].GetName() + " (" + teams[0].GetPlayer(0).GetName() + ", "
@@ -144,54 +160,54 @@ namespace Server
                           + teams[1].GetPlayer(1).GetName() + ") has " + teams[1].GetScore()
                           + (teams[1].GetContract() == -1 ? "" : "/" + teams[1].GetContract()) + " points. "
                           + "Trump: " + _trump);
-/*            while (currentTrick.size() != 4) {
-                _allPlayers.get(playerId).sendMessage(_allPlayers.get(playerId).getDeck().sendDeck());
-                arbiter.sendMessage("MSG " + _allPlayers.get(playerId).getName() + "' deck:");
-                arbiter.sendMessage(_allPlayers.get(playerId).getDeck().sendDeck());
-                _allPlayers.get(playerId).sendMessage("PLAY");
-                BroadcastToOthers(_allPlayers.get(playerId), "MSG " + _allPlayers.get(playerId).getName() + "'s turn...");
-                while (_allPlayers.get(playerId).peekMsg() == null)
-                    Thread.sleep(500);
-                String msg = _allPlayers.get(playerId).popMsg();
-                Scanner strId = new Scanner(msg);
-                if (strId.next().equals("PLAY") && strId.hasNextInt()) {
-                    cardId = strId.nextInt();
-                    if (_allPlayers.get(playerId).putCard(currentTrick, cardId, trump)) {
-                        Broadcast("MSG " + _allPlayers.get(playerId).getName() + " put a "
-                                + modelDeck[cardId].getName() + " of " + modelDeck[cardId].getSuit()
-                                + ". " + currentTrick.getLeadingPlayer().getName() + " is leading this turn.");
-                        _allPlayers.get(playerId).sendMessage("PLAY OK");
-                        playerId += 1;
-                        if (playerId >= 4)
-                            playerId = 0;
-                    } else {
-                        _allPlayers.get(playerId).sendMessage("MSG You cannot play this card!");
-                        _allPlayers.get(playerId).sendMessage("PLAY KO");
+                AnnounceScores();
+                while (trick.Size() != 4)
+                {
+                    _allPlayers[playerId].SendDeck();
+                    _allPlayers[playerId].SendMessage("PLAY");
+                    Broadcast("MSG " + _allPlayers[playerId].GetName() + "'s turn...");
+                    var msg = _allPlayers[playerId].GetNextMessage().Split();
+                    if (msg.Length != 2 && msg[0].Equals("PLAY") &&
+                        Int32.TryParse(msg[1], out var cardId))
+                    {
+                        if (_allPlayers[playerId].PutCard(trick, cardId, _trump))
+                        {
+                            Broadcast("MSG " + _allPlayers[playerId].GetName() + " put a "
+                                      + modelDeck.GetDeck()[cardId].GetName() + " of " +
+                                      modelDeck.GetDeck()[cardId].GetSuit()
+                                      + ". " + trick.GetLeadingPlayer().GetName() + " is leading this turn.");
+                            _allPlayers[playerId].SendMessage("PLAY OK");
+                            playerId += 1;
+                            if (playerId >= 4)
+                                playerId = 0;
+                        }
+                        else
+                            _allPlayers[playerId].SendMessage("PLAY KO");
                     }
+                    else
+                        _allPlayers[playerId].SendMessage("PLAY KO");
+                    /*
+                playerId = currentTrick.getLeadingPlayer().getId();
+                for (ServerTeam team : teams)
+                {
+                    for (ServerPlayer player : team.getPlayers())
+                    {
+                        if (player.getId() == playerId)
+                            team.addScore(currentTrick.getValue());
+                    }
+                }
+                currentTrick.resetTrick();*/
+                }
+                /*if (teams.get(0).hasWon(teams.get(1).getScore())) {
+                    Broadcast("MSG " + teams.get(0).getName() + " has " + teams.get(0).getScore() + " points and "
+                            + teams.get(1).getName() + " has " + teams.get(1).getScore() + ".");
+                    Broadcast(teams.get(0).getName() + "won! Congratulations!!");
                 } else {
-                    _allPlayers.get(playerId).sendMessage("MSG You cannot play this card!");
-                    _allPlayers.get(playerId).sendMessage("PLAY KO");
-                }
-            }
-            playerId = currentTrick.getLeadingPlayer().getId();
-            for (ServerTeam team : teams) {
-                for (ServerPlayer player : team.getPlayers()) {
-                    if (player.getId() == playerId)
-                        team.addScore(currentTrick.getValue());
-                }
-            }
-            currentTrick.resetTrick();
-        }
-        if (teams.get(0).hasWon(teams.get(1).getScore())) {
-            Broadcast("MSG " + teams.get(0).getName() + " has " + teams.get(0).getScore() + " points and "
-                    + teams.get(1).getName() + " has " + teams.get(1).getScore() + ".");
-            Broadcast(teams.get(0).getName() + "won! Congratulations!!");
-        } else {
-            Broadcast("MSG " + teams.get(0).getName() + " has " + teams.get(0).getScore() + " points and "
-                    + teams.get(1).getName() + " has " + teams.get(1).getScore() + ".");
-            Broadcast(teams.get(1).getName() + "won! Congratulations!!");
-            teams.get(1).setScore(160 + teams.get(0).getContract());
-        }*/
+                    Broadcast("MSG " + teams.get(0).getName() + " has " + teams.get(0).getScore() + " points and "
+                            + teams.get(1).getName() + " has " + teams.get(1).getScore() + ".");
+                    Broadcast(teams.get(1).getName() + "won! Congratulations!!");
+                    teams.get(1).setScore(160 + teams.get(0).getContract());
+                }*/
                 Broadcast("END");
             }
         }

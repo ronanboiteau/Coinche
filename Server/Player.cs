@@ -58,7 +58,22 @@ namespace Server
 
         public void SetTrumpChooser(Boolean trumpChooser)
         {
-            this._trumpChooser = trumpChooser;
+            _trumpChooser = trumpChooser;
+        }
+
+        public Boolean PutCard(Trick trick, int cardId, Suit suit)
+        {
+            // TODO : update leadingPlayer & leadingCardId of the trick
+            foreach (var card in deck.GetDeck())
+            {
+                if (card.GetId() == cardId)
+                {
+                    trick.AddCard(card);
+                    deck.RemoveCard(card);
+                    return (true);
+                }
+            }
+            return (false);
         }
 
         public Boolean IsTrumpChooser()

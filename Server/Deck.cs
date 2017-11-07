@@ -5,8 +5,8 @@ namespace Server
 {
     public class Deck
     {
-        private List<Card> cards = new List<Card>();
-        private int maxCards;
+        protected List<Card> cards = new List<Card>();
+        protected int maxCards;
 
         public Deck(int maxCards)
         {

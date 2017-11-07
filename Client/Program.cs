@@ -99,7 +99,7 @@ namespace Client
                         for (var idx = 0; idx < cardsId.Length; idx += 1)
                         {
                             Console.Write("Trying to add card with ID " + cardsId[idx] + " to your deck...\n");
-                            player.GetDeck().AddCard(_modelDeck.GetCardById(Int16.Parse(cardsId[idx])));
+                            player.GetDeck().AddCard(_modelDeck.GetCardById(Int32.Parse(cardsId[idx])));
                             Console.Write("Card added successfully!\n");
                         }
                         Console.Write("Your cards:");
