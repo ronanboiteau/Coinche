@@ -100,6 +100,7 @@ namespace Server
                     trick.SetLeadingCard(cardToPlay);
                 }
                 trick.AddCard(cardToPlay);
+                trick.AddValue(cardToPlay.GetValue());
                 deck.RemoveCard(cardToPlay);
             }
             return (isLegal);
