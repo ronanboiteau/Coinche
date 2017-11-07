@@ -53,5 +53,15 @@ namespace Server
         {
             return _name;
         }
+
+        public Boolean HasWon(int otherTeamScore)
+        {
+            if (_score >= _contract && _score > otherTeamScore) {
+                _score += _contract;
+                return (true);
+            }
+            _score = 0;
+            return (false);
+        }
     }
 }

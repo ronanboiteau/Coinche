@@ -147,10 +147,38 @@ namespace Server
             }
             return (-1);
         }
+
+        public void CalculateScore()
+        {
+            foreach (Team team in teams)
+            {
+                foreach (Player player in team.GetPlayers())
+                {
+                    if (player.GetId() == trick.GetLeadingPlayer().GetId())
+                        team.AddScore(trick.GetValue());
+                }
+            }
+        }
+
+        public void AnnounceWinner()
+        {
+            if (teams[0].HasWon(teams[1].GetScore()))
+            {
+                Broadcast("MSG " + teams[0].GetName() + " has " + teams[0].GetScore() + " points and "
+                        + teams[1].GetName() + " has " + teams[1].GetScore() + ".");
+                Broadcast(teams[0].GetName() + "won! Congratulations!!");
+            }
+            else
+            {
+                Broadcast("MSG " + teams[0].GetName() + " has " + teams[0].GetScore() + " points and "
+                          + teams[1].GetName() + " has " + teams[1].GetScore() + ".");
+                Broadcast(teams[1].GetName() + "won! Congratulations!!");
+            }
+        }
         
         public void StartPlaying()
         {
-            int playerId = GetTrumpChooser();
+            var playerId = GetTrumpChooser();
             while (_allPlayers[0].GetDeck().Size() != 0)
             {
                 Broadcast("MSG " + teams[0].GetName() + " (" + teams[0].GetPlayer(0).GetName() + ", "
@@ -186,40 +214,23 @@ namespace Server
                     }
                     else
                         _allPlayers[playerId].SendMessage("PLAY KO");
-                    /*
-                playerId = currentTrick.getLeadingPlayer().getId();
-                for (ServerTeam team : teams)
-                {
-                    for (ServerPlayer player : team.getPlayers())
-                    {
-                        if (player.getId() == playerId)
-                            team.addScore(currentTrick.getValue());
-                    }
+                    playerId = trick.GetLeadingPlayer().GetId();
+                    CalculateScore();
+                    trick.ResetDeck();
                 }
-                currentTrick.resetTrick();*/
-                }
-                /*if (teams.get(0).hasWon(teams.get(1).getScore())) {
-                    Broadcast("MSG " + teams.get(0).getName() + " has " + teams.get(0).getScore() + " points and "
-                            + teams.get(1).getName() + " has " + teams.get(1).getScore() + ".");
-                    Broadcast(teams.get(0).getName() + "won! Congratulations!!");
-                } else {
-                    Broadcast("MSG " + teams.get(0).getName() + " has " + teams.get(0).getScore() + " points and "
-                            + teams.get(1).getName() + " has " + teams.get(1).getScore() + ".");
-                    Broadcast(teams.get(1).getName() + "won! Congratulations!!");
-                    teams.get(1).setScore(160 + teams.get(0).getContract());
-                }*/
+                AnnounceWinner();
                 Broadcast("END");
             }
         }
 
-        private Boolean RecursiveBidding(int idPlayer, int max_iterations)
+        private Boolean RecursiveBidding(int idPlayer, int maxIterations)
         {
             var iterations = 0;
-            while (iterations < max_iterations)
+            while (iterations < maxIterations)
             {
                 if (idPlayer >= 4)
                     idPlayer = idPlayer % 4;
-                var player = this._allPlayers[idPlayer];
+                var player = _allPlayers[idPlayer];
                 Broadcast("MSG " + player.GetName() + " is making a decision...");
                 player.SendMessage("BID");
                 while (true)
@@ -240,8 +251,8 @@ namespace Server
                         continue;
                     }
                     var suit = msgTab[3];
-                    if (contract <= this.teams[0].GetContract()
-                            || contract <= this.teams[1].GetContract()
+                    if (contract <= teams[0].GetContract()
+                            || contract <= teams[1].GetContract()
                             || contract < 80
                             || contract % 10 != 0)
                     {
@@ -256,13 +267,13 @@ namespace Server
                         player.SendMessage("BID KO");
                         continue;
                     }
-                    this._trump = (Suit)Enum.Parse(typeof(Suit), suit.ToUpper());
-                    this.teams[(idPlayer == 0 || idPlayer == 2) ? 0 : 1].SetContract(contract);
-                    this.teams[(idPlayer == 0 || idPlayer == 2) ? 1 : 0].SetContract(-1);
-                    Broadcast("MSG " + player.GetName() + " from " + this.teams[(idPlayer == 0 || idPlayer == 2) ? 0 : 1].GetName()
+                    _trump = (Suit)Enum.Parse(typeof(Suit), suit.ToUpper());
+                    teams[(idPlayer == 0 || idPlayer == 2) ? 0 : 1].SetContract(contract);
+                    teams[(idPlayer == 0 || idPlayer == 2) ? 1 : 0].SetContract(-1);
+                    Broadcast("MSG " + player.GetName() + " from " + teams[(idPlayer == 0 || idPlayer == 2) ? 0 : 1].GetName()
                     + " bid " + contract + " on " + suit.ToUpper());
                     if (!RecursiveBidding(idPlayer + 1, 3))
-                        this._allPlayers[idPlayer].SetTrumpChooser(true);
+                        _allPlayers[idPlayer].SetTrumpChooser(true);
                     return (true);
                 }
                 ++idPlayer;
@@ -302,7 +313,7 @@ namespace Server
                     }
                 }
             }
-            Broadcast("MSG " + playerName + " from " + teamName + " made the final bid! The chosen trump is " + this._trump + ". "
+            Broadcast("MSG " + playerName + " from " + teamName + " made the final bid! The chosen trump is " + _trump + ". "
                       + teamName + "'s contract is " + contract + ".");
         }
         
