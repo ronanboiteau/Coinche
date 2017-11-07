@@ -161,6 +161,7 @@ namespace Server
 
         private void AnnounceWinner()
         {
+            Broadcast("MSG Calculating score...");
             if (_teams[0].HasWon(_teams[1].GetScore()))
             {
                 Broadcast("MSG " + _teams[0].GetName() + " has " + _teams[0].GetScore() + " points and "
@@ -169,6 +170,7 @@ namespace Server
             }
             else
             {
+                _teams[1].SetScore(160 + _teams[0].GetContract());
                 Broadcast("MSG " + _teams[0].GetName() + " has " + _teams[0].GetScore() + " points and "
                           + _teams[1].GetName() + " has " + _teams[1].GetScore() + ".");
                 Broadcast(_teams[1].GetName() + "won! Congratulations!!");

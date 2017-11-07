@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace Server
 {
@@ -54,9 +55,15 @@ namespace Server
             return _name;
         }
 
+        public void SetScore(int score)
+        {
+            _score = score;
+        }
+        
         public Boolean HasWon(int otherTeamScore)
         {
-            if (_score >= _contract && _score > otherTeamScore) {
+            if (_score >= _contract && _score > otherTeamScore)
+            {
                 _score += _contract;
                 return (true);
             }
