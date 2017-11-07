@@ -40,7 +40,7 @@ namespace Server
         {
             return (cards.Count);
         }
-
+        
         public List<Card> GetDeck()
         {
             return (cards);

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 
 namespace Server
 {
@@ -16,6 +15,7 @@ namespace Server
             _players[1] = playerTwo;
             _name = name;
             _contract = -1;
+            _score = 0;
         }
 
         public void SetContract(int contract)

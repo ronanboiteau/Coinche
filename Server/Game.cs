@@ -60,6 +60,10 @@ namespace Server
             _deck = new Deck(32);
             for (var idx = 0; idx < _modelDeck.Size(); idx += 1)
                 _deck.AddCard(_modelDeck.GetDeck()[idx]);
+            _teams[0].GetPlayer(0).EmptyDeck();
+            _teams[0].GetPlayer(1).EmptyDeck();
+            _teams[1].GetPlayer(0).EmptyDeck();
+            _teams[1].GetPlayer(1).EmptyDeck();
         }
         
         private void DrawCards()
@@ -136,13 +140,10 @@ namespace Server
 
         private int GetTrumpChooser()
         {
-            foreach (var team in _teams)
+            foreach (var player in _allPlayers)
             {
-                foreach (var player in team.GetPlayers())
-                {
-                    if (player.IsTrumpChooser())
-                        return (player.GetId());
-                }
+                if (player.IsTrumpChooser())
+                    return (player.GetId());
             }
             return (-1);
         }
@@ -196,11 +197,16 @@ namespace Server
                     _allPlayers[playerId].SendMessage("PLAY");
                     Broadcast("MSG " + _allPlayers[playerId].GetName() + "'s turn...");
                     var msg = _allPlayers[playerId].GetNextMessage().Split();
-                    if (msg.Length != 2 && msg[0].Equals("PLAY") &&
+                    Console.Write("RECEIVED BY SERVER: " + msg[0] + ", " + msg[1] + ", " + msg.Length + "\n");
+                    if (msg.Length == 2 && msg[0].Equals("PLAY") &&
                         Int32.TryParse(msg[1], out var cardId))
                     {
+                        Console.Write("Player's playing a card...\n");
                         if (_allPlayers[playerId].PutCard(_trick, cardId, _trump))
                         {
+                            Console.Write("playerID = " + playerId + "\n");
+                            Console.Write("playerID = " + _allPlayers[playerId] + "\n");
+                            Console.Write("playerID = " + _allPlayers[playerId].GetName() + "\n");
                             Broadcast("MSG " + _allPlayers[playerId].GetName() + " put a "
                                       + _modelDeck.GetDeck()[cardId].GetName() + " of " +
                                       _modelDeck.GetDeck()[cardId].GetSuit()
@@ -214,13 +220,13 @@ namespace Server
                     }
                     else
                         _allPlayers[playerId].SendMessage("PLAY KO");
-                    playerId = _trick.GetLeadingPlayer().GetId();
-                    CalculateScore();
-                    _trick.ResetDeck();
                 }
-                AnnounceWinner();
-                Broadcast("END");
+                playerId = _trick.GetLeadingPlayer().GetId();
+                CalculateScore();
+                _trick.ResetDeck();
             }
+            AnnounceWinner();
+            Broadcast("END");
         }
 
         private Boolean RecursiveBidding(int idPlayer, int maxIterations)
@@ -323,10 +329,8 @@ namespace Server
             CreateModelDeck();
             DrawCards();
             PreBidding();
-            Broadcast("DECK");
             StartBidding();
-//            StartPlaying();
-            Broadcast("END");
+            StartPlaying();
         }
     }
 }

@@ -91,5 +91,14 @@ namespace Server
             }
             SendMessage(msgDeck);
         }
+
+        public void EmptyDeck()
+        {
+            var count = deck.GetDeck().Count;
+            while (count != 0) {
+                deck.GetDeck().RemoveAt(0);
+                count -= 1;
+            }
+        }
     }
 }

@@ -90,18 +90,14 @@ namespace Client
                     }
                     received = buffer.Substring(0, buffer.IndexOf('\n'));
                     buffer = buffer.Substring(buffer.IndexOf('\n') + 1, buffer.Length - (buffer.IndexOf('\n') + 1));
-                    Console.Write("RECEIVED: " + received + "\n");
                     if (received.StartsWith("MSG "))
                         Console.Write(received.Substring(4, received.Length - 4) + "\n");
                     else if (received.StartsWith("DECK "))
                     {
+                        Console.Write("RECEIVED: " + received + "\n");
                         var cardsId = received.Substring(5, received.Length - 5).Split();
                         for (var idx = 0; idx < cardsId.Length; idx += 1)
-                        {
-                            Console.Write("Trying to add card with ID " + cardsId[idx] + " to your deck...\n");
                             player.GetDeck().AddCard(_modelDeck.GetCardById(Int32.Parse(cardsId[idx])));
-                            Console.Write("Card added successfully!\n");
-                        }
                         Console.Write("Your cards:");
                         player.GetDeck().PrintDeck();
                     }
