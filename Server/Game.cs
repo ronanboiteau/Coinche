@@ -101,17 +101,12 @@ namespace Server
                 }
                 if (idxTeam >= 2)
                     idxTeam = 0;
-                Console.Write("========== CARDS REMAINING : " + _deck.Size() + " =========\n");
                 for (var i = 0; i < 3; i += 1)
                 {
                     int randCard;
                     if (_deck.Size() == 8 || _deck.Size() == 6 || _deck.Size() == 4 || _deck.Size() == 2)
                         i = 1;
                     randCard = _deck.Size() > 1 ? rand.Next(1, _deck.Size()) : 0;
-                    Console.Write("Giving card - ");
-                    _deck.GetDeck()[randCard].PrintCard();
-                    Console.Write(" - to " + _teams[idxTeam].GetPlayer(idxPlayer).GetName() +
-                                       " of " + _teams[idxTeam].GetName() + "\n");
                     _teams[idxTeam].GetPlayer(idxPlayer).GetDeck().AddCard(_deck.GetDeck()[randCard]);
                     _deck.RemoveCard(_deck.GetDeck()[randCard]);
                 }
@@ -186,14 +181,33 @@ namespace Server
             {
                 Broadcast("MSG " + _teams[0].GetName() + " has " + _teams[0].GetScore() + " points and "
                         + _teams[1].GetName() + " has " + _teams[1].GetScore() + ".");
-                Broadcast(_teams[0].GetName() + "won! Congratulations!!");
+                Broadcast("MSG " + _teams[0].GetName() + " won! Congratulations!!");
             }
             else
             {
                 _teams[1].SetScore(160 + _teams[0].GetContract());
                 Broadcast("MSG " + _teams[0].GetName() + " has " + _teams[0].GetScore() + " points and "
                           + _teams[1].GetName() + " has " + _teams[1].GetScore() + ".");
-                Broadcast(_teams[1].GetName() + "won! Congratulations!!");
+                Broadcast("MSG " + _teams[1].GetName() + " won! Congratulations!!");
+            }
+        }
+
+        private void CheckDeclarations(int playerId)
+        {
+            int toAdd = 0;
+            if (_allPlayers[playerId].GetDeck().Size() != 8)
+                return;
+            if (playerId % 2 == 0)
+            {
+                if ((toAdd = _allPlayers[playerId].HasAllFour()) != 0)
+                    Broadcast("MSG " + _allPlayers[playerId].GetName() + " has an all-four!");
+                _teams[0].AddScore(toAdd);
+                if (toAdd != 0)
+                    Broadcast("MSG " + _teams[0].GetName() + " has now " + _teams[0].GetScore() + " points.");
+            }
+            else
+            {
+                _teams[1].AddScore(_allPlayers[playerId].HasAllFour());
             }
         }
         
@@ -202,34 +216,24 @@ namespace Server
             var playerId = GetTrumpChooser();
             while (_allPlayers[0].GetDeck().Size() != 0)
             {
-                Broadcast("MSG " + _teams[0].GetName() + " (" + _teams[0].GetPlayer(0).GetName() + ", "
-                          + _teams[0].GetPlayer(1).GetName() + ") has " + _teams[0].GetScore()
-                          + (_teams[0].GetContract() == -1 ? "" : "/" + _teams[0].GetContract()) + " points || "
-                          + _teams[1].GetName() + " (" + _teams[1].GetPlayer(0).GetName() + ", "
-                          + _teams[1].GetPlayer(1).GetName() + ") has " + _teams[1].GetScore()
-                          + (_teams[1].GetContract() == -1 ? "" : "/" + _teams[1].GetContract()) + " points. "
-                          + "Trump: " + _trump);
                 AnnounceScores();
                 var isFirstTry = true;
                 while (_trick.Size() != 4)
                 {
                     if (isFirstTry)
+                    {
                         _allPlayers[playerId].SendDeck();
-                    _allPlayers[playerId].SendMessage("PLAY");
-                    if (isFirstTry)
                         Broadcast("MSG " + _allPlayers[playerId].GetName() + "'s turn...");
+                        CheckDeclarations(playerId);
+                    }
+                    _allPlayers[playerId].SendMessage("PLAY");
                     isFirstTry = false;
                     var msg = _allPlayers[playerId].GetNextMessage().Split();
-                    Console.Write("RECEIVED BY SERVER: " + msg[0] + ", " + msg[1] + ", " + msg.Length + "\n");
                     if (msg.Length == 2 && msg[0].Equals("PLAY") &&
                         Int32.TryParse(msg[1], out var cardId))
                     {
-                        Console.Write("Player's playing a card...\n");
                         if (_allPlayers[playerId].PutCard(_trick, cardId, _trump))
                         {
-                            Console.Write("playerID = " + playerId + "\n");
-                            Console.Write("playerID = " + _allPlayers[playerId] + "\n");
-                            Console.Write("playerID = " + _allPlayers[playerId].GetName() + "\n");
                             Broadcast("MSG " + _allPlayers[playerId].GetName() + " put a "
                                       + _modelDeck.GetDeck()[cardId].GetName() + " of " +
                                       _modelDeck.GetDeck()[cardId].GetSuit()

@@ -19,6 +19,37 @@ namespace Server
             this.channel = channel;
         }
 
+        public int HasAllFour()
+        {
+            var score = 0;
+            int[] nb = {0, 0, 0, 0, 0, 0};
+            foreach (var card in deck.GetDeck())
+            {
+                if (card.GetName().Equals("J"))
+                    nb[(int) CardName.Jack] += 1;
+                else if (card.GetName().Equals("9"))
+                    nb[(int) CardName.Nine] += 1;
+                else if (card.GetName().Equals("A"))
+                    nb[(int) CardName.Ace] += 1;
+                else if (card.GetName().Equals("10"))
+                    nb[(int) CardName.Ten] += 1;
+                else if (card.GetName().Equals("K"))
+                    nb[(int) CardName.King] += 1;
+                else if (card.GetName().Equals("Q"))
+                    nb[(int) CardName.Queen] += 1;
+            }
+            if (nb[(int) CardName.Jack] == 4)
+                score += 200;
+            else if (nb[(int) CardName.Nine] == 4)
+                score += 150;
+            for (var idx = 2; idx <= (int) CardName.Queen ; idx += 1)
+            {
+                if (nb[idx] == 4)
+                    score += 100;
+            }
+            return score;
+        }
+        
         public void SendMessage(String message)
         {
             var data = Encoding.ASCII.GetBytes(message + "\n");
@@ -29,7 +60,7 @@ namespace Server
         {
             return name;
         }
-
+        
         public int GetId()
         {
             return id;
