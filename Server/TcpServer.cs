@@ -39,12 +39,6 @@ namespace Server
             var game = new Game(Players, team1, team2);
             game.StartGame();
             }
-//                byte[] data = Encoding.ASCII.GetBytes("Send next data: [enter 'quit' to terminate] ");
-//                client.GetStream().Write(data, 0, data.Length);
-//                byte[] buffer = new byte[1024];
-//                client.GetStream().Read(buffer, 0, buffer.Length);
-//                String msg = Encoding.ASCII.GetString(buffer);
-//                Console.Write(msg + "\n");
         }
 
         private static void _listen()
@@ -57,34 +51,6 @@ namespace Server
             ConnectedClients++;
             var player = new Player(ConnectedClients - 1, "Player" + ConnectedClients, client);
             Players.Add(player);
-//            Console.Write("Closing connection. {connectedClients} connected at the moment.\n");
-//            client.GetStream().Dispose();
-//            clients.Remove(client);
-//            connectedClients--;
             }
-
-//        private async static void _listen() {
-//            Task<TcpClient> clientTask = listener.AcceptTcpClientAsync(); // Get the client
-//            clients.Add(clientTask);
-//            if (clientTask.Result != null) {
-//                connectedClients++;
-//                Console.Write("Client connected. Waiting for data.\n");
-//                var client = clientTask.Result;
-//                string message = "";
-//                await Task.Run(() => {
-//                    while (message != null && !message.Equals("quit")) {
-//                        byte[] data = Encoding.ASCII.GetBytes("Send next data: [enter 'quit' to terminate] ");
-//                        client.GetStream().Write(data, 0, data.Length);
-//                        byte[] buffer = new byte[1024];
-//                        client.GetStream().Read(buffer, 0, buffer.Length);
-//                        message = Encoding.ASCII.GetString(buffer);
-//                        Console.Write(message + "\n");
-//                    }    
-//                });
-//                Console.Write("Closing connection. {connectedClients} connected at the moment.\n");
-//                client.GetStream().Dispose();
-//                clients.Remove(clientTask);
-//                connectedClients--;
-//            }
     }
 }
