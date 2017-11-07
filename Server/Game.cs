@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 
 namespace Server
 {
@@ -17,6 +18,24 @@ namespace Server
             _teams[0] = teamOne;
             _teams[1] = teamTwo;
             _allPlayers = allPlayers;
+        }
+
+        private void SetTrump(Suit trump)
+        {
+            _trump = trump;
+            foreach (var card in _modelDeck.GetDeck())
+            {
+                if (card.GetSuit() == _trump)
+                    card.MakeTrump();
+            }
+//            foreach (var player in _allPlayers)
+//            {
+//                foreach (var card in player.GetDeck().GetDeck())
+//                {
+//                    if (card.GetSuit() == _trump)
+//                        card.MakeTrump();
+//                }
+//            }
         }
 
         private void CreateModelDeck()
@@ -278,7 +297,7 @@ namespace Server
                         player.SendMessage("BID KO");
                         continue;
                     }
-                    _trump = (Suit)Enum.Parse(typeof(Suit), suit.ToUpper());
+                    SetTrump((Suit)Enum.Parse(typeof(Suit), suit.ToUpper()));
                     _teams[(idPlayer == 0 || idPlayer == 2) ? 0 : 1].SetContract(contract);
                     _teams[(idPlayer == 0 || idPlayer == 2) ? 1 : 0].SetContract(-1);
                     Broadcast("MSG " + player.GetName() + " from " + _teams[(idPlayer == 0 || idPlayer == 2) ? 0 : 1].GetName()

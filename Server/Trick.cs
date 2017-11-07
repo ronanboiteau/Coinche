@@ -38,9 +38,14 @@ namespace Server
                     return false;
                 if (card.GetSuit() != trump && player.HasSuit(trump))
                     return false;
-                if (card.GetSuit() == trump && card.GetValue() < _leadingCard.GetValue() &&
-                    !(card.GetName().Equals("8") && _leadingCard.GetName().Equals("7")))
-                    return false;
+                if (card.GetSuit() == trump && _leadingCard.GetSuit() != trump)
+                    return true;
+                if (card.GetSuit() == trump && _leadingCard.GetSuit() == trump)
+                {
+                    if (card.GetValue() > _leadingCard.GetValue() ||
+                        (card.GetName().Equals("8") && _leadingCard.GetName().Equals("7")))
+                        return true;
+                }
             }
             return true;
         }

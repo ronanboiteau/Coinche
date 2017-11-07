@@ -93,12 +93,12 @@ namespace Client
                             buffer += Convert.ToChar(buff[i]);
                     }
                     received = buffer.Substring(0, buffer.IndexOf('\n'));
-                    Console.Write("RECEIVED: " + received + "\n");
                     buffer = buffer.Substring(buffer.IndexOf('\n') + 1, buffer.Length - (buffer.IndexOf('\n') + 1));
                     if (received.StartsWith("MSG "))
                         Console.Write(received.Substring(4, received.Length - 4) + "\n");
                     else if (received.StartsWith("DECK "))
                     {
+                        player.EmptyDeck();
                         var cardsId = received.Substring(5, received.Length - 5).Split();
                         for (var idx = 0; idx < cardsId.Length; idx += 1)
                             player.GetDeck().AddCard(_modelDeck.GetCardById(Int32.Parse(cardsId[idx])));
@@ -107,19 +107,10 @@ namespace Client
                     }
                     else if (received.Equals("BID"))
                         BiddingChoice(player);
-                    /*else if (received.Equals("BID OK"))
-                        ;*/
                     else if (received.Equals("BID KO"))
                         BiddingChoice(player);
-                    //else if (received.Equals("BID STOP")) {}
                     else if (received.Equals("BID RESET"))
-                    {
-                        var count = player.GetDeck().Size();
-                        while (count != 0) {
-                            player.GetDeck().GetDeck().RemoveAt(0);
-                            count -= 1;
-                        }
-                    }
+                        player.EmptyDeck();
                     else if (received.Equals("PLAY KO"))
                         Console.Write("You cannot play this card!\n");
                     else if (received.Equals("PLAY"))

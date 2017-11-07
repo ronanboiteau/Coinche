@@ -27,6 +27,15 @@ namespace Client
             return (deck);
         }
 
+        public void EmptyDeck()
+        {
+            var count = deck.GetDeck().Count;
+            while (count != 0) {
+                deck.GetDeck().RemoveAt(0);
+                count -= 1;
+            }
+        }
+
         public void PutCard(Card card)
         {
             deck.RemoveCard(card);

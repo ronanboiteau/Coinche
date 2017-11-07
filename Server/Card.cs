@@ -22,6 +22,22 @@ namespace Server
             return (name);
         }
 
+        public void MakeTrump()
+        {
+            if (name == "Q")
+                value = 3;
+            else if (name == "K")
+                value = 4;
+            else if (name == "10")
+                value = 10;
+            else if (name == "A")
+                value = 11;
+            else if (name == "9")
+                value = 14;
+            else if (name == "J")
+                value = 20;
+        }
+
         public Suit GetSuit()
         {
             return (suit);
@@ -35,6 +51,11 @@ namespace Server
         public int GetValue()
         {
             return (value);
+        }
+        
+        public void SetValue(int newValue)
+        {
+            value = newValue;
         }
         
         public void     PrintCard() {
