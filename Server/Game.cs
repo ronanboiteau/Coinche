@@ -194,21 +194,14 @@ namespace Server
 
         private void CheckDeclarations(int playerId)
         {
-            int toAdd = 0;
+            var toAdd = 0;
             if (_allPlayers[playerId].GetDeck().Size() != 8)
                 return;
-            if (playerId % 2 == 0)
-            {
-                if ((toAdd = _allPlayers[playerId].HasAllFour()) != 0)
-                    Broadcast("MSG " + _allPlayers[playerId].GetName() + " has an all-four!");
-                _teams[0].AddScore(toAdd);
-                if (toAdd != 0)
-                    Broadcast("MSG " + _teams[0].GetName() + " has now " + _teams[0].GetScore() + " points.");
-            }
-            else
-            {
-                _teams[1].AddScore(_allPlayers[playerId].HasAllFour());
-            }
+            if ((toAdd += _allPlayers[playerId].HasAllFour()) != 0)
+                Broadcast("MSG " + _allPlayers[playerId].GetName() + " has an all-four!");
+            _teams[playerId % 2].AddScore(toAdd);
+            if (toAdd != 0)
+                Broadcast("MSG " + _teams[playerId % 2].GetName() + " has now " + _teams[playerId % 2].GetScore() + " points.");
         }
         
         private void StartPlaying()
