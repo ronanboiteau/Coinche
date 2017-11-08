@@ -23,29 +23,28 @@ namespace Server
                 return true;
             var suit = cards[0].GetSuit();
             // The card belongs to the requested suit
-            if (card.GetSuit() == suit && suit != trump)
+            if (card.GetSuit() == suit)
             {
                 if (suit != trump)
                     return true;
-                return card.GetValue() > _leadingCard.GetValue() ||
-                       card.GetName().Equals("8") && _leadingCard.GetName().Equals("7");
+                if (card.GetValue() > _leadingCard.GetValue() ||
+                    (card.GetName().Equals("8") && _leadingCard.GetName().Equals("7")))
+                    return true;
+                if (!player.HasGreater(_leadingCard))
+                    return true;
+                return false;
             }
             // The card doesn't belong to the requested suit
-            if (card.GetSuit() != suit)
-            {
-                if (player.HasSuit(suit))
-                    return false;
-                if (card.GetSuit() != trump && player.HasSuit(trump))
-                    return false;
-                if (card.GetSuit() == trump && _leadingCard.GetSuit() != trump)
-                    return true;
-                if (card.GetSuit() == trump && _leadingCard.GetSuit() == trump)
-                {
-                    if (card.GetValue() > _leadingCard.GetValue() ||
-                        (card.GetName().Equals("8") && _leadingCard.GetName().Equals("7")))
-                        return true;
-                }
-            }
+            if (player.HasSuit(suit))
+                return false;
+            if (card.GetSuit() != trump && player.HasSuit(trump))
+                return false;
+            if (!(card.GetSuit() == trump && _leadingCard.GetSuit() != trump))
+                return false;
+            if (!(card.GetSuit() == trump && _leadingCard.GetSuit() == trump &&
+                  (card.GetValue() > _leadingCard.GetValue() ||
+                   (card.GetName().Equals("8") && _leadingCard.GetName().Equals("7")))))
+                return false;
             return true;
         }
 
@@ -59,8 +58,9 @@ namespace Server
             {
                 if (card.GetSuit() != trump && card.GetId() > _leadingCard.GetId())
                     return true;
-                if (card.GetSuit() == trump && (card.GetValue() > _leadingCard.GetValue()
-                                                || card.GetName().Equals("8") && _leadingCard.GetName().Equals("7")))
+                if (card.GetSuit() == trump &&
+                    (card.GetValue() > _leadingCard.GetValue() ||
+                     card.GetName().Equals("8") && _leadingCard.GetName().Equals("7")))
                     return true;
             }
             // The player cut

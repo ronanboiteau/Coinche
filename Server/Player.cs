@@ -18,6 +18,17 @@ namespace Server
             this.name = name;
             this.channel = channel;
         }
+        
+        public bool HasGreater(Card cardMin)
+        {
+            foreach (var card in GetDeck().GetDeck())
+            {
+                if (card.GetSuit() == cardMin.GetSuit()
+                    && card.GetValue() > cardMin.GetValue())
+                    return true;
+            }
+            return false;
+        }
 
         public int HasAllFour()
         {
