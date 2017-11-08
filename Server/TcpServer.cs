@@ -47,6 +47,13 @@ namespace Server
             var client = task.Result;
             if (client == null)
                 return ;
+//            if (ConnectedClients >= 4)
+//            {
+//                var data = Encoding.ASCII.GetBytes("MSG The server is full, sorry! Try again later...\n");
+//                client.GetStream().Write(data, 0, data.Length);
+//                client.GetStream().Dispose();
+//                return ;
+//            }
             Console.Write("A new client just joined!\n");
             ConnectedClients++;
             var player = new Player(ConnectedClients - 1, "Player" + ConnectedClients, client);

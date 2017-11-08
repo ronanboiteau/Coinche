@@ -32,19 +32,33 @@ namespace Server
                     return true;
                 if (!player.HasGreater(_leadingCard))
                     return true;
+                Console.Write("[" + player.GetName() + "] Illegal play (type 1)\n");
                 return false;
             }
             // The card doesn't belong to the requested suit
             if (player.HasSuit(suit))
+            {
+                Console.Write("[" + player.GetName() + "] Illegal play (type 2)\n");
                 return false;
+            }
             if (card.GetSuit() != trump && player.HasSuit(trump))
+            {
+                Console.Write("[" + player.GetName() + "] Illegal play (type 3)\n");
                 return false;
-            if (!(card.GetSuit() == trump && _leadingCard.GetSuit() != trump))
-                return false;
-            if (!(card.GetSuit() == trump && _leadingCard.GetSuit() == trump &&
-                  (card.GetValue() > _leadingCard.GetValue() ||
-                   (card.GetName().Equals("8") && _leadingCard.GetName().Equals("7")))))
-                return false;
+            }
+            if (card.GetSuit() == trump && _leadingCard.GetSuit() == trump)
+            {
+                if (player.HasGreater(_leadingCard) &&
+                    !(card.GetValue() > _leadingCard.GetValue() ||
+                      (card.GetName().Equals("8") && _leadingCard.GetName().Equals("7"))))
+                {
+                    Console.Write("[" + player.GetName() + "] Illegal play (type 4)\n");
+                    return false;
+                }
+                return true;
+            }
+            if (!player.HasGreater(_leadingCard))
+                return true;
             return true;
         }
 
