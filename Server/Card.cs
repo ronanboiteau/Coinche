@@ -4,12 +4,12 @@ namespace Server
 {
     public class Card
     {
-        private String name;
+        private string name;
         private Suit suit;
         private int id;
         private int value;
 
-        public Card(String name, Suit suit, int value, int id)
+        public Card(string name, Suit suit, int value, int id)
         {
             this.name = name;
             this.suit = suit;
@@ -17,7 +17,7 @@ namespace Server
             this.id = id;
         }
 
-        public String GetName()
+        public string GetName()
         {
             return (name);
         }

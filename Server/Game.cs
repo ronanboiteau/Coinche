@@ -113,7 +113,7 @@ namespace Server
             }
         }
 
-        private void Broadcast(String message)
+        private void Broadcast(string message)
         {
             if (message.Equals("DECK"))
             {

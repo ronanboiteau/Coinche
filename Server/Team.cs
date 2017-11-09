@@ -5,12 +5,12 @@ namespace Server
     public class Team
     {
         private Player[] _players = new Player[2];
-        private String _name;
+        private string _name;
         private int _score;
         private int _contract;
         private int _nbOfTrick = 0;
 
-        public Team(Player playerOne, Player playerTwo, String name)
+        public Team(Player playerOne, Player playerTwo, string name)
         {
             _players[0] = playerOne;
             _players[1] = playerTwo;
@@ -61,7 +61,7 @@ namespace Server
             return _players[id];
         }
 
-        public String GetName()
+        public string GetName()
         {
             return _name;
         }
