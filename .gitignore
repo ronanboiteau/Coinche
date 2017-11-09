@@ -1,5 +1,3 @@
-Client/bin/
-Client/obj/
-Server/bin/
-Server/obj/
+*/bin/
+*/obj/
 .idea/
