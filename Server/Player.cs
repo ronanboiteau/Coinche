@@ -11,7 +11,8 @@ namespace Server
         private TcpClient channel;
         private Deck deck = new Deck(8);
         private bool _trumpChooser;
-
+        private bool _hasBelote = false;
+        
         public Player(int id, String name, TcpClient channel)
         {
             this.id = id;
@@ -102,6 +103,32 @@ namespace Server
         {
             _trumpChooser = trumpChooser;
         }
+
+        public void CheckBelote(Suit trump)
+        {
+            int check = 0;
+            foreach (var card in deck.GetDeck())
+            {
+                if (card.GetSuit() == trump && card.GetName().Equals("K"))
+                    check += 1;
+                else if (card.GetSuit() == trump && card.GetName().Equals("Q"))
+                    check += 1;
+            }
+            if (check == 2)
+                _hasBelote = true;
+        }
+
+
+        public bool HasBelote()
+        {
+            return _hasBelote;
+        }
+        
+//        public bool PlayerIsBuddy(Player player)
+//        {
+//            return id == 0 && player.GetId() == 2 || id == 1 && player.GetId() == 3 ||
+//                   id == 2 && player.GetId() == 0 || id == 3 && player.GetId() == 1;
+//        }
 
         public bool HasSuit(Suit suit)
         {

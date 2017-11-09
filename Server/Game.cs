@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
 
 namespace Server
 {
@@ -164,14 +163,20 @@ namespace Server
 
         private void CalculateScore()
         {
+            int leadingPlayerId = _trick.GetLeadingPlayer().GetId();
             foreach (var team in _teams)
             {
                 foreach (var player in team.GetPlayers())
                 {
-                    if (player.GetId() == _trick.GetLeadingPlayer().GetId())
+                    if (player.GetId() == leadingPlayerId)
                         team.AddScore(_trick.GetValue());
                 }
             }
+            if (_allPlayers[leadingPlayerId].GetDeck().Size() != 0)
+                return;
+            _teams[leadingPlayerId % 2].AddScore(10);
+            Broadcast("MSG " + _teams[leadingPlayerId % 2].GetName() + " won the last trick and got " + 10 + " bonus points!");
+            
         }
 
         private void AnnounceWinner()
@@ -197,6 +202,7 @@ namespace Server
             var toAdd = 0;
             if (_allPlayers[playerId].GetDeck().Size() != 8)
                 return;
+            _allPlayers[playerId].CheckBelote(_trump);
             if ((toAdd += _allPlayers[playerId].HasAllFour()) != 0)
                 Broadcast("MSG " + _allPlayers[playerId].GetName() + " has an all-four!");
             _teams[playerId % 2].AddScore(toAdd);
@@ -232,6 +238,7 @@ namespace Server
                                       _modelDeck.GetDeck()[cardId].GetSuit()
                                       + ". " + _trick.GetLeadingPlayer().GetName() + " is leading this turn.");
                             _allPlayers[playerId].SendMessage("PLAY OK");
+                            _teams[playerId % 2].AddATrick();
                             isFirstTry = true;
                             playerId += 1;
                             playerId = (playerId >= 4 ? 0 : playerId);

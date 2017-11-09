@@ -8,6 +8,7 @@ namespace Server
         private String _name;
         private int _score;
         private int _contract;
+        private int _nbOfTrick = 0;
 
         public Team(Player playerOne, Player playerTwo, String name)
         {
@@ -17,7 +18,17 @@ namespace Server
             _contract = -1;
             _score = 0;
         }
-
+        
+        public void AddATrick()
+        {
+            _nbOfTrick += 1;
+        }
+        
+        public int GetNbOfTrick()
+        {
+            return _nbOfTrick;
+        }
+        
         public void SetContract(int contract)
         {
             _contract = contract;
