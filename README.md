@@ -62,6 +62,28 @@ After that, every player has to play. The one who wins the trick will increase t
 Once the players are out of cards, the game ends. 
 If the team who made the bid has at least the points of their contract and has more points than the other team, they win, and the other team loses.
 
+## Protocole
+
+#### Server
+
+* **MSG [message to send]** *: Sends a message to all the clients*
+* **DECK [cards IDs]**  *: Sends the player's deck*
+* **BID** *: Asks the client to start bidding*
+* **BID OK** *: Accepts the cient's bidding*
+* **BID KO** *: Client's bid failed, asks the client to bid again*
+* **BID STOP** *: Stops the bidding*
+* **BID RESET** *: Starts another round of bidding when all the players passed*
+* **PLAY** *: Asks the client to play a card*
+* **PLAY KO** *: Card failed to be played, asks the client to play again*
+* **PLAY OK** *: The card can be played*
+* **END** *: Ends the game*
+ 
+#### Client
+
+* **BID N** *: Bid refused by the server, the player has to choose another card*
+* **BID Y [card ID]** *: Bid accepted*
+* **PLAY [card ID]** *: Sends the card to play to the server*
+
 ## Authors
 
 * **Ronan Boiteau** ([GitHub](https://github.com/ronanboiteau) / [LinkedIn](https://www.linkedin.com/in/ronanboiteau/))
