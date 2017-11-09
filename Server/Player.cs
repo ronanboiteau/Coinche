@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading.Tasks.Dataflow;
+using NUnit.Framework;
 
 namespace Server
 {
@@ -11,7 +13,7 @@ namespace Server
         private TcpClient channel;
         private Deck deck = new Deck(8);
         private bool _trumpChooser;
-        private bool _hasBelote;
+        private short _beloteCards;
         
         public Player(int id, string name, TcpClient channel)
         {
@@ -104,7 +106,7 @@ namespace Server
 
         public void CheckBelote(Suit trump)
         {
-            int check = 0;
+            var check = 0;
             foreach (var card in deck.GetDeck())
             {
                 if (card.GetSuit() == trump && card.GetName().Equals("K"))
@@ -113,13 +115,22 @@ namespace Server
                     check += 1;
             }
             if (check == 2)
-                _hasBelote = true;
+                _beloteCards = 2;
         }
 
+        public short GetBeloteCards()
+        {
+            return _beloteCards;
+        }
+
+        public void SetBeloteCards(short cards)
+        {
+            _beloteCards = cards; 
+        }
 
         public bool HasBelote()
         {
-            return _hasBelote;
+            return _beloteCards > 0;
         }
         
 //        public bool PlayerIsBuddy(Player player)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Serialization.Formatters;
 
 namespace Server
 {
@@ -20,6 +21,11 @@ namespace Server
         public string GetName()
         {
             return (name);
+        }
+
+        public bool IsBeloteCard(Suit trump)
+        {
+            return suit == trump && (name.Equals("K") || name.Equals("Q"));
         }
 
         public void MakeTrump()
