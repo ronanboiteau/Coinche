@@ -27,14 +27,6 @@ namespace Server
                 if (card.GetSuit() == _trump)
                     card.MakeTrump();
             }
-//            foreach (var player in _allPlayers)
-//            {
-//                foreach (var card in player.GetDeck().GetDeck())
-//                {
-//                    if (card.GetSuit() == _trump)
-//                        card.MakeTrump();
-//                }
-//            }
         }
 
         private void CreateModelDeck()
@@ -113,7 +105,7 @@ namespace Server
             }
         }
 
-        private void Broadcast(String message)
+        private void Broadcast(string message)
         {
             if (message.Equals("DECK"))
             {
@@ -197,22 +189,41 @@ namespace Server
             }
         }
 
-        private void CheckDeclarations(int playerId)
+        private void CheckDeclarations(Player player)
         {
             var toAdd = 0;
-            if (_allPlayers[playerId].GetDeck().Size() != 8)
+            if (player.GetDeck().Size() != 8)
                 return;
-            _allPlayers[playerId].CheckBelote(_trump);
-            if ((toAdd += _allPlayers[playerId].HasAllFour()) != 0)
-                Broadcast("MSG " + _allPlayers[playerId].GetName() + " has an all-four!");
-            _teams[playerId % 2].AddScore(toAdd);
+            player.CheckBelote(_trump);
+            if ((toAdd += player.HasAllFour()) != 0)
+                Broadcast("MSG " + player.GetName() + " has an all-four!");
+            _teams[player.GetId() % 2].AddScore(toAdd);
             if (toAdd != 0)
-                Broadcast("MSG " + _teams[playerId % 2].GetName() + " has now " + _teams[playerId % 2].GetScore() + " points.");
+                Broadcast("MSG " + _teams[player.GetId() % 2].GetName() + " has now "
+                          + _teams[player.GetId() % 2].GetScore() + " points.");
+        }
+        
+        private void HandleBelote(Player player, Card card)
+        {
+            if (player.HasBelote() && card.IsBeloteCard(_trump))
+            {
+                if (player.GetBeloteCards() == 2)
+                {
+                    player.SetBeloteCards((short)(player.GetBeloteCards() - 1));
+                    Broadcast("MSG [" + player.GetName() + "] BELOTE!");
+                }
+                else if (player.GetBeloteCards() == 1)
+                {
+                    player.SetBeloteCards((short)(player.GetBeloteCards() - 1));
+                    Broadcast("MSG [" + player.GetName() + "] RE-BELOTE!");
+                    _teams[player.GetId() % 2].AddScore(20);
+                }
+            }
         }
         
         private void StartPlaying()
         {
-            var playerId = GetTrumpChooser();
+            var player = _allPlayers[GetTrumpChooser()];
             while (_allPlayers[0].GetDeck().Size() != 0)
             {
                 AnnounceScores();
@@ -221,35 +232,35 @@ namespace Server
                 {
                     if (isFirstTry)
                     {
-                        _allPlayers[playerId].SendDeck();
-                        Broadcast("MSG " + _allPlayers[playerId].GetName() + "'s turn...");
-                        CheckDeclarations(playerId);
+                        player.SendDeck();
+                        Broadcast("MSG " + player.GetName() + "'s turn...");
+                        CheckDeclarations(player);
                     }
-                    _allPlayers[playerId].SendMessage("PLAY");
+                    player.SendMessage("PLAY");
                     isFirstTry = false;
-                    var msg = _allPlayers[playerId].GetNextMessage().Split();
+                    var msg = player.GetNextMessage().Split();
                     if (msg.Length == 2 && msg[0].Equals("PLAY") &&
                         Int32.TryParse(msg[1], out var cardId))
                     {
-                        if (_allPlayers[playerId].PutCard(_trick, cardId, _trump))
+                        if (player.PutCard(_trick, cardId, _trump))
                         {
-                            Broadcast("MSG " + _allPlayers[playerId].GetName() + " put a "
+                            Broadcast("MSG " + player.GetName() + " put a "
                                       + _modelDeck.GetDeck()[cardId].GetName() + " of " +
                                       _modelDeck.GetDeck()[cardId].GetSuit()
                                       + ". " + _trick.GetLeadingPlayer().GetName() + " is leading this turn.");
-                            _allPlayers[playerId].SendMessage("PLAY OK");
-                            _teams[playerId % 2].AddATrick();
+                            HandleBelote(player, _modelDeck.GetDeck()[cardId]);
+                            player.SendMessage("PLAY OK");
+                            _teams[player.GetId() % 2].AddATrick();
                             isFirstTry = true;
-                            playerId += 1;
-                            playerId = (playerId >= 4 ? 0 : playerId);
+                            player = _allPlayers[(player.GetId() == 3 ? 0 : player.GetId() + 1)];
                         }
                         else
-                            _allPlayers[playerId].SendMessage("PLAY KO");
+                            player.SendMessage("PLAY KO");
                     }
                     else
-                        _allPlayers[playerId].SendMessage("PLAY KO");
+                        player.SendMessage("PLAY KO");
                 }
-                playerId = _trick.GetLeadingPlayer().GetId();
+                player = _allPlayers[_trick.GetLeadingPlayer().GetId()];
                 CalculateScore();
                 _trick.ResetDeck();
             }

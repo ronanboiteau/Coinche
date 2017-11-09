@@ -14,7 +14,7 @@ namespace Client
             this.channel = channel;
         }
 
-        public void SendMessage(String message)
+        public void SendMessage(string message)
         {
             message += "\n";
             var asen = new ASCIIEncoding();

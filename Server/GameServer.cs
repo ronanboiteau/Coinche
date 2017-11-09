@@ -2,14 +2,10 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
-using System.Net.WebSockets;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Server
 {
-    class TcpServer
+    class GameServer
     {
         private static TcpListener Listener { get; set; }
         private static bool Accept { get; set; }
@@ -22,7 +18,7 @@ namespace Server
             Listener = new TcpListener(address, port);
             Listener.Start();
             Accept = true;
-            Console.Write($"Server started. Listening to TCP clients at {ip}:{port}\n");
+            Console.Write($"Server up. Listening to TCP clients at {ip}:{port}\n");
         }
 
         public static void Listen()
@@ -31,13 +27,13 @@ namespace Server
             {
                 while (ConnectedClients < 4)
                 {
-                    Console.Write($"Waiting for client... {ConnectedClients} connected at the moment.\n");
+                    Console.Write($"Waiting for more players... {ConnectedClients} connected at the moment.\n");
                     _listen();
                 }
-            var team1 = new Team(Players[0], Players[2], "Team1");
-            var team2 = new Team(Players[1], Players[3], "Team2");
-            var game = new Game(Players, team1, team2);
-            game.StartGame();
+                var team1 = new Team(Players[0], Players[2], "Team1");
+                var team2 = new Team(Players[1], Players[3], "Team2");
+                var game = new Game(Players, team1, team2);
+                game.StartGame();
             }
         }
 
@@ -58,6 +54,6 @@ namespace Server
             ConnectedClients++;
             var player = new Player(ConnectedClients - 1, "Player" + ConnectedClients, client);
             Players.Add(player);
-            }
+        }
     }
 }

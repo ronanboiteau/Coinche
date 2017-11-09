@@ -1,19 +1,21 @@
 ﻿using System;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading.Tasks.Dataflow;
+using NUnit.Framework;
 
 namespace Server
 {
     public class Player
     {
         private int id;
-        private String name;
+        private string name;
         private TcpClient channel;
         private Deck deck = new Deck(8);
         private bool _trumpChooser;
-        private bool _hasBelote = false;
+        private short _beloteCards;
         
-        public Player(int id, String name, TcpClient channel)
+        public Player(int id, string name, TcpClient channel)
         {
             this.id = id;
             this.name = name;
@@ -62,13 +64,13 @@ namespace Server
             return score;
         }
         
-        public void SendMessage(String message)
+        public void SendMessage(string message)
         {
             var data = Encoding.ASCII.GetBytes(message + "\n");
             channel.GetStream().Write(data, 0, data.Length);
         }
 
-        public String GetName()
+        public string GetName()
         {
             return name;
         }
@@ -83,7 +85,7 @@ namespace Server
             return (deck);
         }
         
-        public String GetNextMessage()
+        public string GetNextMessage()
         {
             var buffer = "";
             while (buffer.IndexOf('\n') < 0)
@@ -94,9 +96,7 @@ namespace Server
                 for (var i = 0; i < readStr; i++)
                     buffer += Convert.ToChar(buff[i]);
             }
-            var received = buffer.Substring(0, buffer.IndexOf('\n'));
-            buffer = buffer.Substring(buffer.IndexOf('\n') + 1, buffer.Length - (buffer.IndexOf('\n') + 1));
-            return received;
+            return buffer.Substring(0, buffer.IndexOf('\n'));
         }
 
         public void SetTrumpChooser(bool trumpChooser)
@@ -106,7 +106,7 @@ namespace Server
 
         public void CheckBelote(Suit trump)
         {
-            int check = 0;
+            var check = 0;
             foreach (var card in deck.GetDeck())
             {
                 if (card.GetSuit() == trump && card.GetName().Equals("K"))
@@ -115,13 +115,22 @@ namespace Server
                     check += 1;
             }
             if (check == 2)
-                _hasBelote = true;
+                _beloteCards = 2;
         }
 
+        public short GetBeloteCards()
+        {
+            return _beloteCards;
+        }
+
+        public void SetBeloteCards(short cards)
+        {
+            _beloteCards = cards; 
+        }
 
         public bool HasBelote()
         {
-            return _hasBelote;
+            return _beloteCards > 0;
         }
         
 //        public bool PlayerIsBuddy(Player player)

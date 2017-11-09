@@ -1,15 +1,16 @@
 ﻿using System;
+using System.Runtime.Serialization.Formatters;
 
 namespace Server
 {
     public class Card
     {
-        private String name;
+        private string name;
         private Suit suit;
         private int id;
         private int value;
 
-        public Card(String name, Suit suit, int value, int id)
+        public Card(string name, Suit suit, int value, int id)
         {
             this.name = name;
             this.suit = suit;
@@ -17,9 +18,14 @@ namespace Server
             this.id = id;
         }
 
-        public String GetName()
+        public string GetName()
         {
             return (name);
+        }
+
+        public bool IsBeloteCard(Suit trump)
+        {
+            return suit == trump && (name.Equals("K") || name.Equals("Q"));
         }
 
         public void MakeTrump()
