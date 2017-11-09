@@ -82,9 +82,9 @@ namespace Client
 //                var ip = Console.ReadLine();
                 Console.Write("Server port: ");
                 var port = Convert.ToInt32(Console.ReadLine());
-                Console.Write("Connecting to server...\n");
+                Console.Write("Trying to reach server...\n");
                 client.Connect("127.0.0.1", port);
-                Console.Write("Connexion successful!\n");
+                Console.Write("Connexion successful! Waiting for more players...\n");
                 var received = "";
                 var player = new Player(client);
                 while (!received.Equals("END"))
