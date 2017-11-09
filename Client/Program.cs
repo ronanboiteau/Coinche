@@ -81,7 +81,7 @@ namespace Client
 //                Console.Write("Server IP: ");
 //                var ip = Console.ReadLine();
                 Console.Write("Server port: ");
-                int port = Convert.ToInt32(Console.ReadLine());
+                var port = Convert.ToInt32(Console.ReadLine());
                 Console.Write("Connecting to server...\n");
                 client.Connect("127.0.0.1", port);
                 Console.Write("Connexion successful!\n");
@@ -99,7 +99,6 @@ namespace Client
                             buffer += Convert.ToChar(buff[i]);
                     }
                     received = buffer.Substring(0, buffer.IndexOf('\n'));
-                    buffer = buffer.Substring(buffer.IndexOf('\n') + 1, buffer.Length - (buffer.IndexOf('\n') + 1));
                     if (received.StartsWith("MSG "))
                         Console.Write(received.Substring(4, received.Length - 4) + "\n");
                     else if (received.StartsWith("DECK "))
