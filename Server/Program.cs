@@ -4,7 +4,7 @@ namespace Server
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static int Main()
         {
             try
             {
@@ -16,7 +16,9 @@ namespace Server
                 GameServer.Listen();
             } catch (Exception e) {
                 Console.Write("An error occurred! Please see trace below for more information.\n" + e);
+                return 84;
             }
+            return 0;
         }
     }
 }

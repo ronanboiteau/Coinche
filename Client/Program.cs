@@ -72,7 +72,7 @@ namespace Client
             player.SendMessage("PLAY " + input);
         }
         
-        public static void Main()
+        public static int Main()
         {
             try
             {
@@ -133,9 +133,12 @@ namespace Client
                 client.Close();
             } catch (SocketException) {
                 Console.Write("Cannot connect to server!\n");
+                return (84);
             } catch (Exception e) {
                 Console.Write("An error occurred! Please see trace below for more information.\n" + e + "\n");
+                return 84;
             }
+            return 0;
         }
     }
 }

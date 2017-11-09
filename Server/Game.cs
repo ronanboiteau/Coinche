@@ -281,7 +281,6 @@ namespace Server
                 while (true)
                 {
                     var msg = player.GetNextMessage();
-                    Console.Write(player.GetName() + " sent : " + msg + "\n");
                     if (msg.Equals("BID N"))
                         break;
                     var msgTab = msg.Split();
