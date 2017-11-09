@@ -1,0 +1,52 @@
+﻿{
+  "version": "1.0.0",
+  "restore": {
+    "projectUniqueName": "/Users/ronan/Documents/Projects/Coinche/Test/Test.csproj",
+    "projectName": "Test",
+    "projectPath": "/Users/ronan/Documents/Projects/Coinche/Test/Test.csproj",
+    "outputPath": "/Users/ronan/Documents/Projects/Coinche/Test/obj/",
+    "projectStyle": "PackageReference",
+    "originalTargetFrameworks": [
+      "netcoreapp2.0"
+    ],
+    "frameworks": {
+      "netcoreapp2.0": {
+        "projectReferences": {
+          "/Users/ronan/Documents/Projects/Coinche/Client/Client.csproj": {
+            "projectPath": "/Users/ronan/Documents/Projects/Coinche/Client/Client.csproj"
+          },
+          "/Users/ronan/Documents/Projects/Coinche/Server/Server.csproj": {
+            "projectPath": "/Users/ronan/Documents/Projects/Coinche/Server/Server.csproj"
+          }
+        }
+      }
+    }
+  },
+  "frameworks": {
+    "netcoreapp2.0": {
+      "dependencies": {
+        "Microsoft.NETCore.App": {
+          "target": "Package",
+          "version": "2.0.0"
+        },
+        "Microsoft.NET.Test.Sdk": {
+          "target": "Package",
+          "version": "15.3.0-preview-20170628-02"
+        },
+        "xunit": {
+          "target": "Package",
+          "version": "2.2.0"
+        },
+        "xunit.runner.visualstudio": {
+          "target": "Package",
+          "version": "2.2.0"
+        }
+      },
+      "imports": [
+        "net461"
+      ],
+      "assetTargetFallback": true,
+      "warn": true
+    }
+  }
+}

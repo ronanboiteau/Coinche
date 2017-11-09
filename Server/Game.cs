@@ -240,7 +240,7 @@ namespace Server
                     isFirstTry = false;
                     var msg = player.GetNextMessage().Split();
                     if (msg.Length == 2 && msg[0].Equals("PLAY") &&
-                        Int32.TryParse(msg[1], out var cardId))
+                        int.TryParse(msg[1], out var cardId))
                     {
                         if (player.PutCard(_trick, cardId, _trump))
                         {
@@ -289,7 +289,7 @@ namespace Server
                         player.SendMessage("BID KO");
                         continue;
                     }
-                    if (!Int32.TryParse(msgTab[2], out var contract))
+                    if (!int.TryParse(msgTab[2], out var contract))
                     {
                         player.SendMessage("BID KO");
                         continue;
@@ -315,7 +315,7 @@ namespace Server
                     _teams[(idPlayer == 0 || idPlayer == 2) ? 0 : 1].SetContract(contract);
                     _teams[(idPlayer == 0 || idPlayer == 2) ? 1 : 0].SetContract(-1);
                     Broadcast("MSG " + player.GetName() + " from " + _teams[(idPlayer == 0 || idPlayer == 2) ? 0 : 1].GetName()
-                    + " bid " + contract + " on " + suit.ToUpper());
+                              + " bid " + contract + " on " + suit.ToUpper());
                     if (!RecursiveBidding(idPlayer + 1, 3))
                         _allPlayers[idPlayer].SetTrumpChooser(true);
                     return (true);

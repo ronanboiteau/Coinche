@@ -63,7 +63,7 @@ namespace Client
         private static void     PlayACard(Player player) {
             Console.Write("Enter the ID of the card you want to play:\n");
             var input = Console.ReadLine();
-            while (!Int32.TryParse(input, out _idCardToPlay))
+            while (!int.TryParse(input, out _idCardToPlay))
             {
                 Console.Write("Invalid card ID!\n");
                 Console.Write("Enter the ID of the card you want to play:\n");
@@ -80,8 +80,14 @@ namespace Client
                 var client = new TcpClient();
 //                Console.Write("Server IP: ");
 //                var ip = Console.ReadLine();
-                Console.Write("Server port: ");
-                var port = Convert.ToInt32(Console.ReadLine());
+                int port;
+                Console.Write("Port: ");
+                var input = Console.ReadLine();
+                while (!int.TryParse(input, out port))
+                {
+                    Console.Write("Port: ");
+                    input = Console.ReadLine();
+                }
                 Console.Write("Trying to reach server...\n");
                 client.Connect("127.0.0.1", port);
                 Console.Write("Connexion successful! Waiting for more players...\n");
@@ -106,7 +112,7 @@ namespace Client
                         player.EmptyDeck();
                         var cardsId = received.Substring(5, received.Length - 5).Split();
                         for (var idx = 0; idx < cardsId.Length; idx += 1)
-                            player.GetDeck().AddCard(ModelDeck.GetCardById(Int32.Parse(cardsId[idx])));
+                            player.GetDeck().AddCard(ModelDeck.GetCardById(int.Parse(cardsId[idx])));
                         Console.Write("Your cards:");
                         player.GetDeck().PrintDeck();
                     }

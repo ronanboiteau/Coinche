@@ -1,0 +1,17 @@
+/Users/ronan/Documents/Projects/Coinche/Test/bin/Debug/netcoreapp2.0/xunit.runner.visualstudio.dotnetcore.testadapter.dll
+/Users/ronan/Documents/Projects/Coinche/Test/bin/Debug/netcoreapp2.0/xunit.runner.utility.netstandard15.dll
+/Users/ronan/Documents/Projects/Coinche/Test/bin/Debug/netcoreapp2.0/xunit.runner.reporters.netstandard15.dll
+/Users/ronan/Documents/Projects/Coinche/Test/bin/Debug/netcoreapp2.0/Test.deps.json
+/Users/ronan/Documents/Projects/Coinche/Test/bin/Debug/netcoreapp2.0/Test.runtimeconfig.json
+/Users/ronan/Documents/Projects/Coinche/Test/bin/Debug/netcoreapp2.0/Test.runtimeconfig.dev.json
+/Users/ronan/Documents/Projects/Coinche/Test/bin/Debug/netcoreapp2.0/Test.dll
+/Users/ronan/Documents/Projects/Coinche/Test/bin/Debug/netcoreapp2.0/Test.pdb
+/Users/ronan/Documents/Projects/Coinche/Test/obj/Debug/netcoreapp2.0/Test.csproj.CoreCompileInputs.cache
+/Users/ronan/Documents/Projects/Coinche/Test/obj/Debug/netcoreapp2.0/Test.AssemblyInfoInputs.cache
+/Users/ronan/Documents/Projects/Coinche/Test/obj/Debug/netcoreapp2.0/Test.AssemblyInfo.cs
+/Users/ronan/Documents/Projects/Coinche/Test/obj/Debug/netcoreapp2.0/Test.dll
+/Users/ronan/Documents/Projects/Coinche/Test/obj/Debug/netcoreapp2.0/Test.pdb
+/Users/ronan/Documents/Projects/Coinche/Test/bin/Debug/netcoreapp2.0/Client.dll
+/Users/ronan/Documents/Projects/Coinche/Test/bin/Debug/netcoreapp2.0/Server.dll
+/Users/ronan/Documents/Projects/Coinche/Test/bin/Debug/netcoreapp2.0/Client.pdb
+/Users/ronan/Documents/Projects/Coinche/Test/bin/Debug/netcoreapp2.0/Server.pdb

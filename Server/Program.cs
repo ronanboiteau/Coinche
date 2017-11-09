@@ -10,8 +10,14 @@ namespace Server
             {
 //                Console.Write("IP address: ");
 //                var ip = Console.ReadLine();
+                int port;
                 Console.Write("Port: ");
-                var port = Convert.ToInt32(Console.ReadLine());
+                var input = Console.ReadLine();
+                while (!int.TryParse(input, out port))
+                {
+                    Console.Write("Port: ");
+                    input = Console.ReadLine();
+                }
                 GameServer.StartServer("127.0.0.1", port);
                 GameServer.Listen();
             } catch (Exception e) {
