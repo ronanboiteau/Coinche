@@ -4,67 +4,76 @@ namespace Shared
 {
     public class Card
     {
-        private string name;
-        private Suit suit;
-        private int id;
-        private int value;
+        private readonly string _name;
+        private readonly Suit _suit;
+        private readonly int _id;
+        private int _value;
 
         public Card(string name, Suit suit, int value, int id)
         {
-            this.name = name;
-            this.suit = suit;
-            this.value = value;
-            this.id = id;
+            _name = name;
+            _suit = suit;
+            _value = value;
+            _id = id;
         }
 
         public string GetName()
         {
-            return name;
+            return _name;
         }
 
         public bool IsBeloteCard(Suit trump)
         {
-            return suit == trump && (name.Equals("K") || name.Equals("Q"));
+            return _suit == trump && (_name.Equals("K") || _name.Equals("Q"));
         }
 
         public void MakeTrump()
         {
-            if (name == "Q")
-                value = 3;
-            else if (name == "K")
-                value = 4;
-            else if (name == "10")
-                value = 10;
-            else if (name == "A")
-                value = 11;
-            else if (name == "9")
-                value = 14;
-            else if (name == "J")
-                value = 20;
+            switch (_name)
+            {
+                case "Q":
+                    _value = 3;
+                    break;
+                case "K":
+                    _value = 4;
+                    break;
+                case "10":
+                    _value = 10;
+                    break;
+                case "A":
+                    _value = 11;
+                    break;
+                case "9":
+                    _value = 14;
+                    break;
+                case "J":
+                    _value = 20;
+                    break;
+            }
         }
 
         public Suit GetSuit()
         {
-            return suit;
+            return _suit;
         }
 
         public int GetId()
         {
-            return id;
+            return _id;
         }
 
         public int GetValue()
         {
-            return value;
+            return _value;
         }
         
         public void SetValue(int newValue)
         {
-            value = newValue;
+            _value = newValue;
         }
         
         public void     PrintCard() {
-            Console.Write(name + " " + suit);
+            Console.Write(_name + " " + _suit);
         }
 
     }
