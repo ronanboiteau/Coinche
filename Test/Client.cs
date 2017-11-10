@@ -25,7 +25,7 @@ namespace Test
         public void TestEmptyDeck(int id1, int id2)
         {
             var player = new Player(null);
-            var cards = new Card[2]
+            Card[] cards =
             {
                 new Card("7", Suit.DIAMONDS, 0, id1),
                 new Card("8", Suit.DIAMONDS, 0, id2)

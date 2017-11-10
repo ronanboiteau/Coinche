@@ -12,7 +12,7 @@ namespace Test
         public void TestEmptyDeck(int id1, int id2)
         {
             var player = new Player(0, "PlayerTest", null);
-            var cards = new Card[2]
+            Card[] cards =
             {
                 new Card("7", Suit.DIAMONDS, 0, id1),
                 new Card("8", Suit.DIAMONDS, 0, id2)
@@ -30,7 +30,7 @@ namespace Test
         public void TestCheckBeloteTrue()
         {
             var player = new Player(0, "PlayerTest", null);
-            var cards = new Card[2]
+            Card[] cards =
             {
                 new Card("Q", Suit.DIAMONDS, 0, 0),
                 new Card("K", Suit.DIAMONDS, 0, 1)
@@ -46,7 +46,7 @@ namespace Test
         public void TestCheckBeloteFalse()
         {
             var player = new Player(0, "PlayerTest", null);
-            var cards = new Card[2]
+            Card[] cards =
             {
                 new Card("Q", Suit.DIAMONDS, 0, 0),
                 new Card("J", Suit.DIAMONDS, 0, 1)
@@ -62,7 +62,7 @@ namespace Test
         public void TestHasSuit()
         {
             var player = new Player(0, "PlayerTest", null);
-            var cards = new Card[2]
+            Card[] cards =
             {
                 new Card("Q", Suit.DIAMONDS, 0, 0),
                 new Card("Q", Suit.HEARTS, 0, 1)
@@ -79,7 +79,7 @@ namespace Test
         public void TestHasGreater()
         {
             var player = new Player(0, "PlayerTest", null);
-            var cards = new Card[2]
+            Card[] cards =
             {
                 new Card("7", Suit.DIAMONDS, 0, 0),
                 new Card("8", Suit.DIAMONDS, 0, 1)
@@ -94,7 +94,7 @@ namespace Test
         public void TestHasGreaterTrumpMin()
         {
             var player = new Player(0, "PlayerTest", null);
-            var cards = new Card[2]
+            Card[] cards =
             {
                 new Card("7", Suit.DIAMONDS, 0, 0),
                 new Card("8", Suit.DIAMONDS, 0, 1)
@@ -109,7 +109,7 @@ namespace Test
         public void TestHasGreaterTrump()
         {
             var player = new Player(0, "PlayerTest", null);
-            var cards = new Card[2]
+            Card[] cards =
             {
                 new Card("10", Suit.DIAMONDS, 10, 0),
                 new Card("9", Suit.DIAMONDS, 14, 1)
@@ -132,7 +132,7 @@ namespace Test
         public void TestHasAllFour(string cardName, int score)
         {
             var player = new Player(0, "PlayerTest", null);
-            var cards = new Card[4]
+            Card[] cards =
             {
                 new Card(cardName, Suit.DIAMONDS, 0, 0),
                 new Card(cardName, Suit.CLUBS, 0, 0),
@@ -148,7 +148,7 @@ namespace Test
         public void TestHasAllFourJacksAndKings()
         {
             var player = new Player(0, "PlayerTest", null);
-            var cards = new Card[8]
+            Card[] cards =
             {
                 new Card("J", Suit.DIAMONDS, 0, 0),
                 new Card("J", Suit.CLUBS, 0, 0),
@@ -168,7 +168,7 @@ namespace Test
         public void TestHasAllFourFalse()
         {
             var player = new Player(0, "PlayerTest", null);
-            var cards = new Card[8]
+            Card[] cards =
             {
                 new Card("J", Suit.DIAMONDS, 0, 0),
                 new Card("Q", Suit.CLUBS, 0, 0),
@@ -202,6 +202,134 @@ namespace Test
             team.SetContract(contract);
             team.SetScore(score);
             Assert.Equal(shouldWin, team.HasWon(otherTeamScore));
+        }
+    }
+
+    public class TrickTests
+    {
+        [Fact]
+        public void TestPutCardTrumpTrick()
+        {
+            var player = new Player(0, "PlayerTest", null);
+            const Suit trump = Suit.DIAMONDS;
+            Card[] cards =
+            {
+                new Card("J", Suit.DIAMONDS, 0, 0),
+                new Card("9", Suit.DIAMONDS, 0, 1),
+                new Card("Q", Suit.CLUBS, 0, 2),
+                new Card("J", Suit.CLUBS, 0, 3),
+                new Card("Q", Suit.CLUBS, 0, 4),
+                new Card("K", Suit.HEARTS, 0, 5),
+                new Card("7", Suit.HEARTS, 0, 6),
+                new Card("10", Suit.SPADES, 0, 7)
+            };
+            foreach (var card in cards)
+                player.GetDeck().AddCard(card);
+
+            var trick = new Trick();
+            var firstCard = new Card("10", Suit.DIAMONDS, 0, 8);
+            trick.AddCard(firstCard);
+            trick.SetLeadingCard(firstCard);
+            Assert.Equal(false, player.PutCard(trick, player.GetDeck().GetCardById(5).GetId(), trump));
+            Assert.NotEqual(null, player.GetDeck().GetCardById(5));
+            Assert.Equal(true, player.PutCard(trick, player.GetDeck().GetCardById(1).GetId(), trump));
+            Assert.Equal(null, player.GetDeck().GetCardById(1));
+         }
+
+        [Fact]
+        public void TestPutCardNonTrumpTrick()
+        {
+            var player = new Player(0, "PlayerTest", null);
+            const Suit trump = Suit.DIAMONDS;
+            Card[] cards =
+            {
+                new Card("J", Suit.DIAMONDS, 0, 0),
+                new Card("9", Suit.DIAMONDS, 0, 1),
+                new Card("Q", Suit.CLUBS, 0, 2),
+                new Card("J", Suit.CLUBS, 0, 3),
+                new Card("Q", Suit.CLUBS, 0, 4),
+                new Card("K", Suit.HEARTS, 0, 5),
+                new Card("7", Suit.HEARTS, 0, 6),
+                new Card("10", Suit.SPADES, 0, 7)
+            };
+            foreach (var card in cards)
+                player.GetDeck().AddCard(card);
+
+            var trick = new Trick();
+            var firstCard = new Card("8", Suit.HEARTS, 0, 8);
+            trick.AddCard(firstCard);
+            trick.SetLeadingCard(firstCard);
+            Assert.Equal(false, player.PutCard(trick, player.GetDeck().GetCardById(3).GetId(), trump));
+            Assert.Equal(false, player.PutCard(trick, player.GetDeck().GetCardById(0).GetId(), trump));
+            Assert.Equal(true, player.PutCard(trick, player.GetDeck().GetCardById(5).GetId(), trump));
+            Assert.Equal(true, player.PutCard(trick, player.GetDeck().GetCardById(6).GetId(), trump));
+        }
+
+        [Fact]
+        public void TestPutCardCuttingNonTrumpTrick()
+        {
+            var player = new Player(0, "PlayerTest", null);
+            const Suit trump = Suit.DIAMONDS;
+            Card[] cards =
+            {
+                new Card("J", Suit.DIAMONDS, 0, 0),
+                new Card("9", Suit.DIAMONDS, 0, 1),
+                new Card("Q", Suit.CLUBS, 0, 2),
+                new Card("J", Suit.CLUBS, 0, 3),
+                new Card("Q", Suit.CLUBS, 0, 4),
+                new Card("K", Suit.HEARTS, 0, 5),
+                new Card("7", Suit.HEARTS, 0, 6),
+                new Card("10", Suit.SPADES, 0, 7)
+            };
+            foreach (var card in cards)
+                player.GetDeck().AddCard(card);
+
+            var trick = new Trick();
+            var firstCard = new Card("8", Suit.SPADES, 0, 8);
+            trick.AddCard(firstCard);
+            trick.SetLeadingCard(firstCard);
+            Assert.Equal(true, player.PutCard(trick, player.GetDeck().GetCardById(7).GetId(), trump));
+            Assert.Equal(true, player.PutCard(trick, player.GetDeck().GetCardById(1).GetId(), trump));
+            Assert.Equal(true, player.PutCard(trick, player.GetDeck().GetCardById(0).GetId(), trump));
+        }
+
+        [Fact]
+        public void TestReset()
+        {
+            var trick = new Trick();
+            trick.AddCard(new Card("J", Suit.DIAMONDS, 1, 0));
+            trick.AddCard(new Card("Q", Suit.CLUBS, 10, 1));
+            trick.AddCard(new Card("10", Suit.SPADES, 100, 2));
+            trick.AddCard(new Card("7", Suit.DIAMONDS, 1000, 3));
+            trick.AddValue(42);
+            trick.ResetDeck();
+            Assert.Equal(0, trick.GetDeck().Count);
+            Assert.Equal(0, trick.GetValue());
+        }
+
+        [Fact]
+        public void TestValue()
+        {
+            var player = new Player(0, "PlayerTest", null);
+            const Suit trump = Suit.DIAMONDS;
+            Card[] cards =
+            {
+                new Card("10", Suit.DIAMONDS, 1, 0),
+                new Card("A", Suit.DIAMONDS, 10, 1),
+                new Card("9", Suit.DIAMONDS, 100, 2),
+                new Card("J", Suit.DIAMONDS, 1000, 3)
+            };
+            foreach (var card in cards)
+                player.GetDeck().AddCard(card);
+            var trick = new Trick();
+            var firstCard = new Card("8", Suit.SPADES, 0, 8);
+            trick.AddCard(firstCard);
+            trick.SetLeadingCard(firstCard);
+            Assert.Equal(true, player.PutCard(trick, player.GetDeck().GetCardById(0).GetId(), trump));
+            Assert.Equal(true, player.PutCard(trick, player.GetDeck().GetCardById(1).GetId(), trump));
+            Assert.Equal(true, player.PutCard(trick, player.GetDeck().GetCardById(2).GetId(), trump));
+            Assert.Equal(true, player.PutCard(trick, player.GetDeck().GetCardById(3).GetId(), trump));
+            Assert.Equal(1111, trick.GetValue());
         }
     }
 }
