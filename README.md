@@ -84,6 +84,11 @@ If the team who made the bid has at least the points of their contract and has m
 * **BID Y [card ID]** *: Bid accepted*
 * **PLAY [card ID]** *: Sends the card to play to the server*
 
+## Unit tests
+
+If you'd like to use Coinche's `Xunit` units tests or to create new tests for features you add, you can use the `Test` project inside the `Test/` directory.
+Use the command `dotnet test` in this directory to run the unit tests.
+
 ## Authors
 
 * **Ronan Boiteau** ([GitHub](https://github.com/ronanboiteau) / [LinkedIn](https://www.linkedin.com/in/ronanboiteau/))
