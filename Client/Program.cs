@@ -50,7 +50,7 @@ namespace Client
             var input = Console.ReadLine();
             while (input == null)
             {
-                Console.Write("Invalid command!\n");
+                Console.Write("Invalid bid!\n");
                 Console.Write("Enter 'PASS' or bid: '<amount> <HEARTS|DIAMONDS|CLUBS|SPADES>' (ex: '80 SPADES')\n");
                 input = Console.ReadLine();
             }
@@ -119,7 +119,10 @@ namespace Client
                     else if (received.Equals("BID"))
                         BiddingChoice(player);
                     else if (received.Equals("BID KO"))
+                    {
+                        Console.Write("Invalid bid!\n");
                         BiddingChoice(player);
+                    }
                     else if (received.Equals("BID RESET"))
                         player.EmptyDeck();
                     else if (received.Equals("PLAY KO"))
