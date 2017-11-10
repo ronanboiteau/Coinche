@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Server
+﻿namespace Server
 {
     public class Team
     {
@@ -36,12 +34,12 @@ namespace Server
 
         public int GetContract()
         {
-            return (_contract);
+            return _contract;
         }
         
         public int GetScore()
         {
-            return (_score);
+            return _score;
         }
         
         public void AddScore(int toAdd)
@@ -57,7 +55,7 @@ namespace Server
         public Player GetPlayer(int id)
         {
             if (id >= 2 || id < 0)
-                return (null);
+                return null;
             return _players[id];
         }
 
@@ -76,10 +74,10 @@ namespace Server
             if (_score >= _contract && _score > otherTeamScore)
             {
                 _score += _contract;
-                return (true);
+                return true;
             }
             _score = 0;
-            return (false);
+            return false;
         }
     }
 }

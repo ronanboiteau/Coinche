@@ -64,7 +64,7 @@ namespace Server
             }
             if (nb[(int) CardName.Jack] == 4)
                 score += 200;
-            else if (nb[(int) CardName.Nine] == 4)
+            if (nb[(int) CardName.Nine] == 4)
                 score += 150;
             for (var idx = 2; idx <= (int) CardName.Queen ; idx += 1)
             {

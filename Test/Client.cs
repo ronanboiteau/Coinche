@@ -25,12 +25,17 @@ namespace Test
         public void TestEmptyDeck(int id1, int id2)
         {
             var player = new Player(null);
-            var card1 = new Card("7", Suit.DIAMONDS, 0, id1);
-            var card2 = new Card("8", Suit.DIAMONDS, 0, id2);
-            Assert.Equal(true, player.GetDeck().AddCard(card1));
-            Assert.Equal(true, player.GetDeck().AddCard(card2));
-            Assert.Equal(card1, player.GetDeck().GetCardById(id1));
-            Assert.Equal(card2, player.GetDeck().GetCardById(id2));
+            var cards = new Card[2]
+            {
+                new Card("7", Suit.DIAMONDS, 0, id1),
+                new Card("8", Suit.DIAMONDS, 0, id2)
+            };
+            foreach (var card in cards)
+                player.GetDeck().AddCard(card);
+            Assert.Equal(true, player.GetDeck().AddCard(cards[0]));
+            Assert.Equal(true, player.GetDeck().AddCard(cards[1]));
+            Assert.Equal(cards[0], player.GetDeck().GetCardById(id1));
+            Assert.Equal(cards[1], player.GetDeck().GetCardById(id2));
             player.EmptyDeck();
             Assert.Equal(null, player.GetDeck().GetCardById(id1));
             Assert.Equal(null, player.GetDeck().GetCardById(id2));
