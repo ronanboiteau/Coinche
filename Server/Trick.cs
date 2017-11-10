@@ -1,4 +1,6 @@
 ﻿using System;
+using Shared;
+
 namespace Server
 {
     public class Trick : Deck
@@ -19,9 +21,9 @@ namespace Server
         public bool PlayIsLegal(Card card, Player player, Suit trump)
         {
             // First play
-            if (cards.Count == 0)
+            if (_cards.Count == 0)
                 return true;
-            var suit = cards[0].GetSuit();
+            var suit = _cards[0].GetSuit();
             // The card belongs to the requested suit
             if (card.GetSuit() == suit)
             {
@@ -65,10 +67,10 @@ namespace Server
         public bool CardIsLeading(Card card, Suit trump)
         {
             // First play
-            if (cards.Count == 0)
+            if (_cards.Count == 0)
                 return true;
             // The card belongs to the requested suit 
-            if (cards[0].GetSuit() == card.GetSuit())
+            if (_cards[0].GetSuit() == card.GetSuit())
             {
                 if (card.GetSuit() != trump && card.GetId() > _leadingCard.GetId())
                     return true;
@@ -85,7 +87,7 @@ namespace Server
                     return true;
             }
             // The card isn't of the requested suit & isn't a trump
-            return (false);
+            return false;
         }
 
         public Player GetLeadingPlayer()
@@ -100,7 +102,7 @@ namespace Server
 
         public int GetValue()
         {
-            return (_value);
+            return _value;
         }
 
         public void SetLeadingCard(Card card)
@@ -115,9 +117,9 @@ namespace Server
 
         public void ResetDeck()
         {
-            int count = cards.Count;
+            var count = _cards.Count;
             for ( ; count > 0 ; count -= 1)
-                cards.RemoveAt(0);
+                _cards.RemoveAt(0);
         }
     }
 }

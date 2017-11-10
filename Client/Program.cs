@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Shared;
+using System;
 using System.Net.Sockets;
 
 namespace Client
 {
-    public class Client
+    public class Program
     {
         private static readonly Deck ModelDeck = new Deck(32);
         private static int _idCardToPlay = -1;
@@ -60,7 +61,7 @@ namespace Client
                 player.SendMessage("BID Y " + input);
         }
         
-        private static void     PlayACard(Player player) {
+        private static void PlayACard(Player player) {
             Console.Write("Enter the ID of the card you want to play:\n");
             var input = Console.ReadLine();
             while (!int.TryParse(input, out _idCardToPlay))
