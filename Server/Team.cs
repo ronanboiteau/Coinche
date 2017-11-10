@@ -71,7 +71,7 @@ namespace Server
             _score = score;
         }
         
-        public Boolean HasWon(int otherTeamScore)
+        public bool HasWon(int otherTeamScore)
         {
             if (_score >= _contract && _score > otherTeamScore)
             {

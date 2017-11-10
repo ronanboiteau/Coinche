@@ -24,7 +24,7 @@ namespace Client
 
         public Deck GetDeck()
         {
-            return (deck);
+            return deck;
         }
 
         public void EmptyDeck()

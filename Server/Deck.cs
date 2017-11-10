@@ -13,7 +13,7 @@ namespace Server
             this.maxCards = maxCards;
         }
 
-        public Boolean AddCard(Card newCard)
+        public bool AddCard(Card newCard)
         {
             if (cards.Count >= maxCards)
                 return (false);
@@ -21,7 +21,7 @@ namespace Server
             return (true);
         }
 
-        public Boolean RemoveCard(Card toRemove)
+        public bool RemoveCard(Card toRemove)
         {
             return (cards.Remove(toRemove));
         }

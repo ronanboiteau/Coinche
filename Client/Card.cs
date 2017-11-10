@@ -19,22 +19,22 @@ namespace Client
 
         public string GetName()
         {
-            return (name);
+            return name;
         }
 
         public Suit GetSuit()
         {
-            return (suit);
+            return suit;
         }
 
         public int GetId()
         {
-            return (id);
+            return id;
         }
 
         public int GetValue()
         {
-            return (value);
+            return value;
         }
         
         public void     PrintCard() {
