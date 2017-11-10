@@ -99,6 +99,7 @@ namespace Server
 
         private void AnnounceScores()
         {
+            Broadcast("MSG " + "=========== NEW ROUND");
             Broadcast("MSG " + _teams[0].GetName() + " (" + _teams[0].GetPlayer(0).GetName() + ", "
                       + _teams[0].GetPlayer(1).GetName() + ") has " + _teams[0].GetScore()
                       + (_teams[0].GetContract() == -1 ? "" : "/" + _teams[0].GetContract()) + " points || "

@@ -7,6 +7,7 @@ namespace Client
     public class Program
     {
         private static readonly Deck ModelDeck = new Deck(32);
+        private static Player _player;
         private static int _idCardToPlay = -1;
         private static bool _isAi;
         private static int _idxCardAi;
@@ -52,6 +53,46 @@ namespace Client
             }
             player.SendMessage("PLAY " + input);
         }
+
+        private static void CheckBidding(string received)
+        {
+            if (received.Equals("BID"))
+                BiddingChoice(_player);
+            else if (received.Equals("BID KO"))
+            {
+                if (_isAi)
+                    _player.SendMessage("BID N");
+                else
+                {
+                    Console.Write("Invalid bid!\n");
+                    BiddingChoice(_player);
+                }
+            }
+            else if (received.Equals("BID RESET"))
+                _player.EmptyDeck();
+        }
+
+        private static void CheckPlay(string received)
+        {
+            if (received.Equals("PLAY"))
+                PlayACard(_player);
+            else if (received.Equals("PLAY KO"))
+            {
+                if (_isAi)
+                    _idxCardAi += 1;
+                else
+                    Console.Write("You cannot play this card!\n");
+            }
+            else if (received.Equals("PLAY OK"))
+            {
+                if (_idCardToPlay == -1)
+                    return;
+                if (_isAi)
+                    Console.Write(_idCardToPlay + "\n");
+                _player.PutCard(ModelDeck.GetDeck()[_idCardToPlay]);
+                _idCardToPlay = -1;
+            }
+        }
         
         public static int Main(string[] args)
         {
@@ -73,7 +114,7 @@ namespace Client
                 client.Connect("127.0.0.1", port);
                 Console.Write("Connection successful! Waiting for more players...\n");
                 var received = "";
-                var player = new Player(client);
+                _player = new Player(client);
                 if (args.Length == 1 && args[0].ToUpper().Equals("AI"))
                     _isAi = true;
                 while (!received.Equals("END"))
@@ -92,45 +133,18 @@ namespace Client
                         Console.Write(received.Substring(4, received.Length - 4) + "\n");
                     else if (received.StartsWith("DECK "))
                     {
-                        player.EmptyDeck();
+                        _player.EmptyDeck();
                         var cardsId = received.Substring(5, received.Length - 5).Split();
                         for (var idx = 0; idx < cardsId.Length; idx += 1)
-                            player.GetDeck().AddCard(ModelDeck.GetCardById(int.Parse(cardsId[idx])));
+                            _player.GetDeck().AddCard(ModelDeck.GetCardById(int.Parse(cardsId[idx])));
                         Console.Write("Your cards:");
-                        player.GetDeck().PrintDeck();
+                        _player.GetDeck().PrintDeck();
                     }
-                    else if (received.Equals("BID"))
-                        BiddingChoice(player);
-                    else if (received.Equals("BID KO"))
-                    {
-                        if (_isAi)
-                            player.SendMessage("BID N");
-                        else
-                        {
-                            Console.Write("Invalid bid!\n");
-                            BiddingChoice(player);
-                        }
-                    }
-                    else if (received.Equals("BID RESET"))
-                        player.EmptyDeck();
-                    else if (received.Equals("PLAY KO"))
-                    {
-                        if (_isAi)
-                            _idxCardAi += 1;
-                        else
-                            Console.Write("You cannot play this card!\n");
-                    }
-                    else if (received.Equals("PLAY"))
-                        PlayACard(player);
-                    else if (received.Equals("PLAY OK"))
-                    {
-                        if (_idCardToPlay == -1)
-                            continue;
-                        if (_isAi)
-                            Console.Write(_idCardToPlay + "\n");
-                        player.PutCard(ModelDeck.GetDeck()[_idCardToPlay]);
-                        _idCardToPlay = -1;
-                    }
+                    else if (received.StartsWith("BID"))
+                        CheckBidding(received);
+                    else if (received.StartsWith("PLAY"))
+                        CheckPlay(received);
+                    
                 }
                 Console.Write("The game is over. See you soon! :)\n");
                 client.Close();
