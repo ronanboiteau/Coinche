@@ -9,42 +9,6 @@ namespace Client
         private static readonly Deck ModelDeck = new Deck(32);
         private static int _idCardToPlay = -1;
 
-        private static void CreateModelDeck()
-        {
-            ModelDeck.AddCard(new Card("7", Suit.DIAMONDS, 0, 0));
-            ModelDeck.AddCard(new Card("8", Suit.DIAMONDS, 0, 1));
-            ModelDeck.AddCard(new Card("9", Suit.DIAMONDS, 0, 2));
-            ModelDeck.AddCard(new Card("J", Suit.DIAMONDS, 2, 3));
-            ModelDeck.AddCard(new Card("Q", Suit.DIAMONDS, 3, 4));
-            ModelDeck.AddCard(new Card("K", Suit.DIAMONDS, 4, 5));
-            ModelDeck.AddCard(new Card("10", Suit.DIAMONDS, 10, 6));
-            ModelDeck.AddCard(new Card("A", Suit.DIAMONDS, 11, 7));
-            ModelDeck.AddCard(new Card("7", Suit.CLUBS, 0, 8));
-            ModelDeck.AddCard(new Card("8", Suit.CLUBS, 0, 9));
-            ModelDeck.AddCard(new Card("9", Suit.CLUBS, 0, 10));
-            ModelDeck.AddCard(new Card("J", Suit.CLUBS, 2, 11));
-            ModelDeck.AddCard(new Card("Q", Suit.CLUBS, 3, 12));
-            ModelDeck.AddCard(new Card("K", Suit.CLUBS, 4, 13));
-            ModelDeck.AddCard(new Card("10", Suit.CLUBS, 10, 14));
-            ModelDeck.AddCard(new Card("A", Suit.CLUBS, 11, 15));
-            ModelDeck.AddCard(new Card("7", Suit.HEARTS, 0, 16));
-            ModelDeck.AddCard(new Card("8", Suit.HEARTS, 0, 17));
-            ModelDeck.AddCard(new Card("9", Suit.HEARTS, 0, 18));
-            ModelDeck.AddCard(new Card("J", Suit.HEARTS, 2, 19));
-            ModelDeck.AddCard(new Card("Q", Suit.HEARTS, 3, 20));
-            ModelDeck.AddCard(new Card("K", Suit.HEARTS, 4, 21));
-            ModelDeck.AddCard(new Card("10", Suit.HEARTS, 10, 22));
-            ModelDeck.AddCard(new Card("A", Suit.HEARTS, 11, 23));
-            ModelDeck.AddCard(new Card("7", Suit.SPADES, 0, 24));
-            ModelDeck.AddCard(new Card("8", Suit.SPADES, 0, 25));
-            ModelDeck.AddCard(new Card("9", Suit.SPADES, 0, 26));
-            ModelDeck.AddCard(new Card("J", Suit.SPADES, 2, 27));
-            ModelDeck.AddCard(new Card("Q", Suit.SPADES, 3, 28));
-            ModelDeck.AddCard(new Card("K", Suit.SPADES, 4, 29));
-            ModelDeck.AddCard(new Card("10", Suit.SPADES, 10, 30));
-            ModelDeck.AddCard(new Card("A", Suit.SPADES, 11, 31));
-        }
-
         private static void BiddingChoice(Player player)
         {
             Console.Write("Enter 'PASS' or bid: '<amount> <HEARTS|DIAMONDS|CLUBS|SPADES>' (ex: '80 SPADES')\n");
@@ -77,7 +41,7 @@ namespace Client
         {
             try
             {
-                CreateModelDeck();
+                ModelDeck.Generate32CardsDeck();
                 var client = new TcpClient();
 //                Console.Write("Server IP: ");
 //                var ip = Console.ReadLine();
@@ -142,8 +106,8 @@ namespace Client
                 Console.Write("The game is over. See you soon! :)\n");
                 client.Close();
             } catch (SocketException) {
-                Console.Write("Cannot connect to server!\n");
-                return (84);
+                Console.Write("Cannot reach server!\n");
+                return 84;
             } catch (Exception e) {
                 Console.Write("An error occurred! Please see trace below for more information.\n" + e + "\n");
                 return 84;

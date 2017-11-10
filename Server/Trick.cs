@@ -72,6 +72,8 @@ namespace Server
             // The card belongs to the requested suit 
             if (_cards[0].GetSuit() == card.GetSuit())
             {
+                if (card.GetSuit() != trump && _leadingCard.GetSuit() == trump)
+                    return false;
                 if (card.GetSuit() != trump && card.GetId() > _leadingCard.GetId())
                     return true;
                 if (card.GetSuit() == trump &&

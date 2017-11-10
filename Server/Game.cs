@@ -30,42 +30,6 @@ namespace Server
             }
         }
 
-        private void CreateModelDeck()
-        {
-            _modelDeck.AddCard(new Card("7", Suit.DIAMONDS, 0, 0));
-            _modelDeck.AddCard(new Card("8", Suit.DIAMONDS, 0, 1));
-            _modelDeck.AddCard(new Card("9", Suit.DIAMONDS, 0, 2));
-            _modelDeck.AddCard(new Card("J", Suit.DIAMONDS, 2, 3));
-            _modelDeck.AddCard(new Card("Q", Suit.DIAMONDS, 3, 4));
-            _modelDeck.AddCard(new Card("K", Suit.DIAMONDS, 4, 5));
-            _modelDeck.AddCard(new Card("10", Suit.DIAMONDS, 10, 6));
-            _modelDeck.AddCard(new Card("A", Suit.DIAMONDS, 11, 7));
-            _modelDeck.AddCard(new Card("7", Suit.CLUBS, 0, 8));
-            _modelDeck.AddCard(new Card("8", Suit.CLUBS, 0, 9));
-            _modelDeck.AddCard(new Card("9", Suit.CLUBS, 0, 10));
-            _modelDeck.AddCard(new Card("J", Suit.CLUBS, 2, 11));
-            _modelDeck.AddCard(new Card("Q", Suit.CLUBS, 3, 12));
-            _modelDeck.AddCard(new Card("K", Suit.CLUBS, 4, 13));
-            _modelDeck.AddCard(new Card("10", Suit.CLUBS, 10, 14));
-            _modelDeck.AddCard(new Card("A", Suit.CLUBS, 11, 15));
-            _modelDeck.AddCard(new Card("7", Suit.HEARTS, 0, 16));
-            _modelDeck.AddCard(new Card("8", Suit.HEARTS, 0, 17));
-            _modelDeck.AddCard(new Card("9", Suit.HEARTS, 0, 18));
-            _modelDeck.AddCard(new Card("J", Suit.HEARTS, 2, 19));
-            _modelDeck.AddCard(new Card("Q", Suit.HEARTS, 3, 20));
-            _modelDeck.AddCard(new Card("K", Suit.HEARTS, 4, 21));
-            _modelDeck.AddCard(new Card("10", Suit.HEARTS, 10, 22));
-            _modelDeck.AddCard(new Card("A", Suit.HEARTS, 11, 23));
-            _modelDeck.AddCard(new Card("7", Suit.SPADES, 0, 24));
-            _modelDeck.AddCard(new Card("8", Suit.SPADES, 0, 25));
-            _modelDeck.AddCard(new Card("9", Suit.SPADES, 0, 26));
-            _modelDeck.AddCard(new Card("J", Suit.SPADES, 2, 27));
-            _modelDeck.AddCard(new Card("Q", Suit.SPADES, 3, 28));
-            _modelDeck.AddCard(new Card("K", Suit.SPADES, 4, 29));
-            _modelDeck.AddCard(new Card("10", Suit.SPADES, 10, 30));
-            _modelDeck.AddCard(new Card("A", Suit.SPADES, 11, 31));
-        }
-
         private void ResetDeck()
         {
             _deck = new Deck(32);
@@ -365,7 +329,7 @@ namespace Server
         public void StartGame()
         {
             Console.Write("Starting game...\n");
-            CreateModelDeck();
+            _modelDeck.Generate32CardsDeck();
             DrawCards();
             PreBidding();
             StartBidding();

@@ -131,12 +131,6 @@ namespace Server
         {
             return _beloteCards > 0;
         }
-        
-//        public bool PlayerIsBuddy(Player player)
-//        {
-//            return id == 0 && player.GetId() == 2 || id == 1 && player.GetId() == 3 ||
-//                   id == 2 && player.GetId() == 0 || id == 3 && player.GetId() == 1;
-//        }
 
         public bool HasSuit(Suit suit)
         {
