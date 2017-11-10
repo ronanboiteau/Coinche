@@ -24,6 +24,10 @@ To run Coinche clients, use your terminal to navigate to the `Client/` folder lo
 ```
 dotnet run
 ```
+You can also use the following command if you want to run a client as an Artificial Intelligence:
+```
+dotnet run AI
+```
 You need to run **4 clients** to start a Coinche game.
 
 ## How to play
