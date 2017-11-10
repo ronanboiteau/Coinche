@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Test
 {
-    public class PlayerTests
+    public class ClientPlayerTests
     {
         [Theory]
         [InlineData(0)]

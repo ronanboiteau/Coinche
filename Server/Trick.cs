@@ -32,7 +32,7 @@ namespace Server
                 if (card.GetValue() > _leadingCard.GetValue() ||
                     (card.GetName().Equals("8") && _leadingCard.GetName().Equals("7")))
                     return true;
-                if (!player.HasGreater(_leadingCard))
+                if (!player.HasGreater(_leadingCard, true))
                     return true;
                 Console.Write("[" + player.GetName() + "] Illegal play (type 1)\n");
                 return false;
@@ -50,7 +50,7 @@ namespace Server
             }
             if (card.GetSuit() == trump && _leadingCard.GetSuit() == trump)
             {
-                if (player.HasGreater(_leadingCard) &&
+                if (player.HasGreater(_leadingCard, true) &&
                     !(card.GetValue() > _leadingCard.GetValue() ||
                       (card.GetName().Equals("8") && _leadingCard.GetName().Equals("7"))))
                 {
@@ -59,7 +59,7 @@ namespace Server
                 }
                 return true;
             }
-            if (!player.HasGreater(_leadingCard))
+            if (!player.HasGreater(_leadingCard, false))
                 return true;
             return true;
         }

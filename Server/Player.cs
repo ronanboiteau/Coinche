@@ -21,12 +21,23 @@ namespace Server
             this.channel = channel;
         }
         
-        public bool HasGreater(Card cardMin)
+        public bool HasGreater(Card cardMin, bool trump)
         {
+            if (trump)
+            {
+                foreach (var card in GetDeck().GetDeck())
+                {
+                    if (card.GetSuit() == cardMin.GetSuit() &&
+                        (card.GetValue() > cardMin.GetValue() ||
+                         cardMin.GetName().Equals("7") && card.GetName().Equals("8")))
+                        return true;
+                }
+                return false;
+            }
             foreach (var card in GetDeck().GetDeck())
             {
                 if (card.GetSuit() == cardMin.GetSuit()
-                    && card.GetValue() > cardMin.GetValue())
+                    && card.GetId() > cardMin.GetId())
                     return true;
             }
             return false;
