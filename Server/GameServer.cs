@@ -23,18 +23,17 @@ namespace Server
 
         public static void Listen()
         {
-            if (Listener != null && Accept)
+            if (!(Listener != null && Accept))
+                return ;
+            while (ConnectedClients < 4)
             {
-                while (ConnectedClients < 4)
-                {
-                    Console.Write($"Waiting for more players... {ConnectedClients} connected at the moment.\n");
-                    _listen();
-                }
-                var team1 = new Team(Players[0], Players[2], "Team1");
-                var team2 = new Team(Players[1], Players[3], "Team2");
-                var game = new Game(Players, team1, team2);
-                game.StartGame();
+                Console.Write($"Waiting for more players... {ConnectedClients} connected at the moment.\n");
+                _listen();
             }
+            var team1 = new Team(Players[0], Players[2], "Team1");
+            var team2 = new Team(Players[1], Players[3], "Team2");
+            var game = new Game(Players, team1, team2);
+            game.StartGame();
         }
 
         private static void _listen()

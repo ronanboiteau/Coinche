@@ -118,15 +118,18 @@ namespace Server
             return (-1);
         }
 
-        private void CalculateScore()
+        private void ComputeScore()
         {
-            int leadingPlayerId = _trick.GetLeadingPlayer().GetId();
+            var leadingPlayerId = _trick.GetLeadingPlayer().GetId();
             foreach (var team in _teams)
             {
                 foreach (var player in team.GetPlayers())
                 {
                     if (player.GetId() == leadingPlayerId)
+                    {
                         team.AddScore(_trick.GetValue());
+                        team.SetIsCapot(false);
+                    }
                 }
             }
             if (_allPlayers[leadingPlayerId].GetDeck().Size() != 0)
@@ -136,21 +139,27 @@ namespace Server
             
         }
 
-        private void AnnounceWinner()
+        private void ComputeWinners()
         {
             Broadcast("MSG Calculating score...");
-            if (_teams[0].HasWon(_teams[1].GetScore()))
+            var takers = _teams[0].GetContract() == -1 ? _teams[1] : _teams[0];
+            var defense = _teams[0].GetContract() == -1 ? _teams[0] : _teams[1];
+            if (takers.HasWon(defense.GetScore()))
             {
-                Broadcast("MSG " + _teams[0].GetName() + " has " + _teams[0].GetScore() + " points and "
-                        + _teams[1].GetName() + " has " + _teams[1].GetScore() + ".");
-                Broadcast("MSG " + _teams[0].GetName() + " won! Congratulations!!");
+                takers.SetScore(takers.GetScore() + (takers.GetContract() == 160 && defense.IsCapot() ? 250 : takers.GetContract()));
+                Broadcast("MSG " + takers.GetName() + " (takers) has " + takers.GetScore() + " points and "
+                        + defense.GetName() + " has " + defense.GetScore() + ".");
+                Broadcast("MSG Takers completed their contract! Congratulations " + takers.GetName() + "!");
             }
             else
             {
-                _teams[1].SetScore(160 + _teams[0].GetContract());
-                Broadcast("MSG " + _teams[0].GetName() + " has " + _teams[0].GetScore() + " points and "
-                          + _teams[1].GetName() + " has " + _teams[1].GetScore() + ".");
-                Broadcast("MSG " + _teams[1].GetName() + " won! Congratulations!!");
+                defense.SetScore(defense.GetScore() + takers.GetScore() + (takers.GetContract() == 160 && defense.IsCapot() ? 250 : takers.GetContract()) - 2);
+                takers.SetScore(0);
+                if (takers.HasBelote())
+                    takers.SetScore(takers.GetScore() + 20);
+                Broadcast("MSG " + takers.GetName() + " has " + takers.GetScore() + " points and "
+                          + defense.GetName() + " has " + defense.GetScore() + ".");
+                Broadcast("MSG Defense took down the contract! Congratulations " + defense.GetName() + "!");
             }
         }
 
@@ -182,6 +191,7 @@ namespace Server
                     player.SetBeloteCards((short)(player.GetBeloteCards() - 1));
                     Broadcast("MSG [" + player.GetName() + "] RE-BELOTE!");
                     _teams[player.GetId() % 2].AddScore(20);
+                    _teams[player.GetId() % 2].SetHasBelote(true);
                 }
             }
         }
@@ -226,10 +236,10 @@ namespace Server
                         player.SendMessage("PLAY KO");
                 }
                 player = _allPlayers[_trick.GetLeadingPlayer().GetId()];
-                CalculateScore();
+                ComputeScore();
                 _trick.ResetDeck();
             }
-            AnnounceWinner();
+            ComputeWinners();
             Broadcast("END");
         }
 
@@ -260,10 +270,8 @@ namespace Server
                         continue;
                     }
                     var suit = msgTab[3];
-                    if (contract <= _teams[0].GetContract()
-                            || contract <= _teams[1].GetContract()
-                            || contract < 80
-                            || contract % 10 != 0)
+                    if (contract <= _teams[0].GetContract() || contract <= _teams[1].GetContract()
+                        || contract < 80 || contract > 160 || contract % 10 != 0)
                     {
                         player.SendMessage("BID KO");
                         continue;

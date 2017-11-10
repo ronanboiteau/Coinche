@@ -6,7 +6,9 @@
         private string _name;
         private int _score;
         private int _contract;
-        private int _nbOfTrick = 0;
+        private int _nbOfTrick;
+        private bool _hasBelote;
+        private bool _isCapot = true;
 
         public Team(Player playerOne, Player playerTwo, string name)
         {
@@ -68,16 +70,30 @@
         {
             _score = score;
         }
-        
+
+        public bool IsCapot()
+        {
+            return _isCapot;
+        }
+
+        public void SetIsCapot(bool isCapot)
+        {
+            _isCapot = isCapot;
+        }
+
+        public void SetHasBelote(bool hasBelote)
+        {
+            _hasBelote = hasBelote;
+        }
+
+        public bool HasBelote()
+        {
+            return _hasBelote;
+        }
+
         public bool HasWon(int otherTeamScore)
         {
-            if (_score >= _contract && _score > otherTeamScore)
-            {
-                _score += _contract;
-                return true;
-            }
-            _score = 0;
-            return false;
+            return _score >= _contract && _score > otherTeamScore;
         }
     }
 }
