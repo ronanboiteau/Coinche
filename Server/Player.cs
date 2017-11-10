@@ -81,7 +81,7 @@ namespace Server
 
         public Deck GetDeck()
         {
-            return (deck);
+            return deck;
         }
         
         public string GetNextMessage()

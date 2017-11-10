@@ -16,10 +16,8 @@ namespace Client
 
         public void SendMessage(string message)
         {
-            message += "\n";
-            var asen = new ASCIIEncoding();
-            var toSend = asen.GetBytes(message);
-            channel.GetStream().Write(toSend, 0, toSend.Length);
+            var data = Encoding.ASCII.GetBytes(message + "\n");
+            channel.GetStream().Write(data, 0, data.Length);
         }
 
         public Deck GetDeck()
