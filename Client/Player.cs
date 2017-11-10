@@ -1,4 +1,5 @@
-﻿using System.Net.Sockets;
+﻿using System;
+using System.Net.Sockets;
 using System.Text;
 using Shared;
 
@@ -8,14 +9,22 @@ namespace Client
     {
         private TcpClient channel;
         private Deck deck = new Deck(8);
+        private bool _isAi;
 
         public Player(TcpClient channel)
         {
             this.channel = channel;
         }
 
+        public void SetIsAi(bool coinche)
+        {
+            _isAi = coinche;
+        }
+        
         public void SendMessage(string message)
         {
+            if (_isAi)
+                Console.Write(message + "\n");
             var data = Encoding.ASCII.GetBytes(message + "\n");
             channel.GetStream().Write(data, 0, data.Length);
         }

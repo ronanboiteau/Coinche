@@ -8,10 +8,16 @@ namespace Client
     {
         private static readonly Deck ModelDeck = new Deck(32);
         private static int _idCardToPlay = -1;
+        private static bool _isAi;
 
         private static void BiddingChoice(Player player)
         {
             Console.Write("Enter 'PASS' or bid: '<amount> <HEARTS|DIAMONDS|CLUBS|SPADES>' (ex: '80 SPADES')\n");
+            if (_isAi)
+            {
+                player.SendMessage("BID Y 80 SPADES");
+                return;
+            }
             var input = Console.ReadLine();
             while (input == null)
             {
@@ -37,7 +43,7 @@ namespace Client
             player.SendMessage("PLAY " + input);
         }
         
-        public static int Main()
+        public static int Main(string[] args)
         {
             try
             {
@@ -58,6 +64,9 @@ namespace Client
                 Console.Write("Connexion successful! Waiting for more players...\n");
                 var received = "";
                 var player = new Player(client);
+                if (args.Length == 1 && args[0].ToUpper().Equals("AI"))
+                    _isAi = true;
+                player.SetIsAi(_isAi);
                 while (!received.Equals("END"))
                 {
                     var buffer = "";
@@ -85,8 +94,13 @@ namespace Client
                         BiddingChoice(player);
                     else if (received.Equals("BID KO"))
                     {
-                        Console.Write("Invalid bid!\n");
-                        BiddingChoice(player);
+                        if (_isAi)
+                            player.SendMessage("PASS");
+                        else
+                        {
+                            Console.Write("Invalid bid!\n");
+                            BiddingChoice(player);
+                        }
                     }
                     else if (received.Equals("BID RESET"))
                         player.EmptyDeck();
@@ -96,11 +110,10 @@ namespace Client
                         PlayACard(player);
                     else if (received.Equals("PLAY OK"))
                     {
-                        if (_idCardToPlay != -1)
-                        {
-                            player.PutCard(ModelDeck.GetDeck()[_idCardToPlay]);
-                            _idCardToPlay = -1;
-                        }
+                        if (_idCardToPlay == -1)
+                            continue;
+                        player.PutCard(ModelDeck.GetDeck()[_idCardToPlay]);
+                        _idCardToPlay = -1;
                     }
                 }
                 Console.Write("The game is over. See you soon! :)\n");
