@@ -1,5 +1,6 @@
 ﻿using Shared;
 using System;
+using System.IO;
 using System.Net.Sockets;
 
 namespace Client
@@ -148,6 +149,9 @@ namespace Client
                 }
                 Console.Write("The game is over. See you soon! :)\n");
                 client.Close();
+//            } catch (IOException) {
+//                Console.Write("Error: A client left! The server closed the connection. You won't be able to finish this game :(\n");
+//                return 84;
             } catch (SocketException) {
                 Console.Write("Cannot reach server!\n");
                 return 84;

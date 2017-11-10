@@ -9,7 +9,7 @@ namespace Server
     {
         private int id;
         private string name;
-        private TcpClient channel;
+        private TcpClient _channel;
         private Deck deck = new Deck(8);
         private bool _trumpChooser;
         private short _beloteCards;
@@ -18,7 +18,7 @@ namespace Server
         {
             this.id = id;
             this.name = name;
-            this.channel = channel;
+            _channel = channel;
         }
         
         public bool HasGreater(Card cardMin, bool trump)
@@ -74,10 +74,30 @@ namespace Server
             return score;
         }
         
+        private bool IsReachable()
+        {
+            if (_channel.Client.Poll(0, SelectMode.SelectRead))
+            {
+                byte[] buff = new byte[1];
+                if (_channel.Client.Receive(buff, SocketFlags.Peek) == 0)
+                    return false;
+            }
+            return true;
+        }
+
         public void SendMessage(string message)
         {
+            if (_channel == null)
+                return ;
+            if (!IsReachable())
+            {
+                _channel = null;
+                Console.Write(GetName() + " lost connection! Quitting game...");
+                SendMessage("END");
+                return ;
+            }
             var data = Encoding.ASCII.GetBytes(message + "\n");
-            channel.GetStream().Write(data, 0, data.Length);
+            _channel.GetStream().Write(data, 0, data.Length);
         }
 
         public string GetName()
@@ -100,7 +120,7 @@ namespace Server
             var buffer = "";
             while (buffer.IndexOf('\n') < 0)
             {
-                var stream = channel.GetStream();
+                var stream = _channel.GetStream();
                 var buff = new byte[1];
                 var readStr = stream.Read(buff, 0, 1);
                 for (var i = 0; i < readStr; i++)
@@ -166,7 +186,7 @@ namespace Server
                 }
             }
             if (!found)
-                return (false);
+                return false;
             var isLegal = trick.PlayIsLegal(cardToPlay, this, trump);
             if (isLegal)
             {
@@ -179,18 +199,19 @@ namespace Server
                 trick.AddValue(cardToPlay.GetValue());
                 deck.RemoveCard(cardToPlay);
             }
-            return (isLegal);
+            return isLegal;
         }
 
         public bool IsTrumpChooser()
         {
-            return (_trumpChooser);
+            return _trumpChooser;
         }
         
         public void SendDeck()
         {
             var msgDeck = "DECK ";
-            for (var idx = 0 ; idx < deck.Size() ; idx += 1) {
+            for (var idx = 0 ; idx < deck.Size() ; idx += 1)
+            {
                 msgDeck += deck.GetDeck()[idx].GetId();
                 if (idx < deck.Size() - 1)
                     msgDeck += " ";

@@ -12,6 +12,7 @@ namespace Server
         private List<Player> _allPlayers;
         private Suit _trump;
         private Trick _trick = new Trick();
+//        private int _multiplier = 1;
         
         public Game(List<Player> allPlayers, Team teamOne, Team teamTwo)
         {

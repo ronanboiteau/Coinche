@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace Server
 {
@@ -20,6 +21,9 @@ namespace Server
                 }
                 GameServer.StartServer("127.0.0.1", port);
                 GameServer.Listen();
+//            } catch (IOException) {
+//                Console.Write("A client left! You won't be able to finish this game :(\n");
+//                return 84;
             } catch (Exception e) {
                 Console.Write("An error occurred! Please see trace below for more information.\n" + e);
                 return 84;
