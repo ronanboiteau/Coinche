@@ -1,7 +1,9 @@
 ﻿using Shared;
 using System;
-using System.IO;
+using System.Data;
 using System.Net.Sockets;
+using System.Reflection.Metadata.Ecma335;
+using System.Text.RegularExpressions;
 
 namespace Client
 {
@@ -15,7 +17,7 @@ namespace Client
 
         private static void BiddingChoice(Player player)
         {
-            Console.Write("Enter 'PASS' or bid: '<amount> <HEARTS|DIAMONDS|CLUBS|SPADES>' (ex: '80 SPADES')\n");
+            Console.Write("Enter 'PASS', 'COINCHE', 'SURCOINCHE' or bid: '<amount> <HEARTS|DIAMONDS|CLUBS|SPADES>' (ex: '80 SPADES')\n");
             if (_isAi)
             {
                 player.SendMessage("BID Y 80 SPADES");
@@ -25,11 +27,15 @@ namespace Client
             while (input == null)
             {
                 Console.Write("Invalid bid!\n");
-                Console.Write("Enter 'PASS' or bid: '<amount> <HEARTS|DIAMONDS|CLUBS|SPADES>' (ex: '80 SPADES')\n");
+                Console.Write("Enter 'PASS', 'COINCHE', 'SURCOINCHE' or bid: '<amount> <HEARTS|DIAMONDS|CLUBS|SPADES>' (ex: '80 SPADES')\n");
                 input = Console.ReadLine();
             }
             if (input.ToUpper().Equals("PASS"))
                 player.SendMessage("BID N");
+            else if (input.ToUpper().Equals("COINCHE"))
+                player.SendMessage("BID COINCHE");
+            else if (input.ToUpper().Equals("SURCOINCHE"))
+                player.SendMessage("BID SURCOINCHE");
             else
                 player.SendMessage("BID Y " + input);
         }
@@ -95,24 +101,45 @@ namespace Client
             }
         }
         
+        private static string GetIp()
+        {
+            Console.Write("Server IP: ");
+            var ip = Console.ReadLine();
+            var match = Regex.Match(ip, @"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}");
+            while (ip == null || !match.Success)
+            {
+                Console.Write("Invalid IP address!\n");
+                Console.Write("Server IP: ");
+                ip = Console.ReadLine();
+                match = Regex.Match(ip, @"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}");
+            }
+            return ip;
+        }
+
+        private static int GetPort()
+        {
+            int port;
+            Console.Write("Port: ");
+            var input = Console.ReadLine();
+            while (input == null || !int.TryParse(input, out port))
+            {
+                Console.Write("Invalid port!\n");
+                Console.Write("Port: ");
+                input = Console.ReadLine();
+            }
+            Console.Write("Trying to reach server...\n");
+            return port;
+        }
+
         public static int Main(string[] args)
         {
             try
             {
                 ModelDeck.Generate32CardsDeck();
                 var client = new TcpClient();
-//                Console.Write("Server IP: ");
-//                var ip = Console.ReadLine();
-                int port;
-                Console.Write("Port: ");
-                var input = Console.ReadLine();
-                while (!int.TryParse(input, out port))
-                {
-                    Console.Write("Port: ");
-                    input = Console.ReadLine();
-                }
-                Console.Write("Trying to reach server...\n");
-                client.Connect("127.0.0.1", port);
+                var ip = GetIp();
+                var port = GetPort();
+                client.Connect(ip, port);
                 Console.Write("Connection successful! Waiting for more players...\n");
                 var received = "";
                 _player = new Player(client);
@@ -149,14 +176,11 @@ namespace Client
                 }
                 Console.Write("The game is over. See you soon! :)\n");
                 client.Close();
-//            } catch (IOException) {
-//                Console.Write("Error: A client left! The server closed the connection. You won't be able to finish this game :(\n");
-//                return 84;
             } catch (SocketException) {
                 Console.Write("Cannot reach server!\n");
                 return 84;
-            } catch (Exception e) {
-                Console.Write("An error occurred! Please see trace below for more information.\n" + e + "\n");
+            } catch (Exception) {
+                Console.Write("An error occurred!\n");
                 return 84;
             }
             return 0;

@@ -12,7 +12,7 @@ namespace Server
         private List<Player> _allPlayers;
         private Suit _trump;
         private Trick _trick = new Trick();
-//        private int _multiplier = 1;
+        private int _multiplier = 1;
         
         public Game(List<Player> allPlayers, Team teamOne, Team teamTwo)
         {
@@ -260,6 +260,32 @@ namespace Server
                     var msg = player.GetNextMessage();
                     if (msg.Equals("BID N"))
                         break;
+                    if (msg.Equals("BID COINCHE"))
+                    {
+                        if (_multiplier == 2 || (_teams[0].GetContract() < 0 && _teams[1].GetContract() < 0)
+                            || _teams[player.GetId() % 2].GetContract() != -1)
+                        {
+                            player.SendMessage("BID KO");
+                            continue;
+                        }
+                        _multiplier = 2;
+                        break;
+                    }
+                    if (msg.Equals("BID SURCOINCHE"))
+                    {
+                        if (_multiplier != 2 || _teams[player.GetId() % 2].GetContract() == -1)
+                        {
+                            player.SendMessage("BID KO");
+                            continue;
+                        }
+                        _multiplier = 4;
+                        return true;
+                    }
+                    if (_multiplier == 2)
+                    {
+                        player.SendMessage("BID KO");
+                        continue;
+                    }
                     var msgTab = msg.Split();
                     if (!msgTab[0].Equals("BID") || !msgTab[1].Equals("Y") || msgTab.Length != 4)
                     {
@@ -293,12 +319,12 @@ namespace Server
                               + " bid " + contract + " on " + suit.ToUpper());
                     if (!RecursiveBidding(idPlayer + 1, 3))
                         _allPlayers[idPlayer].SetTrumpChooser(true);
-                    return (true);
+                    return true;
                 }
                 ++idPlayer;
                 ++iterations;
             }
-            return (false);
+            return false;
         }
 
         private void StartBidding()
