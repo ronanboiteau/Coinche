@@ -132,13 +132,13 @@ namespace Client
         {
             try
             {
-                ModelDeck.Generate32CardsDeck();
                 var client = new TcpClient();
                 var ip = GetIp();
                 var port = GetPort();
                 client.Connect(ip, port);
                 Console.Write("Connection successful! Waiting for more players...\n");
                 var received = "";
+                ModelDeck.Generate32CardsDeck();
                 _player = new Player(client);
                 if (args.Length == 1 && args[0].ToUpper().Equals("AI"))
                     _isAi = true;
