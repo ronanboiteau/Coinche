@@ -261,6 +261,8 @@ namespace Server
             var iterations = 0;
             while (iterations < maxIterations)
             {
+                if (iterations > 1 && _multiplier == 2)
+                    idPlayer += 1;
                 if (idPlayer >= 4)
                     idPlayer = idPlayer % 4;
                 var player = _allPlayers[idPlayer];
