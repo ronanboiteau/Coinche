@@ -1,8 +1,6 @@
 ﻿using Shared;
 using System;
-using System.Data;
 using System.Net.Sockets;
-using System.Reflection.Metadata.Ecma335;
 using System.Text.RegularExpressions;
 
 namespace Client
@@ -41,16 +39,15 @@ namespace Client
         }
         
         private static void PlayACard(Player player) {
-            Console.Write("Enter the ID of the card you want to play:\n");
             if (_isAi)
             {
                 if (_idxCardAi >= player.GetDeck().GetDeck().Count)
                     _idxCardAi = 0;
-                Console.Write("Trying to play card nb " + _idxCardAi + "\n");
                 _idCardToPlay = player.GetDeck().GetDeck()[_idxCardAi].GetId();
                 player.SendMessage("PLAY " + _idCardToPlay);
                 return;
             }
+            Console.Write("Enter the ID of the card you want to play:\n");
             var input = Console.ReadLine();
             while (!int.TryParse(input, out _idCardToPlay))
             {

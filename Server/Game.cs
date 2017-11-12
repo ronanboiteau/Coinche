@@ -100,7 +100,7 @@ namespace Server
 
         private void AnnounceScores()
         {
-            Broadcast("MSG " + "=========== NEW ROUND");
+            Broadcast("MSG " + "=========== NEW ROUND ===========");
             Broadcast("MSG " + _teams[0].GetName() + " (" + _teams[0].GetPlayer(0).GetName() + ", "
                       + _teams[0].GetPlayer(1).GetName() + ") has " + _teams[0].GetScore()
                       + (_teams[0].GetContract() == -1 ? "" : "/" + _teams[0].GetContract()) + " points || "
@@ -148,7 +148,17 @@ namespace Server
             var defense = _teams[0].GetContract() == -1 ? _teams[0] : _teams[1];
             if (takers.HasWon(defense.GetScore()))
             {
-                takers.SetScore(takers.GetScore() + (takers.GetContract() == 160 && defense.IsCapot() ? 250 : takers.GetContract()));
+                if (_multiplier == 1)
+                {
+                    takers.SetScore(takers.GetScore() + (takers.GetContract() == 160 && defense.IsCapot() ? 250 : takers.GetContract()));
+                    takers.SetScore(takers.GetScore() * _multiplier);
+                }
+                else
+                {
+                    takers.SetScore(takers.GetScore() + defense.GetScore() + (takers.GetContract() == 160 && defense.IsCapot() ? 250 : takers.GetContract()) - 2);
+                    takers.SetScore(takers.GetScore() * _multiplier);
+                    defense.SetScore(0);
+                }
                 Broadcast("MSG " + takers.GetName() + " (takers) has " + takers.GetScore() + " points and "
                         + defense.GetName() + " has " + defense.GetScore() + ".");
                 Broadcast("MSG Takers completed their contract! Congratulations " + takers.GetName() + "!");
@@ -156,6 +166,7 @@ namespace Server
             else
             {
                 defense.SetScore(defense.GetScore() + takers.GetScore() + (takers.GetContract() == 160 && defense.IsCapot() ? 250 : takers.GetContract()) - 2);
+                defense.SetScore(defense.GetScore() * _multiplier);
                 takers.SetScore(0);
                 if (takers.HasBelote())
                     takers.SetScore(takers.GetScore() + 20);
@@ -262,13 +273,15 @@ namespace Server
                         break;
                     if (msg.Equals("BID COINCHE"))
                     {
-                        if (_multiplier == 2 || (_teams[0].GetContract() < 0 && _teams[1].GetContract() < 0)
+                        if (_multiplier >= 2 || (_teams[0].GetContract() < 0 && _teams[1].GetContract() < 0)
                             || _teams[player.GetId() % 2].GetContract() != -1)
                         {
                             player.SendMessage("BID KO");
                             continue;
                         }
+                        Broadcast("MSG " + player.GetName() + " coinched the contract!");
                         _multiplier = 2;
+                        iterations = 0;
                         break;
                     }
                     if (msg.Equals("BID SURCOINCHE"))
@@ -276,10 +289,11 @@ namespace Server
                         if (_multiplier != 2 || _teams[player.GetId() % 2].GetContract() == -1)
                         {
                             player.SendMessage("BID KO");
-                            continue;
+                            return false;
                         }
+                        Broadcast("MSG " + player.GetName() + " surcoinched the contract!");
                         _multiplier = 4;
-                        return true;
+                        break;
                     }
                     if (_multiplier == 2)
                     {
@@ -304,10 +318,10 @@ namespace Server
                         player.SendMessage("BID KO");
                         continue;
                     }
-                    if (!(suit.ToUpper().Equals("HEARTS")
-                            || suit.ToUpper().Equals("DIAMONDS")
-                            || suit.ToUpper().Equals("CLUBS")
-                            || suit.ToUpper().Equals("SPADES")))
+                    if (!(suit.ToUpper().Equals("HEARTS") ||
+                          suit.ToUpper().Equals("DIAMONDS") ||
+                          suit.ToUpper().Equals("CLUBS") ||
+                          suit.ToUpper().Equals("SPADES")))
                     {
                         player.SendMessage("BID KO");
                         continue;
