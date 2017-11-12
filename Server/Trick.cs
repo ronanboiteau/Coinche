@@ -1,5 +1,4 @@
-﻿using System;
-using Shared;
+﻿using Shared;
 
 namespace Server
 {
@@ -21,9 +20,9 @@ namespace Server
         public bool PlayIsLegal(Card card, Player player, Suit trump)
         {
             // First play
-            if (_cards.Count == 0)
+            if (Cards.Count == 0)
                 return true;
-            var suit = _cards[0].GetSuit();
+            var suit = Cards[0].GetSuit();
             // The card belongs to the requested suit
             if (card.GetSuit() == suit)
             {
@@ -57,10 +56,10 @@ namespace Server
         public bool CardIsLeading(Card card, Suit trump)
         {
             // First play
-            if (_cards.Count == 0)
+            if (Cards.Count == 0)
                 return true;
             // The card belongs to the requested suit 
-            if (_cards[0].GetSuit() == card.GetSuit())
+            if (Cards[0].GetSuit() == card.GetSuit())
             {
                 if (card.GetSuit() != trump && _leadingCard.GetSuit() == trump)
                     return false;
@@ -102,16 +101,11 @@ namespace Server
             _leadingCard = card;
         }
 
-        public Card GetLeadingCard()
-        {
-            return _leadingCard;
-        }
-
         public void ResetDeck()
         {
-            var count = _cards.Count;
+            var count = Cards.Count;
             for ( ; count > 0 ; count -= 1)
-                _cards.RemoveAt(0);
+                Cards.RemoveAt(0);
             _value = 0;
         }
     }

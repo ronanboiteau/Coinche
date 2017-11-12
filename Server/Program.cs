@@ -46,8 +46,8 @@ namespace Server
             } catch (SocketException) {
                 Console.Write("Failed to run server... Please check the IP address & port.\n");
                 return 84;
-            } catch (Exception) {
-                Console.Write("An error occurred!\n");
+            } catch (Exception e) {
+                Console.Write("An error occurred!\n" + e);
                 return 84;
             }
             return 0;

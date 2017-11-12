@@ -5,12 +5,12 @@ using System.Net.Sockets;
 
 namespace Server
 {
-    class GameServer
+    static class GameServer
     {
         private static TcpListener Listener { get; set; }
         private static bool Accept { get; set; }
         private static int ConnectedClients { get; set; }
-        private static List<Player> Players = new List<Player>();
+        private static List<Player> _players = new List<Player>();
 
         public static void StartServer(string ip, int port)
         {
@@ -30,9 +30,9 @@ namespace Server
                 Console.Write($"Waiting for more players... {ConnectedClients} connected at the moment.\n");
                 _listen();
             }
-            var team1 = new Team(Players[0], Players[2], "Team1");
-            var team2 = new Team(Players[1], Players[3], "Team2");
-            var game = new Game(Players, team1, team2);
+            var team1 = new Team(_players[0], _players[2], "Team1");
+            var team2 = new Team(_players[1], _players[3], "Team2");
+            var game = new Game(_players, team1, team2);
             game.StartGame();
         }
 
@@ -42,17 +42,10 @@ namespace Server
             var client = task.Result;
             if (client == null)
                 return ;
-//            if (ConnectedClients >= 4)
-//            {
-//                var data = Encoding.ASCII.GetBytes("MSG The server is full, sorry! Try again later...\n");
-//                client.GetStream().Write(data, 0, data.Length);
-//                client.GetStream().Dispose();
-//                return ;
-//            }
             Console.Write("A new client just joined!\n");
             ConnectedClients++;
             var player = new Player(ConnectedClients - 1, "Player" + ConnectedClients, client);
-            Players.Add(player);
+            _players.Add(player);
         }
     }
 }

@@ -38,7 +38,8 @@ namespace Client
                 player.SendMessage("BID Y " + input);
         }
         
-        private static void PlayACard(Player player) {
+        private static void PlayACard(Player player)
+        {
             if (_isAi)
             {
                 if (_idxCardAi >= player.GetDeck().GetDeck().Count)
@@ -138,7 +139,7 @@ namespace Client
                 client.Connect(ip, port);
                 Console.Write("Connection successful! Waiting for more players...\n");
                 var received = "";
-                ModelDeck.Generate32CardsDeck();
+                ModelDeck.Generate32CardDeck();
                 _player = new Player(client);
                 if (args.Length == 1 && args[0].ToUpper().Equals("AI"))
                     _isAi = true;

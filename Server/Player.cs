@@ -7,17 +7,17 @@ namespace Server
 {
     public class Player
     {
-        private int id;
-        private string name;
+        private int _id;
+        private string _name;
         private TcpClient _channel;
-        private Deck deck = new Deck(8);
+        private Deck _deck = new Deck(8);
         private bool _trumpChooser;
         private short _beloteCards;
         
         public Player(int id, string name, TcpClient channel)
         {
-            this.id = id;
-            this.name = name;
+            _id = id;
+            _name = name;
             _channel = channel;
         }
         
@@ -47,7 +47,7 @@ namespace Server
         {
             var score = 0;
             int[] nb = {0, 0, 0, 0, 0, 0};
-            foreach (var card in deck.GetDeck())
+            foreach (var card in _deck.GetDeck())
             {
                 if (card.GetName().Equals("J"))
                     nb[(int) CardName.Jack] += 1;
@@ -102,17 +102,17 @@ namespace Server
 
         public string GetName()
         {
-            return name;
+            return _name;
         }
         
         public int GetId()
         {
-            return id;
+            return _id;
         }
 
         public Deck GetDeck()
         {
-            return deck;
+            return _deck;
         }
         
         public string GetNextMessage()
@@ -137,7 +137,7 @@ namespace Server
         public void CheckBelote(Suit trump)
         {
             var check = 0;
-            foreach (var card in deck.GetDeck())
+            foreach (var card in _deck.GetDeck())
             {
                 if (card.GetSuit() == trump && card.GetName().Equals("K"))
                     check += 1;
@@ -165,7 +165,7 @@ namespace Server
 
         public bool HasSuit(Suit suit)
         {
-            foreach (var card in deck.GetDeck())
+            foreach (var card in _deck.GetDeck())
             {
                 if (card.GetSuit() == suit)
                     return true;
@@ -177,7 +177,7 @@ namespace Server
         {
             var found = false;
             Card cardToPlay = null;
-            foreach (var card in deck.GetDeck())
+            foreach (var card in _deck.GetDeck())
             {
                 if (card.GetId() == cardId)
                 {
@@ -197,7 +197,7 @@ namespace Server
                 }
                 trick.AddCard(cardToPlay);
                 trick.AddValue(cardToPlay.GetValue());
-                deck.RemoveCard(cardToPlay);
+                _deck.RemoveCard(cardToPlay);
             }
             return isLegal;
         }
@@ -210,10 +210,10 @@ namespace Server
         public void SendDeck()
         {
             var msgDeck = "DECK ";
-            for (var idx = 0 ; idx < deck.Size() ; idx += 1)
+            for (var idx = 0 ; idx < _deck.Size() ; idx += 1)
             {
-                msgDeck += deck.GetDeck()[idx].GetId();
-                if (idx < deck.Size() - 1)
+                msgDeck += _deck.GetDeck()[idx].GetId();
+                if (idx < _deck.Size() - 1)
                     msgDeck += " ";
             }
             SendMessage(msgDeck);
@@ -221,9 +221,9 @@ namespace Server
 
         public void EmptyDeck()
         {
-            var count = deck.GetDeck().Count;
+            var count = _deck.GetDeck().Count;
             while (count != 0) {
-                deck.GetDeck().RemoveAt(0);
+                _deck.GetDeck().RemoveAt(0);
                 count -= 1;
             }
         }

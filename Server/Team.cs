@@ -6,7 +6,6 @@
         private string _name;
         private int _score;
         private int _contract;
-        private int _nbOfTrick;
         private bool _hasBelote;
         private bool _isCapot = true;
 
@@ -18,17 +17,7 @@
             _contract = -1;
             _score = 0;
         }
-        
-        public void AddATrick()
-        {
-            _nbOfTrick += 1;
-        }
-        
-        public int GetNbOfTrick()
-        {
-            return _nbOfTrick;
-        }
-        
+
         public void SetContract(int contract)
         {
             _contract = contract;

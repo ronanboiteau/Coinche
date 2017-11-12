@@ -6,38 +6,37 @@ namespace Client
 {
     public class Player
     {
-        private TcpClient channel;
-        private Deck deck = new Deck(8);
+        private TcpClient _channel;
+        private Deck _deck = new Deck(8);
 
         public Player(TcpClient channel)
         {
-            this.channel = channel;
+            _channel = channel;
         }
-
         
         public void SendMessage(string message)
         {
             var data = Encoding.ASCII.GetBytes(message + "\n");
-            channel.GetStream().Write(data, 0, data.Length);
+            _channel.GetStream().Write(data, 0, data.Length);
         }
 
         public Deck GetDeck()
         {
-            return deck;
+            return _deck;
         }
 
         public void EmptyDeck()
         {
-            var count = deck.GetDeck().Count;
+            var count = _deck.GetDeck().Count;
             while (count != 0) {
-                deck.GetDeck().RemoveAt(0);
+                _deck.GetDeck().RemoveAt(0);
                 count -= 1;
             }
         }
 
         public void PutCard(Card card)
         {
-            deck.RemoveCard(card);
+            _deck.RemoveCard(card);
         }
     }
 }

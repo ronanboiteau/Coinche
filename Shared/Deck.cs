@@ -5,23 +5,23 @@ namespace Shared
 {
     public class Deck
     {
-        protected readonly List<Card> _cards = new List<Card>();
+        protected readonly List<Card> Cards = new List<Card>();
         private readonly int _maxCards;
 
         public Deck(int maxCards)
         {
-            this._maxCards = maxCards;
+            _maxCards = maxCards;
         }
 
         public bool AddCard(Card newCard)
         {
-            if (_cards.Count >= _maxCards)
+            if (Cards.Count >= _maxCards)
                 return false;
-            _cards.Add(newCard);
+            Cards.Add(newCard);
             return true;
         }
 
-        public void Generate32CardsDeck()
+        public void Generate32CardDeck()
         {
             AddCard(new Card("7", Suit.DIAMONDS, 0, 0));
             AddCard(new Card("8", Suit.DIAMONDS, 0, 1));
@@ -57,41 +57,39 @@ namespace Shared
             AddCard(new Card("A", Suit.SPADES, 11, 31));
         }
 
-
-
         public bool RemoveCard(Card toRemove)
         {
-            return _cards.Remove(toRemove);
+            return Cards.Remove(toRemove);
         }
 
         public Card GetCardById(int id)
         {
-            for (var idx = 0; idx < _cards.Count; idx += 1)
+            for (var idx = 0; idx < Cards.Count; idx += 1)
             {
-                if (_cards[idx].GetId() == id)
-                    return _cards[idx];
+                if (Cards[idx].GetId() == id)
+                    return Cards[idx];
             }
             return null;
         }
 
         public int Size()
         {
-            return _cards.Count;
+            return Cards.Count;
         }
 
         public List<Card> GetDeck()
         {
-            return _cards;
+            return Cards;
         }
 
         public void PrintDeck()
         {
             Console.Write(" ");
-            for (int idx = 0 ; idx < _cards.Count ; idx += 1) {
+            for (int idx = 0 ; idx < Cards.Count ; idx += 1) {
                 if (idx != 0)
                     Console.Write(" | ");
-                Console.Write("(" + _cards[idx].GetId() + ") ");
-                _cards[idx].PrintCard();
+                Console.Write("(" + Cards[idx].GetId() + ") ");
+                Cards[idx].PrintCard();
             }
             Console.Write("\n");
         }

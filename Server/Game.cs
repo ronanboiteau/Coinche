@@ -87,7 +87,8 @@ namespace Server
             _teams[1].GetPlayer(1).SendMessage(message);
         }
 
-        private void PreBidding() {
+        private void PreBidding()
+        {
             _teams[0].GetPlayer(0).SendMessage("MSG You are " + _teams[0].GetPlayer(0).GetName() + ". Together with your mate "
                                               + _teams[0].GetPlayer(1).GetName() + ", you make " + _teams[0].GetName() + ".");
             _teams[0].GetPlayer(1).SendMessage("MSG You are " + _teams[0].GetPlayer(1).GetName() + ". Together with your mate "
@@ -238,7 +239,6 @@ namespace Server
                                       + ". " + _trick.GetLeadingPlayer().GetName() + " is leading this turn.");
                             HandleBelote(player, _modelDeck.GetDeck()[cardId]);
                             player.SendMessage("PLAY OK");
-                            _teams[player.GetId() % 2].AddATrick();
                             isFirstTry = true;
                             player = _allPlayers[(player.GetId() == 3 ? 0 : player.GetId() + 1)];
                         }
@@ -381,7 +381,7 @@ namespace Server
         public void StartGame()
         {
             Console.Write("Starting game...\n");
-            _modelDeck.Generate32CardsDeck();
+            _modelDeck.Generate32CardDeck();
             DrawCards();
             PreBidding();
             StartBidding();

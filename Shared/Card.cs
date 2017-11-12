@@ -67,12 +67,8 @@ namespace Shared
             return _value;
         }
         
-        public void SetValue(int newValue)
+        public void     PrintCard()
         {
-            _value = newValue;
-        }
-        
-        public void     PrintCard() {
             Console.Write(_name + " " + _suit);
         }
 
