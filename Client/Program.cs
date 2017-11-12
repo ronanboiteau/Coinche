@@ -1,8 +1,6 @@
 ﻿using Shared;
 using System;
-using System.Data;
 using System.Net.Sockets;
-using System.Reflection.Metadata.Ecma335;
 using System.Text.RegularExpressions;
 
 namespace Client
