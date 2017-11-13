@@ -44,7 +44,7 @@ Here is your card deck:
 ```
 For the game to start, a player needs to make the highest bid (https://en.wikipedia.org/wiki/Coinche#Bidding).
 To make a bid you need to specify the value of your bid *(80, 90, 100, 110, 120, 130, 140, 150 or 160)* and a card suit *(HEARTS, DIAMONDS, CLUBS or SPADES)*.
-Bidding ex.:
+Bidding example:
 ```
 80 SPADES
 ```
@@ -53,7 +53,7 @@ To pass, you just need to type
 PASS
 ```
 If every player passes, the cards are re-drawn and the bidding will start again.
-The bidding will stop when only one player bids and the other ones pass.
+The bidding will stop when only one player bids and all the other ones pass or if someone surcoinche.
 
 #### Game
 
@@ -85,7 +85,7 @@ If the team who made the bid has at least the points of their contract and has m
 #### Client
 
 * **BID N** *: Pass, don't bid*
-* **BID Y [bid]** *: Send a bid to the server. [bid] can be an amount of points along with a suit ("80 SPADES"), "COINCHE" or "SURCOINCHE"*
+* **BID Y [bid]** *: Send a bid to the server. [bid] can be an amount of points along with a suit (ex: "80 SPADES"), "COINCHE" or "SURCOINCHE"*
 * **PLAY [card ID]** *: Sends the card to play to the server*
 
 ## Unit tests
