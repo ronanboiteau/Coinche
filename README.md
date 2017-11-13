@@ -1,6 +1,6 @@
 # Coinche
 
-This is a .NET online Coinche game. It requires 4 players to play. You can find the rules of this game on [Wikipedia](https://en.wikipedia.org/wiki/Coinche).
+This is a .NET online Coinche game. It requires 4 players to play. You can find the rules of this game on [Wikipedia](https://en.wikipedia.org/wiki/Coinche). If you want a more comprehensive version, [here are the offical rules (in french)](http://www.ffbelote.org/wp-content/uploads/2015/11/REGLES-DE-LA-BELOTE-COINCHEE.pdf), as defined by the *Fédération Française de Belote*.
 
 ## Getting Started
 
