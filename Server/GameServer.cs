@@ -10,7 +10,7 @@ namespace Server
         private static TcpListener _listener;
         private static int _connectedClients;
         private static readonly List<Player> Players = new List<Player>();
-
+        
         public static void StartServer(string ip, int port)
         {
             var address = IPAddress.Parse(ip);
@@ -21,16 +21,25 @@ namespace Server
 
         public static void Listen()
         {
-            while (_connectedClients < 4)
+            try
             {
-                Console.Write($"Waiting for more players... {_connectedClients} connected at the moment.\n"); 
-                _listen();
+                while (_connectedClients < 4)
+                {
+                    Console.Write($"Waiting for more players... {_connectedClients} connected at the moment.\n"); 
+                    _listen();
+                }
+                _listener.Stop();
+                var team1 = new Team(Players[0], Players[2], "Team1");
+                var team2 = new Team(Players[1], Players[3], "Team2");
+                var game = new Game(Players, team1, team2);
+                game.StartGame();
+            } catch (Exception) {
+                foreach (var player in Players)
+                { 
+                    player.GetChannel().GetStream().Close();
+                    player.GetChannel().Close();
+                }
             }
-            _listener.Stop();
-            var team1 = new Team(Players[0], Players[2], "Team1");
-            var team2 = new Team(Players[1], Players[3], "Team2");
-            var game = new Game(Players, team1, team2);
-            game.StartGame();
         }
 
         private static void _listen()

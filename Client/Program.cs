@@ -151,6 +151,11 @@ namespace Client
                         var stream = client.GetStream();
                         var buff = new byte[1];
                         var readStr = stream.Read(buff, 0, 1);
+                        if (readStr == 0)
+                        {
+                            Console.Write("Cannot reach server!\n");
+                            return 84;
+                        }
                         for (var i = 0; i < readStr; i++)
                             buffer += Convert.ToChar(buff[i]);
                     }

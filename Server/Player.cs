@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net.Http;
+using System.Net.Mime;
 using System.Net.Sockets;
 using System.Text;
 using Shared;
@@ -78,7 +80,7 @@ namespace Server
         {
             if (_channel.Client.Poll(0, SelectMode.SelectRead))
             {
-                byte[] buff = new byte[1];
+                var buff = new byte[1];
                 if (_channel.Client.Receive(buff, SocketFlags.Peek) == 0)
                     return false;
             }
@@ -91,10 +93,10 @@ namespace Server
                 return ;
             if (!IsReachable())
             {
+                Console.Write(GetName() + " lost connection! Quitting game...\n");
+                _channel.Close();
                 _channel = null;
-                Console.Write(GetName() + " lost connection! Quitting game...");
-                SendMessage("END");
-                return ;
+                throw new SocketException();
             }
             var data = Encoding.ASCII.GetBytes(message + "\n");
             _channel.GetStream().Write(data, 0, data.Length);
@@ -113,6 +115,11 @@ namespace Server
         public Deck GetDeck()
         {
             return _deck;
+        }
+        
+        public TcpClient GetChannel()
+        {
+            return _channel;
         }
         
         public string GetNextMessage()
