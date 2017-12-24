@@ -48,49 +48,51 @@ Bidding example:
 ```
 80 SPADES
 ```
-To pass, you just need to type
+To pass, you just need to type:
 ```
 PASS
 ```
-If every player passes, the cards are re-drawn and the bidding will start again.
-The bidding will stop when only one player bids and all the other ones pass or if someone surcoinche.
+If every player has passed, the cards are re-drawn and the bidding starts again.
+The bidding stops when only one player bids and allf the other ones pass or if someone has surcoinche'd.
 
 #### Game
 
-The player who made the highest bid starts. He needs to type the ID *(shown in the deck between parentheses)* of the card he wants to play.
+The player who made the highest bid starts. He needs to type the ID *(shown in the deck between parenthesis)* of the card he wants to play.
 ```
 18
 ```
 After that, every player has to play. The one who wins the trick will increase the score of his team.
 
-Once the players are out of cards, the game ends. 
-If the team who made the bid has at least the points of their contract and has more points than the other team, they win, and the other team loses.
+Once all the players are out of cards, the game ends. 
+If the team who made the bid has at least the points of their contract and has more points than the other team, they win, and the other team looses.
 
 ## Protocol
 
 #### Server
 
-* **MSG [message to send]** *: Sends a message*
-* **DECK [cards IDs]**  *: Sends the player's deck*
-* **BID** *: Asks the player to bid*
-* **BID OK** *: Accepts the player's bid*
-* **BID KO** *: Player's bid failed, asks him to bid again*
-* **BID STOP** *: Stops the bidding*
-* **BID RESET** *: Starts another round of bidding (happens when all the players have passed)*
-* **PLAY** *: Asks the client to play a card*
-* **PLAY KO** *: Illegal play, asks the client to select another card*
-* **PLAY OK** *: The card can be played*
-* **END** *: Ends the game*
+* **MSG [message to send]** *: Send a message*
+* **DECK [cards IDs]**  *: Send the player's deck*
+* **BID** *: Ask the player to bid*
+* **BID OK** *: Accept the player's bid*
+* **BID KO** *: Player's bid failed, ask him to bid again*
+* **BID STOP** *: Stop the bidding*
+* **BID RESET** *: Start another round of bidding when all the players have passed*
+* **PLAY** *: Ask the client to play a card*
+* **PLAY KO** *: Illegal play, ask the client to select another card*
+* **PLAY OK** *: The card has been played*
+* **END** *: End of the game*
  
 #### Client
 
 * **BID N** *: Pass, don't bid*
 * **BID Y [bid]** *: Send a bid to the server. [bid] can be an amount of points along with a suit (ex: "80 SPADES"), "COINCHE" or "SURCOINCHE"*
-* **PLAY [card ID]** *: Sends the card to play to the server*
+* **PLAY [card ID]** *: Send the card to play to the server*
 
 ## Unit tests
 
-If you'd like to use Coinche's `Xunit` units tests or to create new tests for features you add, you can use the `Test` project inside the `Test/` directory. Use the command `dotnet test` in this directory to run the unit tests.
+If you'd like to use Coinche's `Xunit` unit tests or create new tests for features you added, you can use the `Test` project inside the `Test/` directory.
+
+Use the command `dotnet test` to run Coinche's unit tests.
 
 ## Authors
 
