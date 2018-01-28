@@ -2,6 +2,8 @@
 
 This is a .NET online Coinche game. It requires 4 players to play. You can find the rules of this game on [Wikipedia](https://en.wikipedia.org/wiki/Coinche). If you want a more comprehensive version, [here are the offical rules (in French)](http://www.ffbelote.org/wp-content/uploads/2015/11/REGLES-DE-LA-BELOTE-COINCHEE.pdf), as defined by the *Fédération Française de Belote*.
 
+<img alt="Fir tree" src="/artwork/trumps.png" width="130" height="130"/>
+
 ## Getting Started
 
 ### Requirements
