@@ -9,6 +9,7 @@ This is a .NET online Coinche game. It requires 4 players to play. You can find 
 ### Requirements
 
 To build and run the project you need to install:
+
 * [.NET Core](https://www.microsoft.com/net/download/) 2.0.2
 
 ## How to run the server & clients
@@ -100,7 +101,7 @@ Commands sent by the clients to the server.
 
 ## Unit tests
 
-If you'd like to use Coinche's `Xunit` unit tests or create new tests for features you added, you can use the `Test` project inside the `Test/` directory.
+If you'd like to use Coinche's [Xunit](https://xunit.github.io/) unit tests or create new tests for features you added, you can use the `Test` project inside the `Test/` directory.
 
 Use the command `dotnet test` to run Coinche's unit tests.
 
