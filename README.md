@@ -72,23 +72,31 @@ If the team who made the bid has at least the points of their contract and has m
 
 #### Server
 
-* **MSG [message to send]** *: Send a message*
-* **DECK [cards IDs]**  *: Send the player's deck*
-* **BID** *: Ask the player to bid*
-* **BID OK** *: Accept the player's bid*
-* **BID KO** *: Player's bid failed, ask him to bid again*
-* **BID STOP** *: Stop the bidding*
-* **BID RESET** *: Start another round of bidding when all the players have passed*
-* **PLAY** *: Ask the client to play a card*
-* **PLAY KO** *: Illegal play, ask the client to select another card*
-* **PLAY OK** *: The card has been played*
-* **END** *: End of the game*
+Commands sent by the server to the clients.
+
+| Command | Description |
+|---|---|
+| `MSG [message to send]` | Send a message |
+| `DECK [cards IDs]` | Send the player's deck |
+| `BID` | Ask the player to bid |
+| `BID OK` | Accept the player's bid |
+| `BID KO` | Player's bid failed, ask him to bid again |
+| `BID STOP` | Stop the bidding |
+| `BID RESET` | Start another round of bidding when all the players have passed |
+| `PLAY` | Ask the client to play a card |
+| `PLAY KO` | Illegal play, ask the client to select another card |
+| `PLAY OK` | The card has been played |
+| `END` | End of the game |
  
 #### Client
 
-* **BID N** *: Pass, don't bid*
-* **BID Y [bid]** *: Send a bid to the server. [bid] can be an amount of points along with a suit (ex: "80 SPADES"), "COINCHE" or "SURCOINCHE"*
-* **PLAY [card ID]** *: Send the card to play to the server*
+Commands sent by the clients to the server.
+
+| Command | Description |
+|---|---|
+| `BID N` | Pass, don't bid |
+| `BID Y [bid]` | Send a bid to the server. [bid] can be an amount of points along with a suit (ex: "80 SPADES"), "COINCHE" or "SURCOINCHE" |
+| `PLAY [card ID]` | Send the card to play to the server |
 
 ## Unit tests
 
