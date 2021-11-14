@@ -104,8 +104,3 @@ Commands sent by the clients to the server.
 If you'd like to use Coinche's [Xunit](https://xunit.github.io/) unit tests or create new tests for features you added, you can use the `Test` project inside the `Test/` directory.
 
 Use the command `dotnet test` to run Coinche's unit tests.
-
-## Authors
-
-* **Ronan Boiteau** ([GitHub](https://github.com/ronanboiteau) / [LinkedIn](https://www.linkedin.com/in/ronanboiteau/))
-* **Fanny Tavart**  ([GitHub](https://github.com/fannytavart) / [LinkedIn](https://www.linkedin.com/in/fannytavart/))
